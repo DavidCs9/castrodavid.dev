@@ -3,24 +3,31 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   bubbleSort,
-  selectionSort,
+  insertionSort,
+  mergeSort,
+  quickSort,
   type Skill,
 } from "../utils/sortingAlgorithms";
 
 const skillsData: Skill[] = [
-  { name: "Node.js", level: 2 },
-  { name: "JavaScript", level: 5 },
-  { name: "React", level: 9 },
-  { name: "AWS", level: 6 },
-  { name: "TypeScript", level: 7 },
+  { name: "Cypress", level: 6 },
+  { name: "Go", level: 6 },
+  { name: "React", level: 8 },
+  { name: "AWS", level: 10 },
+  { name: "TypeScript", level: 9 },
+  { name: "Redis", level: 7 },
   { name: "Python", level: 8 },
-  { name: "Docker", level: 6 },
-  { name: "Kubernetes", level: 5 },
-  { name: "GraphQL", level: 4 },
+  { name: "Docker", level: 8 },
   { name: "MongoDB", level: 7 },
-  { name: "PostgreSQL", level: 6 },
+  { name: "GraphQL", level: 6 },
+  { name: "MySQL", level: 10 },
   { name: "Git", level: 9 },
-  // Agrega más skills según sea necesario
+  { name: "SQS", level: 7 },
+  { name: "JavaScript", level: 10 },
+  { name: "Angular", level: 8 },
+  { name: "Bash", level: 6 },
+  { name: "CI/CD", level: 8 },
+  { name: "Node.js", level: 10 },
 ];
 
 const SkillsList: React.FC = () => {
@@ -28,15 +35,18 @@ const SkillsList: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [steps, setSteps] = useState<Skill[][]>([]);
   const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [clickAlgorithm, setClickAlgorithm] = useState<string>();
+  const [algoLatency, setAlgoLatency] = useState<number>(0);
+
+  const STEP_DELAY = 400;
 
   const handleSort = (
     algorithmFn: (arr: Skill[]) => { sorted: Skill[]; steps: Skill[][] }
   ) => {
-    setCurrentStep(0);
-    setSkills(skillsData);
+    restartSkills();
+    setClickAlgorithm(algorithmFn.name);
     const { steps: algoSteps } = algorithmFn(skillsData);
     setSteps(algoSteps);
-    // No need to call runAutomated here
   };
 
   // Add this useEffect
@@ -55,32 +65,47 @@ const SkillsList: React.FC = () => {
         setSkills(steps[step]);
         setCurrentStep(step);
         step++;
+        setAlgoLatency((step * STEP_DELAY) / 1000);
       } else {
         clearInterval(interval);
         setIsRunning(false);
       }
-    }, 600);
+    }, STEP_DELAY);
   };
 
-  // Function to get color based on skill level
   const getSkillColor = (level: number) => {
-    if (level >= 8) return "bg-green-500";
-    if (level >= 5) return "bg-blue-500";
-    return "bg-yellow-500";
+    if (level === 10) return "bg-green-700"; // Darker green for highest skill
+    if (level === 9) return "bg-green-600"; // Rich green
+    if (level === 8) return "bg-teal-500"; // Slightly darker teal
+    if (level === 7) return "bg-teal-400"; // Rich teal
+    if (level === 6) return "bg-blue-500"; // Medium blue
+    return "bg-blue-400"; // Slightly darker blue for lowest skill
+  };
+
+  const restartSkills = () => {
+    setSkills(skillsData);
+    setSteps([]);
+    setCurrentStep(0);
+    setIsRunning(false);
+    setClickAlgorithm(undefined);
+    setAlgoLatency(0);
   };
 
   const algorithms = [
     { name: "Bubble Sort", fn: bubbleSort },
-    { name: "Selection Sort", fn: selectionSort },
+    { name: "Insertion Sort", fn: insertionSort },
+    { name: "Merge Sort", fn: mergeSort },
+    { name: "Quick Sort", fn: quickSort },
   ];
 
   return (
-    <div className="max-w-6xl mx-auto text-center py-8 px-4">
-      <h2 className="text-2xl font-bold mb-4">Skills List</h2>
-      <p className="text-gray-600 mb-6">
-        Click on a sorting algorithm to sort my skills list.
+    <div className="w-full mx-auto text-center py-8 px-4">
+      <h2 className="text-2xl font-bold mb-4 text-primary-dark">
+        Want to see my skills sorted?
+      </h2>
+      <p className="text-gray-900/50 mb-6">
+        Click on the algorithm you want to use to sort my skills.
       </p>
-
       <div className="mb-6 flex justify-center gap-4">
         {algorithms.map((algo) => (
           <button
@@ -93,14 +118,21 @@ const SkillsList: React.FC = () => {
           </button>
         ))}
       </div>
-
       {isRunning && (
-        <div className="mb-2 text-sm text-gray-400">
-          Sorting step: {currentStep + 1}/{steps.length}
+        <div className="flex justify-between items-center mb-2 text-sm text-gray-400">
+          <div>
+            Sorting step: {currentStep + 1}/{steps.length}
+          </div>
+          <div>Latency: {algoLatency} seconds</div>
         </div>
       )}
-
-      <div className="flex flex-wrap justify-center items-end rounded-lg p-10 gap-4">
+      {!isRunning && steps.length > 0 && (
+        <div className="mb-2 text-sm text-gray-400">
+          Algorithm: {clickAlgorithm} | Latency:{" "}
+          {(steps.length * STEP_DELAY) / 1000} seconds
+        </div>
+      )}
+      <div className="flex flex-wrap items-end rounded-lg gap-2 justify-center">
         <AnimatePresence>
           {skills.map((skill) => (
             <motion.div
@@ -110,21 +142,19 @@ const SkillsList: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col justify-end items-center w-8 md:w-12"
+              className="flex flex-col justify-end items-center relative"
             >
               <div className="h-full flex items-end">
                 <motion.div
-                  className={`w-8 rounded-t-md ${getSkillColor(skill.level)}`}
+                  className={`w-10 rounded-t-md ${getSkillColor(skill.level)}`}
                   initial={{ height: 0 }}
                   animate={{ height: `${(skill.level / 10) * 180}px` }}
                   transition={{ duration: 0.5 }}
                 ></motion.div>
               </div>
-              <div className="mt-2 text-xs text-gray-800 w-full truncate text-center">
-                {skill.level}/10
-              </div>
-              <div className="mt-6 text-xs text-gray-700 font-medium w-full text-center rotate-[-45deg] origin-top-left translate-y-6">
-                {skill.name}
+              <div className=" text-xs left-0 absolute text-gray-100/80 font-medium w-full text-center rotate-[-90deg] bottom-10 flex justify-center gap-1">
+                <div> {skill.name}</div>
+                <div>({skill.level})</div>
               </div>
             </motion.div>
           ))}
