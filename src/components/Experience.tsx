@@ -142,53 +142,6 @@ const Resume = () => {
       {education.map((edu, index) => (
         <EducationCard key={index} education={edu} />
       ))}
-
-      <h2 className="text-2xl font-semibold mb-6 text-gray-900 border-b pb-2 mt-10">
-        Additional Information
-      </h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <h3 className="text-lg font-medium text-gray-900 mb-3">Languages</h3>
-          <ul className="space-y-2">
-            {additionalInfo.languages.map((lang, index) => (
-              <InfoItem key={index}>
-                {lang.language}{" "}
-                <span className="text-gray-500 text-sm ml-1">
-                  ({lang.proficiency})
-                </span>
-              </InfoItem>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-medium text-gray-900 mb-3">
-            Certifications
-          </h3>
-          <ul className="space-y-2">
-            {additionalInfo.certifications.map((cert, index) => (
-              <InfoItem key={index}>
-                {cert.name}{" "}
-                <span className="text-gray-500 text-sm ml-1">
-                  (Valid until {cert.validUntil})
-                </span>
-              </InfoItem>
-            ))}
-          </ul>
-        </div>
-
-        <div className="col-span-2">
-          <h3 className="text-lg font-medium text-gray-900 mb-3">
-            Additional Reading
-          </h3>
-          <ul className="space-y-2">
-            {additionalInfo.additionalReading.map((reading, index) => (
-              <InfoItem key={index}>{reading}</InfoItem>
-            ))}
-          </ul>
-        </div>
-      </div>
     </section>
   );
 };
