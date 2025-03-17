@@ -100,10 +100,10 @@ const SkillsList: React.FC = () => {
 
   return (
     <div className="w-full mx-auto text-center py-8 px-4">
-      <h2 className="text-2xl font-bold mb-4 text-primary-dark">
+      <h2 className="text-2xl font-bold mb-2 text-primary-dark">
         Want to see my skills sorted?
       </h2>
-      <p className="text-gray-900/50 mb-6">
+      <p className="text-gray-900/50 mb-2">
         Click on the algorithm you want to use to sort my skills.
       </p>
       <div className="mb-6 flex justify-center gap-4">
@@ -112,7 +112,7 @@ const SkillsList: React.FC = () => {
             key={algo.name}
             onClick={() => handleSort(algo.fn)}
             disabled={isRunning}
-            className="bg-primary text-white px-4 py-2 rounded-lg cursor-pointer"
+            className="bg-primary text-white/90 px-4 py-2 rounded-lg cursor-pointer hover:bg-primary-dark hover:shadow-lg transition"
           >
             {algo.name}
           </button>
