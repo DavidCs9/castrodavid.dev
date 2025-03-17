@@ -98,7 +98,7 @@ const SkillsList: React.FC = () => {
   ];
 
   return (
-    <div className="w-full mx-auto text-center py-8">
+    <div className="w-full mx-auto text-center py-8 min-h-[400px]">
       <h2 className="text-xl md:text-2xl font-bold mb-2 text-primary-dark">
         Want to see my skills sorted?
       </h2>

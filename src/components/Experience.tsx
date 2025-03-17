@@ -128,7 +128,7 @@ const InfoItem = ({ children }: { children: React.ReactNode }) => (
 // Main Resume Component
 const Resume = () => {
   return (
-    <section className="mt-30 py-8  text-gray-800 font-sans">
+    <section className="mt-20 py-8  text-gray-800 font-sans">
       <h2 className="text-2xl font-semibold mb-6 text-gray-900 border-b pb-2">
         Professional Experience
       </h2>
