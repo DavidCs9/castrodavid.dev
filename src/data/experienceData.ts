@@ -5,8 +5,9 @@ export const experiences: Experience[] = [
     location: "Chihuahua, MX",
     date: "06/2023 - Present",
     summary:
-      "Championed the conversion of 50% of legacy Javascript codebase to TypeScript, resulting in a 35% reduction in critical production bugs and accelerating feature delivery timelines by two weeks.",
+      "Maintained and enhanced a critical legacy system responsible for managing and visualizing sand silo metrics during the fracking process in the USA. The project processes 100,000 writes per day and tracks over 5 billion lbs of sand usage annually for a prominent USA client, ensuring precise real-time data analysis and operational decision support in a high-stakes environment.",
     achievements: [
+      "Championed the conversion of 50% of the legacy JavaScript codebase to TypeScript, resulting in a 35% reduction in critical production bugs and an acceleration in feature delivery timelines by two weeks.",
       "Spearheaded the migration of a critical reporting feature from a client-side to a microservice architecture using AWS Lambda and API Gateway—reducing report generation time by 90% (from 5 minutes to 30 seconds), enhancing system resilience, and lowering operational costs through effective caching strategies.",
       "Identified and optimized an inefficient indexing strategy in our MySQL database, reducing query latency by 75% and markedly improving system performance.",
       "Independently developed an internal server monitoring tool in Go that tracks performance metrics from 8 cross-cloud servers, improving the detection speed of high-latency issues by 50%.",
