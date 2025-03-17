@@ -14,7 +14,7 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
 
   return (
     <div className="mb-8">
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between md:items-start relative">
         <div>
           <h3 className="text-xl font-medium text-gray-900/90">
             {experience.title}{" "}
@@ -30,7 +30,7 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
           </p>
         </div>
         <button
-          className="text-primary-dark hover:text-primary text-sm font-medium flex items-center focus:outline-none transition-colors duration-200 w-40 cursor-pointer justify-end"
+          className="text-primary-dark hover:text-primary text-sm font-medium flex items-center focus:outline-none transition-colors duration-200 w-40 cursor-pointer justify-end absolute -bottom-4 left-12 md:static"
           onClick={() => setIsExpanded(!isExpanded)}
           aria-expanded={isExpanded}
         >
@@ -102,7 +102,7 @@ const EducationCard = ({ education }: { education: Education }) => {
         </div>
       </div>
       <div className="mt-3">
-        <h4 className="text-sm font-medium text-gray-700 mb-2">
+        <h4 className="text-sm font-medium text-gray-700/70 mb-2">
           Achievements:
         </h4>
         <ul className="space-y-2 list-disc pl-5">
@@ -128,7 +128,7 @@ const InfoItem = ({ children }: { children: React.ReactNode }) => (
 // Main Resume Component
 const Resume = () => {
   return (
-    <section className="mt-30 py-8 px-4 sm:px-6 text-gray-800 font-sans">
+    <section className="mt-30 py-8  text-gray-800 font-sans">
       <h2 className="text-2xl font-semibold mb-6 text-gray-900 border-b pb-2">
         Professional Experience
       </h2>

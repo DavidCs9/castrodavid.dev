@@ -17,14 +17,13 @@ const skillsData: Skill[] = [
   { name: "TypeScript", level: 9 },
   { name: "Redis", level: 7 },
   { name: "Python", level: 8 },
-  { name: "Docker", level: 8 },
   { name: "MongoDB", level: 7 },
   { name: "GraphQL", level: 6 },
   { name: "MySQL", level: 10 },
   { name: "Git", level: 9 },
   { name: "SQS", level: 7 },
   { name: "JavaScript", level: 10 },
-  { name: "Angular", level: 8 },
+  { name: "Docker", level: 8 },
   { name: "Bash", level: 6 },
   { name: "CI/CD", level: 8 },
   { name: "Node.js", level: 10 },
@@ -99,27 +98,27 @@ const SkillsList: React.FC = () => {
   ];
 
   return (
-    <div className="w-full mx-auto text-center py-8 px-4">
-      <h2 className="text-2xl font-bold mb-2 text-primary-dark">
+    <div className="w-full mx-auto text-center py-8">
+      <h2 className="text-xl md:text-2xl font-bold mb-2 text-primary-dark">
         Want to see my skills sorted?
       </h2>
-      <p className="text-gray-900/50 mb-2">
-        Click on the algorithm you want to use to sort my skills.
+      <p className="text-gray-900/50 mb-3 text-sm md:text-base">
+        Click on the algorithm you want to sort them.
       </p>
-      <div className="mb-6 flex justify-center gap-4">
+      <div className="mb-6 flex justify-center md:gap-4 gap-1">
         {algorithms.map((algo) => (
           <button
             key={algo.name}
             onClick={() => handleSort(algo.fn)}
             disabled={isRunning}
-            className="bg-primary text-white/90 px-4 py-2 rounded-lg cursor-pointer hover:bg-primary-dark hover:shadow-lg transition"
+            className="bg-primary text-white/90 md:px-4 md:py-2 md:rounded-lg cursor-pointer hover:bg-primary-dark hover:shadow-lg transition text-sm p-1 rounded"
           >
             {algo.name}
           </button>
         ))}
       </div>
       {isRunning && (
-        <div className="flex justify-between items-center mb-2 text-sm text-gray-400">
+        <div className="flex justify-between items-center mb-3 text-sm text-gray-400">
           <div>
             Sorting step: {currentStep + 1}/{steps.length}
           </div>
@@ -127,12 +126,12 @@ const SkillsList: React.FC = () => {
         </div>
       )}
       {!isRunning && steps.length > 0 && (
-        <div className="mb-2 text-sm text-gray-400">
+        <div className="mb-3 text-sm text-gray-400">
           Algorithm: {clickAlgorithm} | Latency:{" "}
           {(steps.length * STEP_DELAY) / 1000} seconds
         </div>
       )}
-      <div className="flex flex-wrap items-end rounded-lg gap-2 justify-center">
+      <div className="flex flex-wrap items-end rounded-lg gap-1 md:gap-2 justify-center">
         <AnimatePresence>
           {skills.map((skill) => (
             <motion.div
@@ -146,13 +145,15 @@ const SkillsList: React.FC = () => {
             >
               <div className="h-full flex items-end">
                 <motion.div
-                  className={`w-10 rounded-t-md ${getSkillColor(skill.level)}`}
+                  className={`w-4 md:w-10 rounded-t-md ${getSkillColor(
+                    skill.level
+                  )}`}
                   initial={{ height: 0 }}
                   animate={{ height: `${(skill.level / 10) * 180}px` }}
                   transition={{ duration: 0.5 }}
                 ></motion.div>
               </div>
-              <div className=" text-xs left-0 absolute text-gray-100/80 font-medium w-full text-center rotate-[-90deg] bottom-10 flex justify-center gap-1">
+              <div className=" text-sm left-0 absolute text-gray-800/60 md:text-gray-100/80 font-medium w-full text-center rotate-[-90deg] md:bottom-12 -bottom-16 flex justify-center gap-1">
                 <div> {skill.name}</div>
                 <div>({skill.level})</div>
               </div>
