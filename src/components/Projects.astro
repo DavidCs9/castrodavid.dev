@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { ProjectsData } from "../data/projectsData";
 ---
 
@@ -12,10 +13,10 @@ import { ProjectsData } from "../data/projectsData";
         <div class="bg-white/40 rounded-lg border border-gray-100/30 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden hover:bg-white/50 ">
           <div class="md:flex hover:transform hover:scale-102 transition-transform duration-300">
             <div class="md:w-2/5">
-              <img
+              <Image
                 src={project.image}
-                alt={`${project.title} preview`}
-                class="h-full w-full object-cover object-center"
+                alt="Project Image"
+                class="h-full w-full object-cover object-center aspect-w-16 aspect-h-9"
               />
             </div>
             <div class="p-5 md:w-3/5">
