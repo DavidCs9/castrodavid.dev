@@ -104,16 +104,32 @@ export const mergeSort = (array: Skill[], onStep?: OnStepCallback) => {
   return { sorted: arr, steps };
 };
 
-export const quickSort = (arr: Skill[], onStep?: OnStepCallback) => {
+export const quickSort = (arr: Skill[]) => {
   const steps: Skill[][] = [];
   const array = [...arr];
+
+  // Helper function to check if two steps (arrays) are equal.
+  // Assumes the order of elements is important.
+  const stepsAreEqual = (a: Skill[], b: Skill[]) =>
+    a.length === b.length &&
+    a.every(
+      (skill, i) => skill.level === b[i].level && skill.name === b[i].name
+    );
+
+  // Add a step if it is not a duplicate of the previous step.
+  const pushStepIfUnique = (current: Skill[]) => {
+    const lastStep = steps[steps.length - 1];
+    if (!lastStep || !stepsAreEqual(lastStep, current)) {
+      steps.push([...current]);
+    }
+  };
 
   const partition = (arr: Skill[], low: number, high: number): number => {
     const pivot = arr[high];
     let i = low - 1;
 
     for (let j = low; j < high; j++) {
-      if (arr[j].level > pivot.level) {
+      if (arr[j].level >= pivot.level) {
         i++;
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
@@ -126,11 +142,8 @@ export const quickSort = (arr: Skill[], onStep?: OnStepCallback) => {
   const quickSortRec = (arr: Skill[], low: number, high: number) => {
     if (low < high) {
       const pi = partition(arr, low, high);
-
-      // Capture the current state of the array after partitioning
-      steps.push([...arr]);
-      if (onStep) onStep([...arr]);
-
+      // Push the snapshot only if it differs from the last one.
+      pushStepIfUnique(arr);
       quickSortRec(arr, low, pi - 1);
       quickSortRec(arr, pi + 1, high);
     }

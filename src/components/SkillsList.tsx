@@ -127,8 +127,7 @@ const SkillsList: React.FC = () => {
       )}
       {!isRunning && steps.length > 0 && (
         <div className="mb-3 text-sm text-gray-400">
-          Algorithm: {clickAlgorithm} | Latency:{" "}
-          {(steps.length * STEP_DELAY) / 1000} seconds
+          Latency: {(steps.length * STEP_DELAY) / 1000} seconds
         </div>
       )}
       <div className="flex flex-wrap items-end rounded-lg gap-1 md:gap-2 justify-center">
