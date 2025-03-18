@@ -16,6 +16,6 @@ Some of my key takeaways:<br><br>
 
 If you work with distributed systems or are planning to dive into the field, I highly recommend this book.<br><br>
 
-Next up on my reading list: _The Pragmatic Programmer_. Which books have shaped your approach to engineering? I'm also open to any recommendations!<br><br>
+Next up on my reading list: _The Pragmatic Programmer_.<br><br>
 
 #DataEngineering #DistributedSystems #SystemDesign
