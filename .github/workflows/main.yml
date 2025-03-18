@@ -20,15 +20,19 @@ jobs:
         with:
           node-version: 22 # Use the Node.js version required by Astro
 
-      # Step 3: Install dependencies
+      # Step 3: Install pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      # Step 4: Install dependencies using pnpm
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
-      # Step 4: Build the Astro project
+      # Step 5: Build the Astro project using pnpm
       - name: Build Astro project
-        run: npm run build
+        run: pnpm build
 
-      # Step 5: Sync files to S3
+      # Step 6: Sync files to S3
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
@@ -40,7 +44,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: dist # The output directory of the Astro build
 
-      # Step 6: Invalidate CloudFront cache using AWS CLI
+      # Step 7: Invalidate CloudFront cache using AWS CLI
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
