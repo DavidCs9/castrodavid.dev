@@ -33,7 +33,7 @@ export const experiences: Experience[] = [
 export const education: Education[] = [
   {
     degree: "Bachelor of Engineering in Mechatronics Engineering",
-    institution: "Universidad La Salle Chihuahua",
+    institution: "Universidad La Salle",
     location: "Chihuahua, MX",
     date: "2017 - 2021",
     achievements: [
