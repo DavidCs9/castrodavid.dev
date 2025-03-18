@@ -37,7 +37,7 @@ const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
             {postsByYear[year].map((post: any) => (
               <li class="group">
                 <a
-                  href={`/posts/${post.slug}`}
+                  href={`/posts/${post.slug}/index.html`}
                   class="block p-6 bg-white/40 rounded-lg border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all duration-200"
                 >
                   <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
