@@ -1,0 +1,104 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render, getEntry } from "astro:content";
+
+// Generate static paths for all posts in the collection
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+// Find the current post by matching the slug from the URL
+const { slug } = Astro.params;
+const post = await getEntry("posts", slug);
+if (!post) {
+  throw new Error("Post not found");
+}
+const { Content } = await render(post);
+---
+
+<Layout title={post.data.title}>
+  <article class="mt-16 px-4 sm:px-6 lg:px-0">
+    <header class="mb-12">
+      <!-- Title -->
+      <h1
+        class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-6 leading-tight"
+      >
+        {post.data.title}
+      </h1>
+
+      <!-- Description -->
+      {
+        post.data.description && (
+          <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+            {post.data.description}
+          </p>
+        )
+      }
+
+      <div
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-500/20 pb-6"
+      >
+        <!-- Date -->
+        <time
+          class="text-gray-500 font-medium"
+          datetime={post.data.date.toISOString()}
+        >
+          {
+            post.data.date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          }
+        </time>
+
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-2">
+          {
+            post.data.tags.map((tag: string) => (
+              <a
+                href={`/tags/${tag}`}
+                class="inline-block bg-primary/10 text-primary font-medium rounded-full px-4 py-1 text-sm hover:bg-primary/20 transition-colors"
+              >
+                #{tag}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <section
+      class="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary prose-a:font-medium prose-img:rounded-lg prose-img:shadow-md"
+    >
+      <Content />
+    </section>
+
+    <!-- Author Bio (optional) -->
+    <!-- {
+      post.data.author && (
+        <div class="mt-16 pt-8 border-t border-gray-200">
+          <div class="flex items-center gap-4">
+            {post.data.authorImage && (
+              <img
+                src={post.data.authorImage}
+                alt={post.data.author}
+                class="w-12 h-12 rounded-full object-cover"
+              />
+            )}
+            <div>
+              <h3 class="font-medium text-gray-900">{post.data.author}</h3>
+              {post.data.authorBio && (
+                <p class="text-gray-600 text-sm">{post.data.authorBio}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )
+    } -->
+  </article>
+</Layout>
