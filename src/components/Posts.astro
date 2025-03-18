@@ -20,7 +20,7 @@ const postsByYear = posts.reduce((acc: Record<string, typeof posts>, post) => {
 const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
 ---
 
-<div class="mt-16 px-4 sm:px-6 lg:px-0">
+<div class="mt-16">
   <header class="mb-12">
     <h2 class="text-3xl font-semibold mb-6 text-gray-900">Blog</h2>
     <p class="text-xl text-gray-600">
