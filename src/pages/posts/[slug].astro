@@ -59,12 +59,9 @@ const { Content } = await render(post);
         <div class="flex flex-wrap gap-2">
           {
             post.data.tags.map((tag: string) => (
-              <a
-                href={`/tags/${tag}`}
-                class="inline-block bg-primary/10 text-primary font-medium rounded-full px-4 py-1 text-sm hover:bg-primary/20 transition-colors"
-              >
+              <div class="inline-block bg-primary/10 text-primary font-medium rounded-full px-4 py-1 text-sm hover:bg-primary/20 transition-colors">
                 #{tag}
-              </a>
+              </div>
             ))
           }
         </div>
