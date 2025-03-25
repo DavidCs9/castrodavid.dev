@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection, render, getEntry } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 
 // Generate static paths for all posts in the collection
 export async function getStaticPaths() {
@@ -16,15 +16,15 @@ const post = await getEntry("posts", slug);
 if (!post) {
   throw new Error("Post not found");
 }
-const { Content } = await render(post);
+const { Content } = await post.render();
 ---
 
 <Layout title={post.data.title}>
-  <article class="mt-16">
-    <header class="mb-12">
+  <article class="mt-8 md:mt-16 px-4 md:px-0">
+    <header class="mb-8 md:mb-12">
       <!-- Title -->
       <h1
-        class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-6 leading-tight"
+        class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4 md:mb-6 leading-tight"
       >
         {post.data.title}
       </h1>
@@ -32,7 +32,7 @@ const { Content } = await render(post);
       <!-- Description -->
       {
         post.data.description && (
-          <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+          <p class="text-lg md:text-xl text-gray-600 mb-6 md:mb-8 leading-relaxed">
             {post.data.description}
           </p>
         )
@@ -70,7 +70,23 @@ const { Content } = await render(post);
 
     <!-- Content -->
     <section
-      class="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary prose-a:font-medium prose-img:rounded-lg prose-img:shadow-md"
+      class="prose prose-base md:prose-lg max-w-none
+             prose-headings:font-bold prose-headings:text-gray-900 prose-headings:mt-8 prose-headings:mb-4
+             prose-h1:text-2xl md:prose-h1:text-3xl prose-h2:text-xl md:prose-h2:text-2xl prose-h3:text-lg md:prose-h3:text-xl
+             prose-p:text-gray-700 prose-p:mb-4 prose-p:leading-relaxed
+             prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+             prose-img:rounded-lg prose-img:shadow-md
+             prose-strong:font-bold prose-strong:text-gray-800
+             prose-em:italic prose-em:text-gray-800
+             prose-code:text-primary-dark prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+             prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+             prose-pre:shadow-md prose-pre:my-6
+             prose-ul:list-disc prose-ul:pl-6 prose-ul:my-4
+             prose-ol:list-decimal prose-ol:pl-6 prose-ol:my-4
+             prose-li:mb-2
+             prose-blockquote:border-l-4 prose-blockquote:border-primary/40 prose-blockquote:pl-4
+             prose-blockquote:italic prose-blockquote:text-gray-700 prose-blockquote:my-6
+             prose-hr:my-8 prose-hr:border-gray-300"
     >
       <Content />
     </section>

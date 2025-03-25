@@ -1,6 +1,13 @@
 ---
 import "../styles/global.css";
 import Header from "../components/Header.astro";
+
+// Define props
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
 ---
 
 <!doctype html>
@@ -10,7 +17,7 @@ import Header from "../components/Header.astro";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>David Castro | SWE</title>
+    <title>{title || "David Castro | SWE"}</title>
     <meta
       name="description"
       content="David Castro's personal portfolio. I am a software engineer passionate about building scalable and efficient software solutions."
@@ -24,6 +31,12 @@ import Header from "../components/Header.astro";
       data-goatcounter="https://davidcs9.goatcounter.com/count"
       async
       src="//gc.zgo.at/count.js"></script>
+
+    <!-- Prism CSS for code highlighting -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css"
+    />
   </head>
   <body
     class="min-h-screen bg-background text-black flex flex-col font-primary relative"
@@ -31,9 +44,54 @@ import Header from "../components/Header.astro";
     <div class="fixed inset-0 bg-[url('../assets/concrete-wall.png')] z-[-2]">
     </div>
     <div class="fixed inset-0 z-[-1] bg-background/40"></div>
-    <div class="p-6 md:p-60 mt-4 mb-8 md:pt-4 max-w-[1400px] mx-auto">
+    <div class="p-6 md:p-60 mt-4 mb-8 md:pt-4 max-w-[1400px] mx-auto w-full">
       <Header />
       <slot />
     </div>
+
+    <!-- Prism JS for code highlighting -->
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"
+    ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"
+    ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"
+    ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"
+    ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-tsx.min.js"
+    ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"
+    ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"
+    ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"
+    ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"
+    ></script>
+
+    <script is:inline>
+      // Re-trigger Prism highlighting after page load
+      document.addEventListener("DOMContentLoaded", (event) => {
+        Prism.highlightAll();
+      });
+    </script>
   </body>
 </html>

@@ -25,3 +25,76 @@
     animation: appearFromAbove 0.5s ease-out;
   }
 }
+
+/* Override specific Tailwind typography styles for Markdown */
+.prose code::before,
+.prose code::after {
+  content: "" !important;
+}
+
+.prose pre {
+  background-color: #1e293b !important;
+  padding: 1rem !important;
+  border-radius: 0.5rem !important;
+  overflow-x: auto !important;
+  margin: 1.5rem 0 !important;
+}
+
+.prose pre code {
+  background-color: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: 0.875rem !important;
+  color: inherit !important;
+}
+
+/* Shiki styles */
+.prose .shiki {
+  font-family: "Fira Code", "Menlo", "Monaco", "Consolas", monospace !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0.375rem !important;
+  background-color: #282c34 !important; /* One Dark Pro background */
+}
+
+.prose .shiki code {
+  background-color: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: inherit !important;
+  color: inherit !important;
+  font-family: inherit !important;
+}
+
+.prose ul {
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
+  margin: 1rem 0 !important;
+}
+
+.prose ol {
+  list-style-type: decimal !important;
+  padding-left: 1.5rem !important;
+  margin: 1rem 0 !important;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-weight: 700 !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1rem !important;
+  color: #111827 !important;
+  line-height: 1.2 !important;
+}
+
+.prose blockquote {
+  border-left: 4px solid rgba(59, 130, 246, 0.4) !important;
+  padding-left: 1rem !important;
+  font-style: italic !important;
+  color: #4b5563 !important;
+  margin: 1.5rem 0 !important;
+}
