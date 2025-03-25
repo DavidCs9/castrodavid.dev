@@ -1,0 +1,200 @@
+---
+title: "You Don't Know JavaScript Yet: Getting Started"
+date: 2025-04-15
+description: "Insights from Kyle Simpson's fundamental exploration of JavaScript's core mechanics and why it matters."
+tags: ["javascript", "web-development", "programming", "frontend"]
+---
+
+The second book review and the first of the series YDKJS. This book is a great introduction to the core concepts of JavaScript. If you want to become a serious JavaScript developer, this is a must read.
+
+## ECMAScript: The Official Language
+
+JavaScript's formal name is ECMAScript, maintained by the TC39 committee and ECMA International. Every language feature goes through a structured proposal process before becoming part of the official specification.
+
+## Backward Compatibility
+
+One of JavaScript's core strengths is its commitment to backward compatibility. Code written 15 years ago will likely still run in today's browsers, making it a stable choice for long-term projects.
+
+## JavaScript's Compilation Process
+
+```javascript
+// Syntax errors are caught during parsing
+function brokenFunction( {
+  console.log("This won't run");
+  // SyntaxError: missing closing parenthesis
+}
+```
+
+JavaScript uses a compilation phase in modern engines. It parses code, compiles to bytecode, and optimizes before execution—contrary to the common belief that it's purely interpreted.
+
+## Multi-Paradigm Flexibility
+
+```javascript
+// Procedural
+function calculateArea(width, height) {
+  return width * height;
+}
+
+// Object-oriented
+class Rectangle {
+  constructor(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+
+  getArea() {
+    return this.width * this.height;
+  }
+}
+
+// Functional
+const area = (width, height) => width * height;
+const double = (x) => x * 2;
+const doubledArea = (width, height) => double(area(width, height));
+```
+
+JavaScript supports procedural, object-oriented, and functional programming approaches, making it extraordinarily versatile.
+
+## Core Pillars in JavaScript
+
+The core pillars of JavaScript are scope and closure, prototypes, and types and coercion. Let's dive into each one of them.
+
+## Core Pillar 1: Scope and Closure
+
+```javascript
+// Scope example
+function outer() {
+  const outerVar = "I'm from outer scope";
+
+  function inner() {
+    const innerVar = "I'm from inner scope";
+    console.log(outerVar); // Can access outerVar
+    console.log(innerVar); // Can access innerVar
+  }
+
+  inner();
+  // console.log(innerVar); // Error: innerVar is not defined
+}
+
+outer();
+```
+
+Scope in JavaScript determines variable accessibility. Each function creates its own scope, forming a hierarchical structure where inner scopes can access variables from outer scopes, but not vice versa. This is called lexical scoping, where variable access is determined by the physical placement of functions and blocks in the code.
+
+```javascript
+function createCounter() {
+  let count = 0; // Private variable
+
+  return function () {
+    count += 1; // Closure remembers 'count'
+    return count;
+  };
+}
+
+const counter = createCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
+console.log(counter()); // 3
+```
+
+Closure is JavaScript's ability to remember and access variables from an outer scope even after that scope has finished executing. This creates powerful patterns for data encapsulation and state management.
+
+## Core Pillar 2: Prototypes
+
+Every object in JavaScript has an internal link to another object called its prototype. When accessing a property, JavaScript first looks for it on the object itself. If not found, it checks the object's prototype, then that prototype's prototype, forming what's called the prototype chain. This chain continues until reaching an object with a null prototype, typically `Object.prototype`.
+
+```javascript
+// Exploring the prototype chain
+const arr = [1, 2, 3];
+
+// Array methods like push and map come from Array.prototype
+console.log(arr.__proto__ === Array.prototype); // true
+
+// Array.prototype inherits from Object.prototype
+console.log(arr.__proto__.__proto__ === Object.prototype); // true
+
+// Object.prototype is the end of the chain
+console.log(arr.__proto__.__proto__.__proto__ === null); // true
+
+// Creating a custom method on Array.prototype (not recommended in production)
+Array.prototype.first = function () {
+  return this[0];
+};
+console.log([10, 20, 30].first()); // 10
+```
+
+This prototype system enables JavaScript to implement inheritance with less overhead than traditional class-based languages. It also allows for powerful dynamic behaviors like extending built-in objects and creating flexible inheritance hierarchies.
+
+## Core Pillar 3: Types and Coercion
+
+```javascript
+// Explicit coercion
+const num = Number("42"); // 42
+const str = String(42); // "42"
+const bool = Boolean(42); // true
+
+// Implicit coercion
+const sum = "42" + 8; // "428" (string concatenation)
+const value = "42" - 8; // 34 (numeric subtraction)
+const check = "42" == 42; // true (loose equality with coercion)
+const check2 = "42" === 42; // false (strict equality, no coercion)
+```
+
+JavaScript's type coercion system automatically converts values between types. Understanding when and how these conversions happen is essential for writing predictable code.
+
+## The Dynamic `this` Keyword
+
+```javascript
+const person = {
+  name: "Alice",
+  greet() {
+    console.log(`Hello, I'm ${this.name}`);
+  },
+};
+
+person.greet(); // "Hello, I'm Alice"
+
+const greetFunction = person.greet;
+greetFunction(); // "Hello, I'm undefined" (lost context)
+
+const boundGreet = person.greet.bind(person);
+boundGreet(); // "Hello, I'm Alice" (bound context)
+```
+
+The `this` keyword changes based on how a function is called, not where it's defined. This dynamic binding can be powerful but requires careful management.
+
+## Modern Iteration
+
+```javascript
+// ES6 iteration protocols
+const colors = ["red", "green", "blue"];
+
+// For-of loop (uses the iteration protocol)
+for (const color of colors) {
+  console.log(color);
+}
+
+// Using iterator methods
+const entries = colors.entries();
+console.log([...entries]); // [[0, "red"], [1, "green"], [2, "blue"]]
+
+// Iterating an object
+const person = { name: "David", role: "Developer" };
+for (const [key, value] of Object.entries(person)) {
+  console.log(`${key}: ${value}`);
+}
+```
+
+ES6 introduced formal iteration protocols that provide clean ways to traverse data structures with tools like the `for-of` loop and methods such as `entries()`, `keys()`, and `values()`.
+
+## Conclusion
+
+After years of daily JavaScript development, it was a humbling experience to realize how much I didn't know about the language as the title suggests. But one thing is for sure, every day im going to be a little bit closer to Simpson's level of understanding of the language.
+
+<br />
+For anyone serious about frontend development, diving deep into "You Don't Know JavaScript
+Yet: Getting Started" isn't optional—it's essential. Seriously, just do it.
+
+<br />
+<br />
+#JavaScript #WebDevelopment #Programming #FrontendDevelopment
