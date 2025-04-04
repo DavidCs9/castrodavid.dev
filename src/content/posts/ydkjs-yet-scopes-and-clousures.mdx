@@ -1,0 +1,331 @@
+---
+title: "You Don't Know JS Yet: Scope & Closures"
+date: 2025-04-04
+description: "Deep Dive into Scope, Closures, and the Module Design Pattern in JavaScript."
+tags: ["javascript", "scope", "closures"]
+---
+
+Third book review and the second of the series YDKJS. This book is a deep dive into the concepts of scope and closures in JavaScript. I find the module chapter particularly interesting, as it provides a great introduction to the module pattern and how to use it in JavaScript.
+
+### JavaScript: Compiled or Interpreted?
+
+Actually, it's both! There's a compilation step where the source code is parsed and transformed into an intermediate representation for the JS engine. This is where lexical scope comes into play. We can see compilation errors like `ReferenceError` or `TypeError` _before_ the code runs. So, JavaScript is compiled and parsed _then_ interpreted.
+
+```javascript
+// Code Example: Illustrating a ReferenceError during the "compile" phase
+try {
+  console.log(myVariable); // Accessing before declaration
+} catch (error) {
+  console.error(error); // Output: ReferenceError: myVariable is not defined
+}
+```
+
+### Lexical Scope
+
+Lexical scope is the scope of a variable determined by its physical location in the source code. In JavaScript, this means that functions are executed using the scope chain of the context in which they were defined, not where they are called.
+
+### Illustrating Lexical Scope: Buckets and Bubbles
+
+Think of lexical scope as nested buckets. The outer bucket is the global scope. Each function creates a new "bubble" or bucket (its scope). If a variable isn't found in the current bucket, the engine looks in the enclosing (parent) bucket, and so on, until it reaches the global scope.
+
+Lexical scope means that a function's scope is determined by its _physical location_ in the source code, not by how or where it's called.
+
+```javascript
+// Code Example: Lexical Scope
+function outerFunction() {
+  let outerVar = "I am from outer!";
+
+  function innerFunction() {
+    console.log(outerVar); // innerFunction can access outerVar
+  }
+
+  innerFunction();
+}
+
+outerFunction(); // Output: I am from outer!
+```
+
+### The Scope Chain
+
+The scope chain is the series of nested scopes the JavaScript engine traverses when looking for a variable.
+
+- **Shadowing:** A variable declared in an inner scope "shadows" a variable with the same name in an outer scope. The inner variable takes precedence.
+- **Function Name Scope:** A function's name is only accessible within the function itself (and any nested functions). This is useful for recursion or internal logic.
+
+```javascript
+// Code Example: Shadowing and Function Name Scope
+let myVar = "Global";
+
+function myFunction() {
+  let myVar = "Local"; // Shadows the global myVar
+  console.log(myVar); // Output: Local
+
+  // Example of function name scope (for recursion)
+  function recursiveFunction(n) {
+    if (n <= 0) {
+      return;
+    }
+    console.log(n);
+    recursiveFunction(n - 1); // Accessing function by name
+  }
+  recursiveFunction(3);
+}
+
+myFunction();
+console.log(myVar); // Output: Global (the global myVar is unchanged)
+```
+
+### Global Scope
+
+The global scope is the outermost scope. In a browser environment, it's typically the `window` object (or `globalThis` in modern environments). In Node.js, it's the `global` object. Avoid polluting the global scope!
+
+```javascript
+// Code Example: Global Scope
+// In a browser:
+window.myGlobalVariable = "Hello from global!";
+console.log(myGlobalVariable); // Output: Hello from global!
+
+// In Node.js:
+global.myGlobalVariable = "Hello from global!";
+console.log(global.myGlobalVariable); // Output: Hello from global!
+
+// New globalThis
+console.log(globalThis.myGlobalVariable); // Output: Hello from global!
+```
+
+### Web Workers
+
+Web Workers allow you to run JavaScript code in background threads, parallel to the main thread. They have their own global scope, separate from the main window's global scope. This helps prevent blocking the UI. Use `postMessage` to communicate.
+
+```javascript
+// Code Example: Web Worker
+// main.js
+const worker = new Worker("worker.js");
+worker.postMessage("Hello from main thread!");
+worker.onmessage = function (event) {
+  console.log("Message from worker:", event.data);
+};
+// worker.js
+onmessage = function (event) {
+  console.log("Message from main thread:", event.data);
+  postMessage("Hello from worker!");
+};
+```
+
+### Function Scope
+
+JavaScript functions create their own scope. Variables declared inside a function are not accessible outside of it. This is called function scope.
+
+```javascript
+// Code Example: Function Scope
+function myFunction() {
+  let localVar = "I am local!";
+  console.log(localVar); // Output: I am local!
+}
+myFunction();
+// console.log(localVar); // Error: localVar is not defined
+```
+
+### Block Scope
+
+Block scope is created by curly braces `{}`. Variables declared with `let` and `const` inside a block are not accessible outside of it. This is useful for limiting variable visibility.
+
+```javascript
+// Code Example: Block Scope
+{
+  let blockVar = "I am block scoped!";
+  console.log(blockVar); // Output: I am block scoped!
+}
+// console.log(blockVar); // Error: blockVar is not defined
+```
+
+### Lifecycle of Variables (Hoisting)
+
+Hoisting is JavaScript's behavior of moving declarations to the top of their scope _before_ code execution.
+
+- **Function Declarations:** Fully hoisted. The entire function is available at the top of its scope.
+- **Function Expressions:** Only the variable declaration is hoisted, not the function assignment.
+- **Variable Declarations (var):** The variable is hoisted and initialized to `undefined`.
+- **Variable Declarations (let, const):** Hoisted, but _not_ initialized. This leads to the Temporal Dead Zone (TDZ).
+
+```javascript
+// Code Example: Hoisting
+console.log(myVar); // Output: undefined (hoisted, but undefined)
+var myVar = "Hello";
+
+myFunction(); // Works fine (function declaration is fully hoisted)
+
+function myFunction() {
+  console.log("Hello from myFunction");
+}
+
+myFunctionExpression(); // Error: myFunctionExpression is not a function
+var myFunctionExpression = function () {
+  // only the var its hoisted not the value
+  console.log("Hello from myFunctionExpression");
+};
+```
+
+### Temporal Dead Zone (TDZ)
+
+The TDZ is the period between entering a scope and the point where a `let` or `const` variable is declared. Accessing a variable in the TDZ results in a `ReferenceError`. This encourages declaring variables at the top of their scope.
+
+```javascript
+// Code Example: TDZ
+console.log(myLet); // ReferenceError: Cannot access 'myLet' before initialization
+let myLet = "Hello";
+```
+
+### Limiting Scope Exposure (Principle of Least Privilege)
+
+Minimize the scope of your variables. Wrap code in functions or blocks to create smaller scopes. This reduces the risk of naming conflicts and makes code easier to reason about.
+
+```javascript
+// Code Example: Limiting Scope
+function processData(data) {
+  if (data) {
+    let processedData = data.map((item) => item * 2); // processedData is only available inside the if block
+    console.log(processedData);
+  }
+  console.log(processedData); // Error: processedData is not defined
+}
+```
+
+### Closures
+
+A closure is when a function "remembers" the variables from its surrounding scope (its lexical environment) even after the outer function has finished executing. Closures allow inner functions to access and manipulate outer function variables.
+
+```javascript
+// Code Example: Closure
+function outerFunction(outerVar) {
+  function innerFunction() {
+    console.log(outerVar); // innerFunction "closes over" outerVar
+  }
+  return innerFunction;
+}
+
+const myClosure = outerFunction("Hello from outer!");
+myClosure(); // Output: Hello from outer! (even though outerFunction has finished)
+```
+
+### Module Pattern
+
+The module pattern is a design pattern used to create self-contained, reusable units of code. It leverages closures to create private state and public interfaces.
+
+- **POLE (Private Output, Lexical Environment):** a mental model for modules.
+
+- **What is a Module?:** A module is a self-contained unit of code with its own scope, data, and behavior.
+
+- **Namespaces (Stateless Grouping):** A way to organize code into logical groups, but they don't encapsulate state.
+  ```javascript
+  // Code Example: Namespace
+  const MyNamespace = {
+    myFunction: function () {
+      console.log("Hello from MyNamespace!");
+    },
+  };
+  MyNamespace.myFunction(); // Output: Hello from MyNamespace!
+  ```
+- **Data Structures (Stateful Grouping):** Objects or classes that hold state, but don't necessarily control access to it.
+
+  ```javascript
+  // Code Example: Data Structure
+  class MyDataStructure {
+    constructor() {
+      this.data = [];
+    }
+
+    add(item) {
+      this.data.push(item);
+    }
+
+    getData() {
+      return this.data;
+    }
+  }
+  const myData = new MyDataStructure();
+  myData.add(1);
+  myData.add(2);
+  console.log(myData.getData()); // Output: [1, 2]
+  ```
+
+- **Modules (Stateful Access Control):** Combine state with controlled access through a public interface.
+
+### Module Pattern Example
+
+### IIFE (Immediately Invoked Function Expression)
+
+```javascript
+// Code Example: Module Pattern (IIFE - Immediately Invoked Function Expression)
+const myModule = (function () {
+  let privateVariable = 0;
+
+  function privateFunction() {
+    privateVariable++;
+    console.log("Private variable:", privateVariable);
+  }
+
+  return {
+    publicMethod: function () {
+      privateFunction();
+    },
+  };
+})();
+
+myModule.publicMethod(); // Output: Private variable: 1
+myModule.publicMethod(); // Output: Private variable: 2
+console.log(myModule.privateVariable); // undefined (private)
+```
+
+### CommonJS (Node.js)
+
+```javascript
+// Code Example: CommonJS (Node.js)
+module.exports = (function () {
+  let privateVariable = 0;
+
+  function privateFunction() {
+    privateVariable++;
+    console.log("Private variable:", privateVariable);
+  }
+
+  return {
+    publicMethod: function () {
+      privateFunction();
+    },
+  };
+})();
+
+// // In another file:
+const myModule = require("./my-module");
+myModule.publicMethod();
+```
+
+### ES Modules (ESM)
+
+```javascript
+// Code Example: ES Modules my-module.js
+let privateVariable = 0;
+
+function privateFunction() {
+  privateVariable++;
+  console.log("Private variable:", privateVariable);
+}
+
+export function publicMethod() {
+  privateFunction();
+}
+
+// In another file:
+import { publicMethod } from "./my-module.js";
+publicMethod();
+```
+
+### Conclusion
+
+Understanding scope and closures is crucial for mastering JavaScript. They are the foundation of how variables are accessed and manipulated in your code. By leveraging these concepts, you can write cleaner, more efficient, and more maintainable code.
+The module pattern provide powerful ways to encapsulate functionality and manage state, making your code more organized and reusable.
+
+<br />
+<br />
+#JavaScript #Scope #Closures #ModulePattern
