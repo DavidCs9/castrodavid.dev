@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+body {
+  background-image: url("../assets/concrete-wall.png");
+}
+
 @theme {
   --color-background: #e4e3d8;
   --color-primary: #3d3879;
