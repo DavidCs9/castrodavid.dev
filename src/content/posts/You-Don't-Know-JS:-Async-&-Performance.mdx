@@ -58,6 +58,8 @@ Even with a \(0\)ms delay, `setTimeout` always schedules the function for _later
 
 This simple example highlights that asynchronous operations like `setTimeout` (and others like event listeners, Promises, `fetch` calls) split your program's execution into two phases: the part that runs **now**, and the part(s) scheduled to run **later**, managed by the event loop. Understanding this split is fundamental to mastering async JavaScript, as detailed throughout YDKJS: Async & Performance.
 
+<br />
+
 ---
 
 ### Chapter 2: Callbacks - The Foundation of "Later"
@@ -155,6 +157,8 @@ As Kyle Simpson puts it, you're implicitly trusting this external function/utili
 6.  **Not suppress errors** that might happen _inside_ your callback.
 
 This trust is often implicit and can be fragile. If the utility you pass your callback to has bugs or behaves unexpectedly, it directly impacts your program's logic in ways that can be very hard to debug. You've given away control over a piece of your own program's execution!
+
+<br />
 
 ---
 
@@ -283,6 +287,8 @@ JavaScript also provides static helper methods like `Promise.resolve(value)` (cr
 #### Conclusion
 
 Promises represent a significant leap forward from raw callbacks. They provide a cleaner syntax (chaining), robust error handling, and most importantly, a more reliable and trustworthy foundation for asynchronous programming by addressing the core issue of Inversion of Control. They form the bedrock upon which newer async features, like async/await, are built.
+
+<br />
 
 ---
 
@@ -424,6 +430,8 @@ YDKJS emphasizes that generators alone don't solve the async problem. You need t
 
 Generators introduced a revolutionary function execution model: pausable functions with two-way communication (`yield`/`.next(value)`). When combined with Promises and orchestrated by a runner function, they allowed developers to write asynchronous code that _looked_ and behaved much more like familiar synchronous code, complete with standard `try...catch` error handling. This pattern directly paved the way for the native `async/await` syntax introduced later in ECMAScript.
 
+<br />
+
 ---
 
 ### Chapter 5 & 6: Program Performance - Benchmarking
@@ -489,11 +497,15 @@ It also often discusses **Tail Call Optimization (TCO)**. TCO is a potential opt
 
 Performance optimization in JavaScript, especially within an asynchronous context, requires a deep understanding of the event loop, task queues (macro and micro), and the tools available for parallelism (Web Workers). It's about keeping the main thread free for rendering and interaction, offloading heavy work, and making informed decisions based on careful measurement and profiling, rather than premature or misguided optimization efforts.
 
+<br />
+
 ---
 
 ### Bonus Chapter: The Event Loop - The Heartbeat of Asynchrony
 
 While we've talked a lot about _scheduling_ code for "Later" (using callbacks, Promises, etc.), we haven't fully detailed the mechanism that actually _runs_ that code. That mechanism is the **Event Loop**, a fundamental concept often mentioned alongside YDKJS, even if not a dedicated chapter in the original Async book. Understanding it is crucial for truly grasping _how_ JavaScript handles concurrency despite being single-threaded.
+
+<br />
 
 **What is it?**
 
@@ -519,11 +531,15 @@ The Event Loop constantly cycles through these parts:
 
 This loop is how JavaScript achieves non-blocking behavior. Long-running operations (like waiting for a network request via `fetch`) are handled by the environment APIs, freeing the Call Stack. When the operation completes, its handler waits patiently in the appropriate queue until the Event Loop picks it up _after_ the current synchronous code ("Now") and any pending microtasks have finished. This keeps the application responsive. Understanding the difference between microtasks (Promises, `await`) and macrotasks (`setTimeout`) helps predict the exact order of execution for complex asynchronous flows.
 
+<br />
+
 ---
 
 ### Bonus Chapter: `async`/`await` - Synchronous-Looking Async
 
 We saw how Generators, combined with Promises and a runner function, could make asynchronous code _look_ synchronous. The ECMAScript committee recognized the power and clarity of this pattern and baked it directly into the language with the `async` and `await` keywords. This is the modern standard for handling Promises in JavaScript.
+
+<br />
 
 **`async` Functions:**
 
@@ -595,7 +611,9 @@ The benefits are clear:
 - **Error Handling:** Standard `try...catch` blocks work seamlessly for handling errors from awaited Promises.
 - **Debugging:** Stepping through `async/await` code in debuggers is often more intuitive than debugging Promise chains.
 
-`async/await` is essentially syntactic sugar built on top of Promises and the generator execution model. It doesn't introduce fundamentally new capabilities but provides a vastly improved developer experience for managing asynchronous operations.
+**`async/await`** is essentially syntactic sugar built on top of Promises and the generator execution model. It doesn't introduce fundamentally new capabilities but provides a vastly improved developer experience for managing asynchronous operations.
+
+<br />
 
 ---
 
@@ -603,17 +621,25 @@ The benefits are clear:
 
 Reviewing "YDKJS: Async & Performance" takes us on a crucial journey through the evolution of handling asynchronous operations in JavaScript. We start with the fundamental concept of code running **"Now"** versus being scheduled for **"Later"**, initially managed by **Callbacks**. While functional, callbacks introduce challenges like "Callback Hell" and the more subtle but significant problem of "Inversion of Control."
 
-**Promises** arrive as a robust solution, offering a trustable placeholder for future values, enabling cleaner chaining with `.then()`, and providing better error handling via `.catch()`. They restore control to the calling code.
+<br />
+**Promises** arrive as a robust solution, offering a trustable placeholder for future
+values, enabling cleaner chaining with `.then()`, and providing better error handling
+via `.catch()`. They restore control to the calling code.
+<br />
 
 **Generators**, though seemingly unrelated at first, provide the key mechanism of pausable functions (`function*` and `yield`), which, when combined with Promises and a runner, allow asynchronous code to be written in a more sequential, synchronous-looking style.
 
+<br />
+
 This pattern culminates in the native **`async`/`await`** syntax, offering the readability benefits of the generator approach directly within the language, built firmly upon the foundation of Promises.
+
+<br />
 
 Underpinning all of this is the **Event Loop**, the engine's heartbeat, diligently managing the Call Stack and the Task/Microtask Queues to ensure non-blocking behavior and execute our "Later" code predictably. Finally, understanding **Performance** implications, including the use of Web Workers for CPU-intensive tasks and the nuances of task queues, allows us to build not just functional but also efficient and responsive applications.
 
-Kyle Simpson's exploration in YDKJS provides the deep understanding necessary to move beyond simply _using_ these features to truly _mastering_ the flow of time and execution in JavaScript. It's an essential read for any serious JavaScript developer looking to write robust, maintainable, and performant asynchronous code.
+<br />
 
----
+Kyle Simpson's exploration in YDKJS provides the deep understanding necessary to move beyond simply _using_ these features to truly _mastering_ the flow of time and execution in JavaScript. It's an essential read for any serious JavaScript developer looking to write robust, maintainable, and performant asynchronous code.
 
 <br />
 <br />

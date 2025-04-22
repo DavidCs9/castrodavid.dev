@@ -80,15 +80,40 @@
   margin: 1rem 0 !important;
 }
 
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4 {
+.prose h1 {
   font-weight: 700 !important;
-  margin-top: 1.5rem !important;
+  margin-top: 2rem !important;
+  margin-bottom: 1.25rem !important;
+  color: #111827 !important;
+  line-height: 1.1 !important;
+  font-size: 2.25rem !important;
+}
+
+.prose h2 {
+  font-weight: 700 !important;
+  margin-top: 1.75rem !important;
   margin-bottom: 1rem !important;
   color: #111827 !important;
   line-height: 1.2 !important;
+  font-size: 1.875rem !important;
+}
+
+.prose h3 {
+  font-weight: 700 !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  color: #111827 !important;
+  line-height: 1.25 !important;
+  font-size: 1.5rem !important;
+}
+
+.prose h4 {
+  font-weight: 700 !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+  color: #111827 !important;
+  line-height: 1.3 !important;
+  font-size: 1.25rem !important;
 }
 
 .prose blockquote {
