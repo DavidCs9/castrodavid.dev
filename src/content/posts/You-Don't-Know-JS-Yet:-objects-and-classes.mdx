@@ -383,9 +383,228 @@ const spot = new Dog("Spot");
 spot.bark(); // Woof! (Delegated to Dog.prototype)
 ```
 
+<br />
+
 ---
 
-### Chapter 3: TODO
+### Chapter 3 Summary: Classy Objects
+
+This chapter transitions from the underlying object mechanics to the **class-oriented design pattern** in JavaScript, focusing primarily on the modern **`class` syntax** introduced in ES6. While acknowledging the older "prototypal class" patterns, the chapter emphasizes that `class` is the current standard, offering much more than just syntactic sugar over prototypes, although it still leverages the `[[Prototype]]` mechanism internally.
+
+<br />
+
+**1. When to Use Classes:**
+
+Class-orientation is suitable when:
+
+- You can classify entities using **"is-a" relationships** (e.g., a `Car` is a `Vehicle`).
+- You need **multiple instances** of a defined type (class).
+- You want to leverage **inheritance** to share and override characteristics between related classes (subclassing).
+- You benefit from **encapsulation** (hiding internal details) and **composition** (building objects from other objects).
+  If you only need a single instance of a complex object, other patterns (like modules or plain objects) might be simpler.
+
+**2. Basic `class` Syntax:**
+
+Classes can be defined using declarations or expressions. They contain methods defined without the `function` keyword. All code inside a `class` body runs in strict mode.
+
+```javascript
+// Class Declaration
+class Point2d {
+  // Constructor: Called when 'new Point2d()' is used
+  constructor(x, y) {
+    console.log("Point2d instance created");
+    // 'this' refers to the new instance being created
+    this.x = x; // Instance property (member)
+    this.y = y;
+  }
+
+  // Method: Defined on Point2d.prototype
+  toString() {
+    return `(${this.x}, ${this.y})`;
+  }
+}
+
+// Creating an instance
+const p1 = new Point2d(5, 10);
+console.log(p1.toString()); // Output: (5, 10)
+
+// Class Expression (named)
+const Vec = class Vector {
+  /* ... */
+};
+// Class Expression (anonymous)
+const Anon = class {
+  /* ... */
+};
+```
+
+- The `constructor` is a special method for initialization. If omitted, a default empty one is provided.
+- Class constructors _must_ be called with `new`.
+- Methods defined in the class body (like `toString`) are placed on the **`ClassName.prototype`** object and shared by all instances via `[[Prototype]]` delegation.
+
+**3. Instance Members (`this` and Public Fields):**
+
+- Inside the `constructor` and methods, `this` refers to the current instance. Properties added via `this.prop = value` become **instance members**.
+- **Public Fields:** A declarative syntax allows defining instance members directly in the class body. These are effectively initialized at the start of the `constructor` (or more accurately, just after `super()` in subclasses).
+
+  ```javascript
+  class Rectangle {
+    // Public fields with initializers
+    width = 0;
+    height = 0;
+    color = "blue";
+    calculatedArea = this.width * this.height; // Can reference other fields
+
+    constructor(width, height) {
+      this.width = width;
+      this.height = height;
+      this.calculatedArea = this.width * this.height; // Re-calculate if needed
+    }
+
+    getArea() {
+      return this.width * this.height;
+    }
+  }
+  const r1 = new Rectangle(10, 5);
+  console.log(r1.width); // 10
+  console.log(r1.color); // blue
+  console.log(r1.calculatedArea); // 50 (after constructor runs)
+  ```
+
+- **Anti-Pattern Warning:** Avoid defining methods using arrow functions assigned to public fields (`myMethod = () => { ... }`). This creates a _new function per instance_ instead of a shared method on the prototype, defeating a key benefit of classes and potentially causing performance/memory overhead. Use regular method syntax and understand `this` binding (covered later).
+
+  ```javascript
+  class BadPattern {
+    value = 10;
+    // Avoid this: Creates a function per instance
+    getValueArrow = () => this.value;
+
+    // Prefer this: Method shared on prototype
+    getValueMethod() {
+      return this.value;
+    }
+  }
+  const bp = new BadPattern();
+  console.log(Object.hasOwn(bp, "getValueArrow")); // true (Oops!)
+  console.log(Object.hasOwn(bp, "getValueMethod")); // false (Good!)
+  ```
+
+**4. Class Inheritance (`extends` and `super`):**
+
+- The `extends` keyword creates a subclass that inherits from a base class.
+- Subclasses inherit methods and properties (via the `[[Prototype]]` chain).
+- Methods and fields can be **overridden** in the subclass.
+- `super.method()` calls the overridden method from the parent class.
+- `super()` **must** be called within the subclass `constructor` _before_ accessing `this`. It calls the parent class's constructor. Field initializers in the subclass run _after_ `super()`.
+
+  ```javascript
+  class Square extends Rectangle {
+    constructor(size) {
+      console.log("Square constructor start");
+      // Must call parent constructor before 'this'
+      super(size, size); // Calls Rectangle's constructor
+      console.log("Square constructor after super");
+      this.color = "red"; // Overrides inherited field
+    }
+
+    // Overrides Rectangle's getArea
+    getArea() {
+      console.log("Using Square's getArea");
+      return this.width * this.width;
+    }
+
+    getParentArea() {
+      // Call parent's getArea method
+      return super.getArea();
+    }
+  }
+  const sq = new Square(7); // Logs constructor messages
+  console.log(sq.getArea()); // Using Square's getArea -> 49
+  console.log(sq.getParentArea()); // 49 (super.getArea uses this.width/height from sq)
+  console.log(sq.color); // red
+  ```
+
+- `instanceof` checks if an object exists anywhere in a class's prototype chain. `obj.constructor === ClassName` checks for direct instantiation.
+- Inheritance is **sharing via `[[Prototype]]`**, not copying properties down.
+
+**5. Static Properties and Methods (`static`):**
+
+- `static` defines properties/methods directly on the **constructor function itself**, not on the prototype or instances. Useful for utility functions or constants related to the class.
+- `this` inside static methods refers to the class (constructor function).
+- Static members are inherited by subclasses (via `[[Prototype]]` linkage of constructors) and can be overridden using `static` and accessed via `super.` in the subclass.
+- **Static initialization blocks (`static { ... }`)** (ES2022) allow more complex static property setup.
+
+  ```javascript
+  class Circle {
+    // Static property
+    static PI = 3.14159;
+
+    // Static method
+    static calculateArea(radius) {
+      // 'this' here refers to the Circle class
+      return this.PI * radius * radius;
+    }
+
+    // Static block
+    static {
+      console.log("Circle class static block initialized.");
+      this.defaultRadius = 1;
+    }
+
+    radius;
+    constructor(radius) {
+      this.radius = radius;
+    }
+  }
+  console.log(Circle.PI); // 3.14159
+  console.log(Circle.calculateArea(10)); // 314.159
+  console.log(Circle.defaultRadius); // 1
+  ```
+
+**6. Private Class Members (`#`):**
+
+- ES2022 introduced private instance fields (`#field`), methods (`#method()`), static fields (`static #staticField`), and static methods (`static #staticMethod()`) using the `#` prefix.
+- **Motivation:** Encapsulation, Principle of Least Privilege (hiding implementation details).
+- **Syntax:** `#` is part of the name; only accessible _within_ the class body where defined.
+- **Limitation:** Privates are **not inherited** or accessible by subclasses. This is a major difference from `protected` visibility in other languages and can complicate subclassing. JS currently lacks `protected`.
+- **Brand Check:** Use `#privateIdentifier in objectInstance` to safely check if an object possesses a specific private member without causing an error.
+- **Exfiltration:** Private members/methods can still be leaked (e.g., by assigning `this.#privateMethod` to an external variable or passing it as a callback).
+- **Static Private Gotcha:** When calling an _inherited public static method_ from a subclass, if that method tries to access a _private static member_ using `this.#privateStatic`, it fails. Workaround: Use `ClassName.#privateStatic` inside the static method instead of `this.#privateStatic`.
+
+  ```javascript
+  class Counter {
+    #count = 0; // Private instance field
+    static #maxCount = 10; // Private static field
+
+    increment() {
+      if (this.#count < Counter.#maxCount) {
+        this.#count++;
+        this.#log(); // Call private instance method
+      }
+    }
+
+    #log() {
+      // Private instance method
+      console.log(`Current count: ${this.#count}`);
+    }
+
+    getCount() {
+      return this.#count;
+    }
+
+    // Ergonomic brand check example
+    static isCounter(obj) {
+      return #count in obj;
+    }
+  }
+  const c = new Counter();
+  c.increment(); // Current count: 1
+  // console.log(c.#count); // SyntaxError: Private field '#count' must be declared in an enclosing class
+  console.log(Counter.isCounter(c)); // true
+  console.log(Counter.isCounter({})); // false
+  ```
+
+  <br />
 
 ---
 
