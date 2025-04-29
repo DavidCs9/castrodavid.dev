@@ -754,7 +754,121 @@ This chapter tackles the often-misunderstood `this` keyword in JavaScript, empha
 
 ---
 
-### Chapter 5 Summary: Prototypes
+### Chapter 5 Summary: Delegation
+
+This chapter presents **delegation** as a powerful, alternative design pattern inherent in JavaScript's prototypal nature, contrasting it with traditional class-based inheritance. While acknowledging its non-mainstream status, Kyle argues that understanding delegation deepens one's grasp of JS's core `[[Prototype]]` and `this` mechanisms, even if primarily using `class`.
+
+<br />
+**1. Deconstructing `class` and `new`:**
+
+The chapter starts by separating object _creation_ from _initialization_. `new` handles creation (step 1) and prototype linking (step 2), while the `constructor` only handles initialization (step 3).
+
+**2. Factory Functions:**
+
+Objects can be created and initialized using simple **factory functions** without `class` or `new`.
+
+```javascript
+// Example Prototype Object
+const PointActions = {
+  init(x, y) {
+    this.x = x;
+    this.y = y;
+  },
+  toString() {
+    return `(${this.x}, ${this.y})`;
+  },
+};
+
+// Factory Function using Object.create + init
+function createPoint(x, y) {
+  // Step 1 & 2: Create object linked to PointActions
+  const instance = Object.create(PointActions);
+  // Step 3: Initialize
+  instance.init(x, y);
+  // Step 4: Return
+  return instance;
+}
+
+const p1 = createPoint(3, 4);
+console.log(p1.toString()); // (3, 4)
+```
+
+- `Object.create(protoObj)` performs the creation and `[[Prototype]]` linking steps.
+- An `init()` method (or similar) handles initialization, often called immediately after creation.
+- Using `new` with such factory functions is wasteful as it creates an extra, unused object.
+- A generic `make(ObjType, ...args)` helper can simplify the create-then-initialize pattern.
+
+**3. Delegation Pattern Explained:**
+
+Instead of hierarchical classes, delegation focuses on **peer objects cooperating** to accomplish tasks. Behavior isn't copied down; it's accessed via **delegation** through the `[[Prototype]]` chain or explicit calls, sharing context via dynamic `this`.
+
+- **Explicit Delegation:** Using `call()` or `apply()` to invoke a method from one object in the context of another.
+- **Implicit Delegation:** Using `[[Prototype]]` linkage so that method calls on an object naturally delegate up the chain if the method isn't found locally.
+
+```javascript
+const Coordinates = {
+  setXY(x, y) {
+    this.x = x;
+    this.y = y;
+  },
+};
+const Inspect = {
+  toString() {
+    return `(${this.x}, ${this.y})`;
+  },
+};
+
+// point uses explicit delegation
+const point = {};
+Coordinates.setXY.call(point, 3, 4); // Explicitly delegate setXY to run with 'point' as 'this'
+console.log(Inspect.toString.call(point)); // (3, 4) - Explicitly delegate toString
+
+// anotherPoint uses implicit delegation for setXY
+const anotherPoint = Object.create(Coordinates); // [[Prototype]] linked to Coordinates
+anotherPoint.setXY(5, 6); // Implicitly delegates to Coordinates.setXY with 'anotherPoint' as 'this'
+console.log(Inspect.toString.call(anotherPoint)); // (5, 6) - Still needs explicit for Inspect
+```
+
+This approach achieves **virtual composition** – objects behave as if composed together at runtime through `this` context sharing, without needing a predefined class structure. This aligns with the **OLOO** (Objects Linked to Other Objects) philosophy.
+
+<br />
+**4. Composing Peer Objects Example:**
+
+A more complex example involving `Canvas`, `Coordinates`, and `ControlPoint` objects demonstrates intricate interactions:
+
+- Objects remain distinct peers (`Canvas`, `Coordinates`, `ControlPoint`).
+- `ControlPoint` links to `Coordinates` (`__proto__` or `Object.create`).
+- Methods on one object (`ControlPoint.render`) explicitly delegate (`Canvas.renderScene.call(this)`) to methods on another (`Canvas`), sharing the `ControlPoint` instance as `this`.
+- Methods called via `this` (`this.draw()` inside `Canvas.renderScene`) resolve dynamically based on the _current_ `this` context (`ControlPoint` in this case), finding the method on `ControlPoint`.
+
+This dynamic interplay allows flexible composition and behavior sharing without rigid inheritance hierarchies.
+
+<br />
+
+**5. Why Use `this` for Delegation?**
+
+The alternative to implicit `this` context sharing is explicitly passing the context object as an argument to every relevant function.
+
+```javascript
+// Explicit Context Passing (Alternative, often more verbose)
+var CoordinatesExplicit = {
+  setXY(entity, x, y) {
+    // 'entity' is the explicit context, instead of 'this'
+    entity.x = x;
+    entity.y = y;
+    // entity.render(); // Assuming entity has render
+  },
+};
+var pointExplicit = { x: 0, y: 0 };
+CoordinatesExplicit.setXY(pointExplicit, 3, 4); // Pass context explicitly
+```
+
+While feasible, this explicit passing clutters function signatures and call-sites. The author argues that leveraging dynamic `this` for delegation, despite its learning curve, can lead to cleaner, less verbose code by implicitly managing the shared context.
+
+<br />
+**Conclusion:**
+
+Delegation, using `[[Prototype]]` linkage and dynamic `this`, offers a powerful, JS-native alternative to class-based patterns. It emphasizes composing behavior through cooperating peer objects rather than rigid inheritance. While less common, understanding this pattern provides valuable insight into JavaScript's core object model and enables flexible, dynamic code structures.
 
 ### Conclusion: TODO
 
