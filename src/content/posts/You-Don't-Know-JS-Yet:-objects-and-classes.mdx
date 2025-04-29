@@ -608,9 +608,153 @@ const Anon = class {
 
 ---
 
-### Chapter 4: TODO
+### Chapter 4 Summary: This Works
+
+This chapter tackles the often-misunderstood `this` keyword in JavaScript, emphasizing its **dynamic nature**. Unlike lexical scope, `this` is **not determined at author-time** but rather **at runtime**, based entirely on **how a function is called (the call-site)**. Understanding this is crucial, as a single `this`-aware function (any function using the `this` keyword) can behave differently depending on its invocation context.
+
+<br />
+**Key Concepts:**
+
+1.  **Dynamic Context:** `this` provides a dynamic context mechanism, contrasting with the static context of lexical scope (closures). It allows a function to operate on different context objects during different invocations.
+2.  **The Burden of `this`:** Using `this` requires authors and readers to analyze every call-site to understand a function's behavior, adding complexity. Use it intentionally when its dynamic power outweighs this cost.
+3.  **The Four Binding Rules (in order of precedence):** JS determines `this` for a _regular_ function call based on these rules:
+
+    - **1. New Binding (`new`):** When a function is called with `new`, a new object is created, `[[Prototype]]`-linked, and set as the `this` for the call. The function usually returns this new object implicitly.
+
+      ```javascript
+      function ConstructorFn(val) {
+        this.a = val;
+        // implicitly returns 'this'
+      }
+      const obj1 = new ConstructorFn(1);
+      console.log(obj1.a); // 1
+      ```
+
+    - **2. Explicit Binding (`call`, `apply`):** These methods invoke a function, explicitly setting the `this` context to the first argument passed to `call`/`apply`.
+
+      ```javascript
+      function printA() {
+        console.log(this.a);
+      }
+      const obj2 = { a: 2 };
+      const obj3 = { a: 3 };
+      printA.call(obj2); // 2 ('this' is obj2)
+      printA.call(obj3); // 3 ('this' is obj3)
+      ```
+
+    - **3. Implicit Binding (Context Object):** When a function is called as a method via a containing object reference (`obj.method()`), that object (`obj`) becomes the `this` for the call.
+
+      ```javascript
+      const obj4 = {
+        a: 4,
+        printA: printA, // Reference to the function above
+      };
+      obj4.printA(); // 4 ('this' is obj4)
+      ```
+
+    - **4. Default Binding:** If none of the above rules apply (e.g., a plain `func()` invocation):
+
+      - In **strict mode** (most common, recommended): `this` is `undefined`. Accessing properties on it (`this.prop`) throws a `TypeError`.
+      - In **non-strict mode**: `this` defaults to the global object (`globalThis`, e.g., `window`). This can lead to accidental global variable creation and is generally discouraged.
+
+      ```javascript
+      "use strict";
+      printA(); // TypeError: Cannot read properties of undefined (reading 'a')
+
+      // --- In non-strict mode ---
+      // printA(); // Logs globalThis.a (likely undefined, or pollutes global scope)
+      ```
+
+4.  **Arrow Functions (`=>`) and Lexical `this`:**
+
+    - Arrow functions are **irregular**: they **do not have their own `this` binding**.
+    - Inside an arrow function, `this` behaves like a normal lexical variable, inheriting its value from the **nearest enclosing _regular_ function scope**.
+    - `call`, `apply`, and `bind` have no effect on the `this` value of an arrow function. They also cannot be used with `new`.
+    - This "lexical `this`" behavior is the primary reason arrow functions were introduced, providing a cleaner alternative to `var self = this` or `var context = this` hacks.
+
+    ```javascript
+    const obj5 = {
+      a: 5,
+      regularFn: function () {
+        // 'this' here is obj5 when called like obj5.regularFn()
+        setTimeout(() => {
+          // Arrow function inherits 'this' from regularFn's scope
+          console.log(this.a); // Logs 5, because 'this' is obj5
+        }, 10);
+      },
+      brokenFn: function () {
+        setTimeout(function () {
+          // Regular function gets default binding (undefined in strict mode)
+          // console.log(this.a); // Throws TypeError
+        }, 10);
+      },
+    };
+    obj5.regularFn();
+    ```
+
+5.  **The Callback Problem:** When passing a `this`-aware method as a callback (e.g., event handlers), the original `this` context is often lost because the calling library/framework invokes the function using a different rule (often explicit binding to something else, or default binding).
+
+    ```javascript
+    class Handler {
+      message = "Clicked!";
+      handleClick() {
+        console.log(this.message); // Relies on 'this' being the Handler instance
+      }
+      setupListener(button) {
+        // Problem: When button is clicked, 'this' inside handleClick
+        // will likely NOT be the Handler instance.
+        // button.addEventListener('click', this.handleClick); // 'this' will be wrong
+
+        // Solution 1: Arrow function wrapper (Lexical this)
+        button.addEventListener("click", (evt) => this.handleClick(evt));
+
+        // Solution 2: bind()
+        // button.addEventListener('click', this.handleClick.bind(this));
+      }
+    }
+    ```
+
+6.  **Hard Binding (`bind`)**: `func.bind(thisContext)` creates a _new_ function that is permanently bound to `thisContext`. Its `this` cannot be overridden by implicit or explicit binding (though `new` binding _can_ still override it, surprisingly).
+
+7.  **Critique of Over-Binding:** The chapter strongly cautions against patterns like defining class methods as arrow function fields (`myMethod = () => {...}`) or using `.bind(this)` in constructors for _all_ methods just to avoid dealing with dynamic `this`.
+
+    - **Costs:** Creates functions per instance (memory/performance overhead), defeats prototype sharing, adds complexity.
+    - **Argument:** If fixed context is always needed, the **closure pattern** (using lexical scope without `this`) is often simpler, more appropriate, and more performant than forcing `class` methods to behave like closures. Use `this` when its _dynamic_ nature is beneficial.
+
+    ```javascript
+    // Author argues this is often better than forcing 'this' with => or bind
+    function createPoint(px, py) {
+      let x = px; // Lexical variables, not 'this'
+      let y = py;
+      return {
+        getDoubleX() {
+          return x * 2;
+        }, // Closure keeps access to x
+        toString() {
+          return `(${x}, ${y})`;
+        }, // Closure keeps access to x, y
+      };
+    }
+    const p_alt = createPoint(3, 4);
+    const getX_alt = p_alt.getDoubleX;
+    console.log(getX_alt()); // 6 (Works simply via closure)
+    ```
+
+8.  **Irregular Invocations:**
+    - **Indirect Calls:** Using comma operator (`(1, obj.method)(...)`) or other tricks can cause a function reference to lose its implicit context, resulting in default binding.
+    - **Tagged Templates:** `` tagFn`...` `` results in default binding for `tagFn`. `` obj.tagFn`...` `` results in implicit binding ( `this` is `obj`) for `tagFn`.
+
+<br />
+
+**Conclusion:**
+
+`this` is a powerful but complex feature providing dynamic context. Understanding the four binding rules and the lexical behavior of arrow functions is essential. Use `this` deliberately, leveraging its dynamic capabilities when needed, but consider alternatives like closure when fixed context is the primary goal, especially within `class` structures. Be aware of the costs and complexities involved.
+
+<br />
 
 ---
+
+### Chapter 5 Summary: Prototypes
 
 ### Conclusion: TODO
 
