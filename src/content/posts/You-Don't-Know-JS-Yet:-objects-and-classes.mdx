@@ -17,6 +17,8 @@ This introductory chapter firmly establishes the **central role of objects in Ja
 
 The chapter contrasts this new edition with the first ("this & Object Prototypes"), highlighting a shift in focus to reflect modern JavaScript practices where `class` syntax is prevalent, though still built upon prototypes.
 
+<br />
+
 **Key takeaways on object fundamentals include:**
 
 1.  **Creation:** Objects are typically created using **literal syntax (`{ ... }`)**, which is preferred over `new Object()`.
@@ -185,7 +187,201 @@ The chapter concludes by framing objects as collections of properties, setting t
 
 ---
 
-### Chapter 2: TODO
+### Chapter 2 Summary: How Objects Work
+
+This chapter delves deeper than viewing objects merely as containers, exploring the underlying mechanisms – the **Metaobject Protocol (MOP)** – that govern their behavior and allow for customization.
+
+<br />
+**1. Property Descriptors:**
+
+Every object property has an associated **property descriptor**, a metaobject defining its characteristics. You can retrieve it using `Object.getOwnPropertyDescriptor()` and define/modify properties precisely using `Object.defineProperty()` or `Object.defineProperties()`.
+
+```javascript
+const myObj = { a: 1 };
+const descriptor = Object.getOwnPropertyDescriptor(myObj, "a");
+// descriptor: { value: 1, writable: true, enumerable: true, configurable: true }
+
+const anotherObj = {};
+Object.defineProperty(anotherObj, "b", {
+  value: 2,
+  writable: false, // read-only
+  enumerable: true,
+  configurable: false, // cannot be deleted or reconfigured
+});
+console.log(anotherObj.b); // 2
+anotherObj.b = 3; // Fails silently (or throws in strict mode)
+console.log(anotherObj.b); // 2
+```
+
+- **`value`**: The property's data value.
+- **`writable`**: If `false`, the `value` cannot be changed with `=`.
+- **`enumerable`**: If `false`, the property won't show up in `for...in` loops, `Object.keys`, `Object.entries`, spread (`...`), or `Object.assign`.
+- **`configurable`**: If `false`, the property cannot be deleted, and its descriptor attributes (except `value` if `writable` is true) cannot be changed. `writable` can be changed from `true` to `false`, but not back.
+
+**2. Accessor Properties (Getters/Setters):**
+
+Instead of a static `value`, properties can have **getter (`get`)** and/or **setter (`set`)** functions defined in their descriptor. These functions are invoked automatically on property access (`obj.prop`) or assignment (`obj.prop = val`).
+
+```javascript
+const user = {
+  _firstName: "John",
+  _lastName: "Doe",
+
+  get fullName() {
+    console.log("Getting fullName");
+    return `${this._firstName} ${this._lastName}`;
+  },
+
+  set fullName(value) {
+    console.log(`Setting fullName to: ${value}`);
+    const parts = value.split(" ");
+    this._firstName = parts[0];
+    this._lastName = parts[1];
+  },
+};
+
+console.log(user.fullName); // Getting fullName -> John Doe
+user.fullName = "Jane Smith"; // Setting fullName to: Jane Smith
+console.log(user._firstName); // Jane
+```
+
+**3. Object Sub-Types (Arrays & Functions):**
+
+- **Arrays:** Specialized objects for numerically indexed collections, created with `[]`. They have an auto-updating `length` property (accessing it is _not_ expensive). Avoid creating **"empty slots"** by assigning beyond the current length + 1, as they behave inconsistently with some array methods.
+
+  ```javascript
+  const list = [1, 2];
+  list[5] = 6;
+  console.log(list); // [ 1, 2, <3 empty items>, 6 ]
+  console.log(list.length); // 6
+  console.log(list[3]); // undefined (but it's an empty slot)
+  ```
+
+- **Functions:** Are also objects ("first-class objects") and can have properties. They have built-in `name` and `length` (number of declared parameters before defaults or rest params) properties. Avoid adding custom properties directly; use `Map` or `WeakMap` to associate metadata with functions instead.
+
+  ```javascript
+  function greet(name, msg = "Hello") {
+    /* ... */
+  }
+  console.log(greet.name); // "greet"
+  console.log(greet.length); // 1 (only 'name' counts)
+
+  const functionMetadata = new Map();
+  functionMetadata.set(greet, { description: "Greets a user" });
+  ```
+
+**4. Object Characteristics (Extensibility, Sealed, Frozen):**
+
+- **Extensible:** Controls if new properties can be added. Default is `true`. `Object.preventExtensions(obj)` makes it non-extensible.
+
+  ```javascript
+  const obj = { a: 1 };
+  Object.preventExtensions(obj);
+  obj.b = 2; // Fails silently (or throws in strict mode)
+  console.log(obj.b); // undefined
+  ```
+
+- **Sealed:** An object that is non-extensible and all its _existing_ properties are non-configurable. You can still change the values of existing properties (if they are writable), but you cannot add new properties, remove existing properties, or change the configurability of existing properties. Use `Object.seal(obj)`.
+
+  ```javascript
+  const sealedObj = { a: 1, b: 2 };
+  Object.seal(sealedObj);
+
+  sealedObj.a = 10; // Allowed
+  console.log(sealedObj.a); // 10
+
+  sealedObj.c = 3; // Fails silently (or throws in strict mode)
+  console.log(sealedObj.c); // undefined
+
+  delete sealedObj.b; // Fails silently (or throws in strict mode)
+  console.log(sealedObj.b); // 2
+
+  // Trying to change configurability will also fail
+  // Object.defineProperty(sealedObj, 'a', { configurable: true }); // Throws Error
+  ```
+
+- **Frozen:** An object that is sealed _and_ all its data properties are non-writable. This is the strictest level of immutability. You cannot add new properties, remove existing properties, change the configurability of existing properties, or change the values of existing data properties. If a property is an accessor (getter/setter), the getter will still work, but setting the value via the setter may throw an error if the setter attempts to modify the object. Use `Object.freeze(obj)`.
+
+  ```javascript
+  const frozenObj = { a: 1, b: 2 };
+  Object.freeze(frozenObj);
+
+  frozenObj.a = 10; // Fails silently (or throws in strict mode)
+  console.log(frozenObj.a); // 1
+
+  frozenObj.c = 3; // Fails silently (or throws in strict mode)
+  console.log(frozenObj.c); // undefined
+
+  delete frozenObj.b; // Fails silently (or throws in strict mode)
+  console.log(frozenObj.b); // 2
+
+  // Trying to change writability or configurability will also fail
+  // Object.defineProperty(frozenObj, 'a', { writable: true }); // Throws Error
+  // Object.defineProperty(frozenObj, 'a', { configurable: true }); // Throws Error
+  ```
+
+**Key Takeaways:**
+
+- `preventExtensions`: Cannot add new properties.
+- `seal`: Cannot add new properties, cannot remove existing properties, cannot change configurability of existing properties. Can change values of existing writable properties.
+- `freeze`: Cannot add new properties, cannot remove existing properties, cannot change configurability of existing properties, cannot change values of existing data properties.
+
+**5. The `[[Prototype]]` Chain:**
+
+This is a crucial, internal linkage (`[[Prototype]]`) connecting an object to another object. When a property is accessed on an object and not found, the lookup **delegates** up this chain. This is how JavaScript implements **inheritance** (or more accurately, delegation).
+
+- By default, objects created with `{}` or `new Object()` are linked to the built-in `Object.prototype`.
+- Methods like `toString()` and `hasOwnProperty()` are typically found on `Object.prototype` and accessed via this delegation.
+- `Object.hasOwn(obj, prop)` (ES2022) is the preferred, safer static method over the inherited `obj.hasOwnProperty(prop)`.
+
+```javascript
+const myObj = { a: 1 };
+console.log(myObj.a); // 1 (Own property)
+console.log(myObj.toString()); // "[object Object]" (Inherited from Object.prototype)
+console.log(Object.hasOwn(myObj, "a")); // true
+console.log(Object.hasOwn(myObj, "toString")); // false
+```
+
+**6. Creating and Managing Prototypes:**
+
+- `Object.create(protoObj)`: Creates a new object explicitly linked to `protoObj`.
+- `{ __proto__: protoObj, ... }`: Literal syntax using the special `__proto__` property (standardized but use with caution, see Appendix B warnings).
+- `Object.create(null)`: Creates an object with **no prototype linkage**, often useful for "dictionary" objects to avoid inheriting from `Object.prototype`.
+
+```javascript
+const parent = { greet: "Hello" };
+const child = Object.create(parent);
+child.name = "Child";
+
+console.log(child.greet); // "Hello" (Delegated to parent)
+
+const dict = Object.create(null);
+dict.key = "value";
+console.log(dict.toString); // undefined (No Object.prototype linkage)
+```
+
+**7. `[[Prototype]]` vs `.prototype` Distinction:**
+
+This is a common point of confusion:
+
+- **`[[Prototype]]`**: The **internal link** an object has to the object it inherits/delegates from.
+- **`.prototype`**: A **public property on constructor functions** (like `Object`, `Array`, `MyClass`). When you use `new MyClass()`, the newly created object's internal `[[Prototype]]` link is set to the object referenced by `MyClass.prototype`.
+
+```javascript
+function Dog(name) {
+  this.name = name;
+}
+// Dog.prototype is an object that will become the [[Prototype]]
+// of objects created via 'new Dog()'
+Dog.prototype.bark = function () {
+  console.log("Woof!");
+};
+
+const spot = new Dog("Spot");
+
+// spot's internal [[Prototype]] === Dog.prototype
+spot.bark(); // Woof! (Delegated to Dog.prototype)
+```
 
 ---
 
