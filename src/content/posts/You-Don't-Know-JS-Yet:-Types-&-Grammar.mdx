@@ -187,7 +187,110 @@ This chapter firmly establishes that JavaScript applies types to **values themse
 
 ---
 
-### Chapter 2: [Chapter 2 Title - e.g., Coercion]
+### Chapter 2: Primitive Behaviors
+
+This chapter delves into the inherent behaviors of JavaScript's primitive values, building upon the foundational types discussed in Chapter 1. It emphasizes their immutability and how they interact with assignments, comparisons, and operations.
+
+<br />
+
+**Key concepts covered in this chapter:**
+
+1.  **Primitive Immutability:**
+    All primitive values (`null`, `undefined`, `boolean`, `string`, `number`, `bigint`, `symbol`) are **immutable**. This means their content cannot be changed once created. Operations on primitives produce _new_ values.
+
+    ```javascript
+    let myAge = 42;
+    myAge = 43; // 'myAge' is reassigned, the value 42 itself is unchanged.
+
+    let greeting = "Hello.";
+    // greeting[5] = "!"; // Fails silently (non-strict) or throws TypeError (strict)
+    console.log(greeting); // "Hello."
+    ```
+
+    - `const` declares variables that cannot be reassigned; it doesn't make the _value_ immutable (primitives already are).
+    - Properties cannot be added to primitive values (e.g., `greeting.isRendered = true;` fails).
+    - However, properties _can_ be accessed on non-nullish primitives (like `greeting.length` or `greeting.toString()`) due to _auto-boxing_ (covered in Chapter 3).
+
+2.  **Primitive Assignments (Value-Copy):**
+    Assigning a primitive value from one variable to another creates a _copy_ of that value. Each variable holds its own independent copy.
+
+    ```javascript
+    let myAge = 42;
+    let yourAge = myAge; // yourAge gets a copy of 42
+
+    myAge++;
+    console.log(myAge); // 43
+    console.log(yourAge); // 42 (unchanged)
+    ```
+
+3.  **String Behaviors:**
+
+    - **Character Access & Iteration:** Strings allow array-like character access (`greeting[4]`) and are iterable (e.g., `for (let char of myName)` or `[...myName]`).
+    - **Length Computation (`.length`):** Counts 16-bit _code-units_, not visual characters (graphemes). This is complicated by:
+
+      - **Surrogate Pairs:** Extended Unicode characters (e.g., `📱`) count as 2.
+      - **Combining Marks:** Characters like "é" can be one code-point or two ("e" + combining accent), affecting length. `normalize("NFC")` helps.
+      - **Grapheme Clusters:** Emojis like `"👎🏾"` or `"👩‍👩‍👦‍👦"` are multiple code-points visually forming one symbol, leading to lengths greater than 1 even after spreading.
+
+      ```javascript
+      const cellphone = "📱";
+      console.log(cellphone.length); // 2
+      console.log([...cellphone].length); // 1 (handles surrogate pairs)
+
+      const thumbsDown = "👎🏾"; // A grapheme cluster
+      console.log(thumbsDown.length); // 4
+      console.log([...thumbsDown].length); // 2 (still not 1)
+      ```
+
+    - **Internationalization (i18n) & Localization (l10n):** The `Intl` API (`Intl.Collator`, `Intl.Segmenter`) handles locale-specific sorting, formatting, and text segmentation (e.g., for RTL languages like Hebrew or Arabic).
+    - **String Comparison:**
+      - **Equality:**
+        - `===` (Strict): Checks type, then value (code-unit by code-unit).
+        - `==` (Coercive): If types differ, prefers numeric comparison by coercing operands. If both are strings, behaves like `===`.
+          ```javascript
+          console.log("42" == "42"); // true (string comparison)
+          console.log(42 == "42"); // true (numeric comparison after coercion)
+          ```
+        - `Object.is(val1, val2)`: Truly strict, no exceptions for `NaN` or `-0`.
+      - **Relational (`<`, `<=`, `>`, `>=`):**
+        - Lexicographical (dictionary order) if both operands are strings.
+        - Coerces to numbers if types differ (no strict version).
+          ```javascript
+          console.log("100" < "11"); // true (lexicographical: "0" < "1")
+          ```
+        - `localeCompare()` method or `Intl.Collator` for locale-aware string comparisons.
+    - **String Concatenation (`+`):** If either operand is a string, `+` performs concatenation, coercing the non-string operand to a string. Template literals (`` ` ``) are often preferred.
+    - **String Methods:** A rich set of methods like `toUpperCase()`, `indexOf()`, `slice()`, `trim()`, `split()`, `startsWith()`, `replace()`, `normalize()`, etc. These return _new_ strings.
+    - **Static `String` Helpers:** `String.fromCharCode()`, `String.fromCodePoint()`, `String.raw()`, and `String(value)` for explicit coercion.
+
+4.  **Number Behaviors:**
+    - **Floating Point Imprecision (IEEE-754):**
+      - The classic `0.1 + 0.2 !== 0.3` (evaluates to `0.30000000000000004`). This is inherent to IEEE-754, not unique to JS.
+      - **`Number.EPSILON`:** The smallest difference between 1 and the next representable number. The author warns that using it as a general tolerance for equality checks (`Math.abs(a - b) < Number.EPSILON`) is **not safe** and can lead to false negatives for larger numbers. Recommends careful consideration, integer math where possible, or arbitrary-precision libraries.
+    - **Numeric Comparison:**
+      - **Equality (`==`, `===`, `Object.is`):**
+        - `42 == 42.0` is `true`.
+        - `NaN === NaN` is `false`.
+        - `-0 === 0` is `true`.
+        - `Object.is()` correctly handles `NaN` and `-0`: `Object.is(NaN, NaN)` is `true`, `Object.is(-0, 0)` is `false`.
+      - **Relational (`<`, `<=`, `>`, `>=`):** Standard numeric comparison. Coerces non-numbers.
+    - **Mathematical Operators:** `+`, `-`, `*`, `/`, `**` (exponentiation), `%` (modulo). Also unary `+`, `-`, and `++`/`--` (increment/decrement).
+      - If operands are not numbers (and not strings for `+`), they are coerced to numbers.
+    - **Bitwise Operators (`&`, `|`, `^`, `~`, `<<`, `>>`, `>>>`):** Operate on 32-bit signed integer representations of numbers. `myNum | 0` can truncate decimals.
+    - **Number Methods:** `toExponential()`, `toFixed()`, `toPrecision()`, `toLocaleString()`.
+      - Dot access on literals: `(42).toFixed(2)` or `42..toFixed(2)`.
+    - **Static `Number` & `Math` Utilities:**
+      - `Number` provides constants (`MAX_SAFE_INTEGER`, `NaN`, `EPSILON`) and helpers (`isFinite()`, `isInteger()`, `isNaN()`, `parseInt()`).
+      - `Math` provides constants (`PI`) and functions (`abs()`, `round()`, `min()`, `max()`).
+        > **Warning:** `Math.random()` is not cryptographically secure; use `crypto.getRandomValues()` instead.
+    - **`bigint` and `number` Don't Mix:** Operations involving both types require explicit coercion (`BigInt(num)` or `Number(bigint)`), which carries risks (e.g., precision loss, `RangeError`).
+      ```javascript
+      const myAge = 42n;
+      // myAge + 1; // TypeError
+      console.log(myAge + 1n); // 43n
+      console.log(Number(2n ** 1024n)); // Infinity (precision loss)
+      // console.log(BigInt(4.2)); // RangeError
+      ```
 
 <br />
 
