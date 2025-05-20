@@ -296,7 +296,95 @@ This chapter delves into the inherent behaviors of JavaScript's primitive values
 
 ---
 
-### Chapter 3: [Chapter 3 Title - e.g., Grammar]
+### Chapter 3: Object Values
+
+After exploring primitive types, this chapter shifts focus to JavaScript's `object` value-type. It provides a high-level overview, as the "Objects & Classes" book in the YDKJSY series covers objects in much greater depth. Here, the emphasis is on how object values behave and interact within the broader JS type system.
+
+<br />
+
+**Key aspects of object values include:**
+
+1.  **Types of Objects:**
+    The `object` value-type encompasses several sub-types, each with specialized behaviors. These include:
+
+    - **Plain Objects (POJOs):** General key-value collections.
+    - **Fundamental Objects:** Wrappers for primitives (e.g., `new String()`), primarily used internally for auto-boxing.
+    - **Built-in Objects:** Instances of constructors like `Date`, `Error`, `Map`, `Set`, Typed Arrays (`Int8Array`, etc.), `ArrayBuffer`.
+    - **Arrays:** Specialized objects for numerically indexed collections.
+    - **Regular Expressions:** Objects for pattern matching.
+    - **Functions:** Callable objects.
+      A shared characteristic is that all objects can hold properties (collections of values, including methods).
+
+2.  **Plain Objects:**
+    Often called POJOs (Plain Ol' JavaScript Objects), these are typically created with object literal syntax `{...}` or `new Object()`.
+
+    ```javascript
+    const address = {
+      street: "12345 Market St",
+      city: "San Francisco",
+      state: "CA",
+      zip: "94114",
+    };
+    ```
+
+    - Plain objects are, by default, `[[Prototype]]`-linked to `Object.prototype`, inheriting methods like `toString()`, `valueOf()`, `hasOwnProperty()` (now `Object.hasOwn()` is preferred), etc.
+
+3.  **Fundamental Objects (Boxed Primitives):**
+    Constructors like `new String()`, `new Number()`, and `new Boolean()` create object wrappers around their corresponding primitive values.
+
+    ```javascript
+    const myNamePrimitive = "David";
+    console.log(typeof myNamePrimitive); // "string"
+
+    const myNicknameObject = new String("DavidCs9");
+    console.log(typeof myNicknameObject); // "object"
+    ```
+
+    > **Warning:** Directly instantiating these fundamental objects is generally considered bad practice. Primitives with auto-boxing are preferred.
+
+    - `Symbol()` and `BigInt()` are also called "constructors" but produce primitive values when called without `new`. Internal fundamental objects exist for these for prototype delegation and auto-boxing.
+    - `null` and `undefined` do not have corresponding fundamental objects or constructors.
+    - **Prototypes:** Instances of fundamental objects (and auto-boxed primitives) link to respective `.prototype` objects (e.g., `String.prototype`, `Number.prototype`), which provide type-specific methods.
+
+4.  **Automatic Objects (Auto-Boxing):**
+    When a property or method is accessed on a primitive value (except `null` or `undefined`), JavaScript temporarily wraps the primitive in its corresponding fundamental object. This "auto-boxing" allows primitives to access methods from their respective prototypes.
+
+    ```javascript
+    const myName = "David";
+    console.log(myName.length); // 4 (myName is auto-boxed to a String object)
+    console.log(myName.toUpperCase()); // "DAVID" (toUpperCase from String.prototype)
+    ```
+
+    - The author considers auto-boxing a form of implicit coercion.
+
+5.  **Other Built-in Objects:**
+    JS provides various other built-in constructors for specialized object sub-types:
+
+    - `new Date()`
+    - `new Error()`
+    - `new Map()`, `new Set()`, `new WeakMap()`, `new WeakSet()` (for keyed collections)
+    - Typed Arrays like `new Int8Array()`, `new Uint32Array()` (for indexed, typed-array collections)
+    - `new ArrayBuffer()`, `new SharedArrayBuffer()` (for structured data)
+
+6.  **Arrays:**
+    Arrays are objects specialized for numerically indexed collections. They can be created with array literal syntax `[...]` or `new Array()`.
+
+    ```javascript
+    const favoriteNumbers = [3, 12, 42];
+    console.log(favoriteNumbers[2]); // 42
+    ```
+
+    - Arrays are `[[Prototype]]`-linked to `Array.prototype`, providing methods like `map()`, `includes()`, `push()`, `sort()`, etc.
+    - Some array methods modify the array in place (e.g., `push()`, `sort()`), while others return a new array (e.g., `map()`, `slice()`).
+
+    Functions in JavaScript are first-class objects, meaning they can be assigned to variables, passed as arguments, and returned from other functions. They are "callable objects."
+
+7.  **Proposed: Records & Tuples:**
+    A Stage 2 TC39 proposal aims to introduce Records (`#{...}`) and Tuples (`#[...]`).
+    - **Records:** Immutable, primitive-like versions of plain objects.
+    - **Tuples:** Immutable, primitive-like versions of arrays.
+    - They are treated as primitive values for assignment and equality comparison and can only contain other primitive values (including other records/tuples).
+    - This proposal would introduce new primitive types that behave like deep-frozen objects/arrays but with value-based equality.
 
 <br />
 
