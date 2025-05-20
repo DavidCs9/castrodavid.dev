@@ -1,0 +1,206 @@
+---
+title: "You Don't Know JS Yet: Types & Grammar - 2nd Edition"
+date: 2025-05-20
+description: "A Deep Dive into JavaScript's Type System, Coercion, and Fundamental Grammar."
+tags:
+  [
+    "javascript",
+    "types",
+    "grammar",
+    "coercion",
+    "values",
+    "operators",
+    "ydkjs",
+    "book review",
+  ]
+---
+
+My next review tackles the second edition of "Types & Grammar," from the "You Don't Know JS Yet" series by Kyle Simpson. This book is essential for truly understanding how JavaScript handles values, the intricacies of its type system (including the often-misunderstood coercion), and the fundamental rules of its grammar that dictate how we write valid code.
+
+### Chapter 1: Primitive Values
+
+This chapter firmly establishes that JavaScript applies types to **values themselves**, not to variables or properties ("value types" vs. "container types"). It immediately dispels the myth that "everything in JS is an object" by diving into the seven built-in, primitive (non-object) value types. Understanding these primitives is key to grasping how JS operates at a fundamental level.
+
+<br />
+
+**Key takeaways on primitive values include:**
+
+1.  **The Seven Primitive Types & `typeof`:**
+    JavaScript has seven primitive value types: `undefined`, `null`, `boolean`, `number`, `bigint`, `symbol`, and `string`. The `typeof` operator inspects a value's type, returning a string representation (e.g., `typeof 42` is `"number"`).
+
+    > **Note:** Variables themselves don't have types; they hold values, and those values have types.
+
+    ```javascript
+    console.log(typeof true); // "boolean"
+    console.log(typeof 42); // "number"
+    console.log(typeof 42n); // "bigint"
+    console.log(typeof Symbol("desc")); // "symbol"
+    console.log(typeof "hello"); // "string"
+    console.log(typeof undefined); // "undefined"
+    console.log(typeof null); // "object" (This is a long-standing bug)
+    ```
+
+2.  **Primitives Are Not Objects:**
+    A core distinction is that primitive values are **not allowed to have properties** set on them. Attempting to do so will fail silently in non-strict mode or throw a `TypeError` in strict mode.
+
+    > **Warning:** This might seem contradicted by expressions like `"hello".length`. This behavior is due to _auto-boxing_, where the primitive is temporarily wrapped in an object. This is covered in Chapter 3 of the book.
+
+    ```javascript
+    "use strict";
+    const myName = "David";
+    // myName.account = "DavidCs9"; // TypeError: Cannot create property 'account' on string 'David'
+    ```
+
+3.  **Empty Values: `null` and `undefined` ("Nullish"):**
+    Both `null` and `undefined` represent emptiness or absence of value.
+
+    - **`typeof null` returns `"object"`:** A historical bug that cannot be fixed. `null` is its own primitive type.
+    - **`typeof undefined` returns `"undefined"`:** This applies to the `undefined` value itself, uninitialized variables, undeclared variables (a special safe case for `typeof`), and accessing non-existent properties or out-of-bounds array elements.
+    - **Nullish Behavior:** JS often treats `null` and `undefined` interchangeably.
+      - The `==` operator considers `null == undefined` to be `true`.
+      - **Nullish Coalescing Operator (`??`):** Provides a default value if the left-hand side is `null` or `undefined`.
+        ```javascript
+        const myName = null;
+        const who = myName ?? "User"; // who is "User"
+        ```
+      - **Optional Chaining (`?.`, `?.[]`, `?.()`):** Safely access properties or call functions on potentially nullish values. If the value before `?.` is nullish, the expression short-circuits and returns `undefined`.
+        ```javascript
+        const record = {
+          /* ... */
+        };
+        // console.log(record?.billingAddress?.street); // undefined if billingAddress is null/undefined
+        // someFunc?.(42); // Calls someFunc only if it's not null/undefined
+        ```
+        > **Warning (Author's Opinion):** Overusing `?.` can hide bugs. The `?.(` form is particularly disliked by the author as it only checks for nullish, not if the value is actually a function, potentially leading to `TypeError`.
+    - **Distinction:** Despite similarities, `null` and `undefined` are distinct. For example, function parameter defaults trigger for `undefined` or missing arguments, but not for `null`.
+      ```javascript
+      function greet(msg = "Hello") {
+        console.log(msg);
+      }
+      greet(); // Hello
+      greet(undefined); // Hello
+      greet(null); // null
+      ```
+
+4.  **Boolean Values:**
+    The `boolean` type has two values: `true` and `false`. They are fundamental for decision-making in control flow statements (`if`, `while`). The `!` operator negates a boolean value.
+
+5.  **String Values:**
+    Strings are sequences of characters, delimited by single quotes (`'`), double quotes (`"`), or backticks (`` ` ``).
+
+    - **Length:** Strings have a `length` property (details on computation in Chapter 2).
+    - **Character Encodings:** JS strings use UTF-16. This means characters outside the Basic Multilingual Plane (BMP) are stored as _surrogate pairs_ (two 16-bit code units), affecting `length`.
+    - **Escape Sequences:** Special character sequences like `\n` (newline), `\t` (tab), `\\` (backslash), `\"` (double quote within double-quoted string).
+      - **Line Continuation:** A `\` at the end of a line in `"` or `'` strings allows the literal to span multiple lines (the newline itself is omitted).
+    - **Multi-Character Escapes:**
+      - Hexadecimal: `\xHH` (e.g., `\xA9` for `©`).
+      - Unicode: `\uHHHH` for BMP characters (e.g., `\u263A` for `☺`).
+      - Unicode (Extended): `\u{HHHHHH}` for any Unicode code point (e.g., `\u{1F4A9}` for `💩`).
+    - **Unicode Normalization:** Different sequences of code points can render the same visual character (e.g., "é" as a single code point vs. "e" + combining accent). The `normalize()` method (`"NFC"`, `"NFD"`) helps manage these representations for consistent comparisons and length calculations.
+      ```javascript
+      const eTilde1 = "é"; // Might be composed or decomposed depending on source
+      const eTilde2 = "\u{e9}"; // Composed form
+      const eTilde3 = "\u{65}\u{301}"; // Decomposed form ("e" + combining acute accent)
+      // console.log(eTilde1.length); // 1 or 2
+      console.log(eTilde2.length); // 1
+      console.log(eTilde3.length); // 2
+      // console.log(eTilde2.normalize("NFD") === eTilde3); // true
+      ```
+    - **Grapheme Clusters:** Multiple code points can combine to form a single visual symbol (e.g., family emojis like `"👩‍👩‍👦‍👦"`), further complicating length and manipulation.
+    - **Template Literals (`` ` ``):**
+
+      - **Interpolation:** Embed expressions using `${expression}`.
+      - **Multi-line Strings:** Newlines within backticks become part of the string value (unlike line continuations in regular strings).
+      - **Tagged Template Literals:** A function (tag) placed before a template literal receives the string parts and interpolated values, allowing custom processing and returning any value type.
+
+        ```javascript
+        const myName = "David";
+        const greeting = `Hello, ${myName}!`; // "Hello, David!"
+
+        function highlight(strings, ...values) {
+          let str = "";
+          strings.forEach((string, i) => {
+            str += string + (values[i] ? `<strong>${values[i]}</strong>` : "");
+          });
+          return str;
+        }
+        const message = highlight`My name is ${myName}.`;
+        // message is "My name is <strong>David</strong>."
+        ```
+
+        > **Author's Tip:** Use template literals when interpolation or true multi-line strings are needed. Otherwise, stick to `"` or `'`.
+
+6.  **Number Values:**
+    Represented as 64-bit IEEE-754 double-precision floating-point numbers. Integers are numbers with no non-zero fractional part (`42` is the same as `42.0`).
+
+    - **`Number.isInteger()`:** Checks if a number has a non-zero fraction.
+    - **Parsing vs. Coercion:**
+      - **Parsing (`parseInt(str, radix)`, `parseFloat(str)`):** Converts string to number, character by character. Stops at non-numeric characters. `parseInt` requires a `radix` (base, e.g., 10).
+      - **Coercion (`Number(val)`, `+val`):** All-or-nothing conversion. If the entire string isn't numeric, results in `NaN`.
+        ```javascript
+        console.log(parseInt("123.45px", 10)); // 123
+        console.log(parseFloat("123.45px")); // 123.45
+        console.log(Number("123.45px")); // NaN
+        console.log(+"123.45"); // 123.45
+        ```
+    - **Other Numeric Representations in Code:**
+      - Binary: `0b101010` (42)
+      - Octal: `0o52` (42)
+      - Hexadecimal: `0x2a` (42)
+      - Scientific Notation: `1e9` (1,000,000,000)
+      - Digit Separator: `1_000_000` for readability.
+    - **IEEE-754 Details:** Numbers are stored with a sign bit, an 11-bit exponent, and a 52-bit mantissa (fraction). This explains floating-point precision issues.
+    - **Limits:**
+      - `Number.MAX_VALUE` (approx `1.79e+308`), `Number.MIN_VALUE` (approx `5e-324`).
+      - `Infinity`, `-Infinity`: Result from overflow or division by zero.
+      - `Number.MAX_SAFE_INTEGER` (`2^53 - 1`), `Number.MIN_SAFE_INTEGER` (`-(2^53 - 1)`): Range for accurate integer arithmetic. `Number.isSafeInteger()` checks this.
+    - **Double Zeros (`0` and `-0`):** IEEE-754 includes signed zero. `Object.is(0, -0)` is `false`. Useful for representing magnitude and direction.
+    - **`NaN` (Invalid Number):** Result of invalid math operations (e.g., `42 / "Kyle"`) or failed coercive conversions.
+      - `typeof NaN` is `"number"`.
+      - `NaN` is the only value not equal to itself (`NaN !== NaN`).
+      - Check with `Number.isNaN(val)`, `Object.is(NaN, val)`, or `[NaN].includes(val)`.
+        > **Warning:** Avoid the global `isNaN()` due to a coercion bug.
+
+7.  **BigInteger Values (`bigint`):**
+    For arbitrarily large integers, beyond `Number.MAX_SAFE_INTEGER`. Denoted by an `n` suffix (e.g., `42n`).
+
+    - Cannot mix `number` and `bigint` types in arithmetic operations directly; explicit conversion is needed using `BigInt()`.
+    - `BigInt(value)` converts numbers or numeric strings to `bigint`. Called without `new`.
+
+      ```javascript
+      const largeNum = 9007199254740991n;
+      console.log(largeNum + 2n); // 9007199254740993n
+      // console.log(largeNum + 2); // TypeError
+
+      const fromString = BigInt("12345678901234567890");
+      console.log(fromString); // 12345678901234567890n
+      ```
+
+8.  **Symbol Values:**
+    Unique, opaque values created by `Symbol(description)`. The description is optional, for debugging. Called without `new`.
+    - **Usage:** Often used as special, unguessable values or as unique keys for object properties (meta-programming).
+    - **Well-Known Symbols (WKS):** Pre-defined symbols like `Symbol.toStringTag` that provide hooks into built-in language behaviors.
+    - **Global Symbol Registry:** `Symbol.for(key)` retrieves or creates a symbol in a global registry. `Symbol.keyFor(sym)` gets the key for a registered symbol.
+    - **Object or Primitive?:** While `Symbol()` is categorized as a "Fundamental Object" in the spec and has a `.prototype`, symbols behave like primitives: they cannot have properties directly assigned, are auto-boxed, and are used as primitive keys. The author considers them primitives.
+
+<br />
+
+---
+
+### Chapter 2: [Chapter 2 Title - e.g., Coercion]
+
+<br />
+
+---
+
+### Chapter 3: [Chapter 3 Title - e.g., Grammar]
+
+<br />
+
+---
+
+### Conclusion: Understanding JavaScript's Core
+
+<br />
+<br />
+#JavaScript #Types #Grammar #Coercion #YDKJS #BookReview
