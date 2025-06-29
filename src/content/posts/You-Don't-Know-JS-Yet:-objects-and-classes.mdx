@@ -2,7 +2,7 @@
 title: "You Don't Know JS Yet: Objects & Classes"
 date: 2025-04-29
 description: "Deep Dive into Objects, Prototypes, 'this', and Classes in JavaScript."
-tags: ["javascript", "objects", "prototypes", "this", "classes", "ydkjs"]
+tags: ['javascript', 'objects', 'prototypes', 'this', 'classes', 'ydkjs']
 ---
 
 My next review covers the second edition book, "Objects & Classes," from the "You Don't Know JS Yet" series by Kyle Simpson. This edition replaces the classic "this & Object Prototypes," diving deep into how JavaScript's object system _really_ works, from fundamental properties to the `class` keyword and beyond. Understanding this is key to truly understanding JS.
@@ -21,31 +21,30 @@ The chapter contrasts this new edition with the first ("this & Object Prototypes
 
     ```javascript
     const myObj = {
-      key: "value",
+      key: 'value',
       anotherKey: 123,
     };
     ```
 
 2.  **Properties:** Objects store **key/value pairs** (properties).
-
     - **Definition:** Defined as `propertyName: value` within literals. Values can be literals or computed expressions. "Lazy" evaluation requires wrapping expressions in functions.
     - **Property Names:** Usually treated as strings. Computed property names use `[expression]`. **Symbols** (`Symbol()`) provide unique keys.
 
       ```javascript
-      const dynamicProp = "dynamicKey";
-      const mySymbol = Symbol("description");
+      const dynamicProp = 'dynamicKey';
+      const mySymbol = Symbol('description');
 
       const objWithDynamicProps = {
-        [dynamicProp]: "This key was computed",
-        [mySymbol]: "Value for a symbol key",
-        "key with spaces": true,
+        [dynamicProp]: 'This key was computed',
+        [mySymbol]: 'Value for a symbol key',
+        'key with spaces': true,
       };
       ```
 
     - **Conciseness:** ES6 introduced shorthands: **concise properties** (`{ variable }`) and **concise methods** (`method() { ... }`).
 
       ```javascript
-      const name = "Alice";
+      const name = 'Alice';
       const age = 30;
 
       const person = {
@@ -80,13 +79,12 @@ The chapter contrasts this new edition with the first ("this & Object Prototypes
       ```
 
 3.  **Access:**
-
     - **Dot Notation (`.`):** Preferred method (`myObj.prop`).
     - **Bracket Notation (`[]`):** Required for keys with invalid identifier characters or computed keys (`myObj["prop-name"]`, `myObj[variable]`).
 
       ```javascript
       console.log(person.name); // Alice
-      console.log(objWithDynamicProps["key with spaces"]); // true
+      console.log(objWithDynamicProps['key with spaces']); // true
       ```
 
     - **Destructuring (`{ prop } = obj`):** Declarative syntax to extract values, optionally renaming and providing defaults.
@@ -96,7 +94,7 @@ The chapter contrasts this new edition with the first ("this & Object Prototypes
       console.log(personName); // Alice
       console.log(personAge); // 30 (default not used as age exists)
 
-      const { nonExistentProp = "default" } = person;
+      const { nonExistentProp = 'default' } = person;
       console.log(nonExistentProp); // default
       ```
 
@@ -114,23 +112,22 @@ The chapter contrasts this new edition with the first ("this & Object Prototypes
     - **Boxing:** Primitives are temporarily wrapped ("boxed") when properties are accessed.
 
       ```javascript
-      const greeting = "Hello";
+      const greeting = 'Hello';
       console.log(greeting.length); // 5 (accessing length property on string primitive)
       ```
 
 4.  **Modification:**
-
     - **Assignment (`=`):** Adds or updates property values.
 
       ```javascript
       person.age = 31;
-      person.city = "New York"; // Adds new property
+      person.city = 'New York'; // Adds new property
       ```
 
     - **`Object.assign(target, ...sources)`:** Copies properties into a target object.
 
       ```javascript
-      const updates = { age: 32, occupation: "Developer" };
+      const updates = { age: 32, occupation: 'Developer' };
       Object.assign(person, updates);
       // person is now { name: 'Alice', age: 32, greet: [Function: greet], city: 'New York', occupation: 'Developer' }
       ```
@@ -143,13 +140,12 @@ The chapter contrasts this new edition with the first ("this & Object Prototypes
       ```
 
 5.  **Inspection:**
-
     - **Existence:** `Object.hasOwn(obj, "prop")` is preferred for checking _owned_ properties. `in` checks the prototype chain too.
 
       ```javascript
-      console.log(Object.hasOwn(person, "name")); // true
-      console.log(Object.hasOwn(person, "toString")); // false (inherited)
-      console.log("toString" in person); // true (found on prototype chain)
+      console.log(Object.hasOwn(person, 'name')); // true
+      console.log(Object.hasOwn(person, 'toString')); // false (inherited)
+      console.log('toString' in person); // true (found on prototype chain)
       ```
 
     - **Listing Contents:** Various methods list keys, values, or entries.
@@ -194,11 +190,11 @@ Every object property has an associated **property descriptor**, a metaobject de
 
 ```javascript
 const myObj = { a: 1 };
-const descriptor = Object.getOwnPropertyDescriptor(myObj, "a");
+const descriptor = Object.getOwnPropertyDescriptor(myObj, 'a');
 // descriptor: { value: 1, writable: true, enumerable: true, configurable: true }
 
 const anotherObj = {};
-Object.defineProperty(anotherObj, "b", {
+Object.defineProperty(anotherObj, 'b', {
   value: 2,
   writable: false, // read-only
   enumerable: true,
@@ -220,24 +216,24 @@ Instead of a static `value`, properties can have **getter (`get`)** and/or **set
 
 ```javascript
 const user = {
-  _firstName: "John",
-  _lastName: "Doe",
+  _firstName: 'John',
+  _lastName: 'Doe',
 
   get fullName() {
-    console.log("Getting fullName");
+    console.log('Getting fullName');
     return `${this._firstName} ${this._lastName}`;
   },
 
   set fullName(value) {
     console.log(`Setting fullName to: ${value}`);
-    const parts = value.split(" ");
+    const parts = value.split(' ');
     this._firstName = parts[0];
     this._lastName = parts[1];
   },
 };
 
 console.log(user.fullName); // Getting fullName -> John Doe
-user.fullName = "Jane Smith"; // Setting fullName to: Jane Smith
+user.fullName = 'Jane Smith'; // Setting fullName to: Jane Smith
 console.log(user._firstName); // Jane
 ```
 
@@ -256,14 +252,14 @@ console.log(user._firstName); // Jane
 - **Functions:** Are also objects ("first-class objects") and can have properties. They have built-in `name` and `length` (number of declared parameters before defaults or rest params) properties. Avoid adding custom properties directly; use `Map` or `WeakMap` to associate metadata with functions instead.
 
   ```javascript
-  function greet(name, msg = "Hello") {
+  function greet(name, msg = 'Hello') {
     /* ... */
   }
   console.log(greet.name); // "greet"
   console.log(greet.length); // 1 (only 'name' counts)
 
   const functionMetadata = new Map();
-  functionMetadata.set(greet, { description: "Greets a user" });
+  functionMetadata.set(greet, { description: 'Greets a user' });
   ```
 
 **4. Object Characteristics (Extensibility, Sealed, Frozen):**
@@ -334,8 +330,8 @@ This is a crucial, internal linkage (`[[Prototype]]`) connecting an object to an
 const myObj = { a: 1 };
 console.log(myObj.a); // 1 (Own property)
 console.log(myObj.toString()); // "[object Object]" (Inherited from Object.prototype)
-console.log(Object.hasOwn(myObj, "a")); // true
-console.log(Object.hasOwn(myObj, "toString")); // false
+console.log(Object.hasOwn(myObj, 'a')); // true
+console.log(Object.hasOwn(myObj, 'toString')); // false
 ```
 
 **6. Creating and Managing Prototypes:**
@@ -345,14 +341,14 @@ console.log(Object.hasOwn(myObj, "toString")); // false
 - `Object.create(null)`: Creates an object with **no prototype linkage**, often useful for "dictionary" objects to avoid inheriting from `Object.prototype`.
 
 ```javascript
-const parent = { greet: "Hello" };
+const parent = { greet: 'Hello' };
 const child = Object.create(parent);
-child.name = "Child";
+child.name = 'Child';
 
 console.log(child.greet); // "Hello" (Delegated to parent)
 
 const dict = Object.create(null);
-dict.key = "value";
+dict.key = 'value';
 console.log(dict.toString); // undefined (No Object.prototype linkage)
 ```
 
@@ -370,10 +366,10 @@ function Dog(name) {
 // Dog.prototype is an object that will become the [[Prototype]]
 // of objects created via 'new Dog()'
 Dog.prototype.bark = function () {
-  console.log("Woof!");
+  console.log('Woof!');
 };
 
-const spot = new Dog("Spot");
+const spot = new Dog('Spot');
 
 // spot's internal [[Prototype]] === Dog.prototype
 spot.bark(); // Woof! (Delegated to Dog.prototype)
@@ -408,7 +404,7 @@ Classes can be defined using declarations or expressions. They contain methods d
 class Point2d {
   // Constructor: Called when 'new Point2d()' is used
   constructor(x, y) {
-    console.log("Point2d instance created");
+    console.log('Point2d instance created');
     // 'this' refers to the new instance being created
     this.x = x; // Instance property (member)
     this.y = y;
@@ -448,7 +444,7 @@ const Anon = class {
     // Public fields with initializers
     width = 0;
     height = 0;
-    color = "blue";
+    color = 'blue';
     calculatedArea = this.width * this.height; // Can reference other fields
 
     constructor(width, height) {
@@ -481,8 +477,8 @@ const Anon = class {
     }
   }
   const bp = new BadPattern();
-  console.log(Object.hasOwn(bp, "getValueArrow")); // true (Oops!)
-  console.log(Object.hasOwn(bp, "getValueMethod")); // false (Good!)
+  console.log(Object.hasOwn(bp, 'getValueArrow')); // true (Oops!)
+  console.log(Object.hasOwn(bp, 'getValueMethod')); // false (Good!)
   ```
 
 **4. Class Inheritance (`extends` and `super`):**
@@ -496,11 +492,11 @@ const Anon = class {
   ```javascript
   class Square extends Rectangle {
     constructor(size) {
-      console.log("Square constructor start");
+      console.log('Square constructor start');
       // Must call parent constructor before 'this'
       super(size, size); // Calls Rectangle's constructor
-      console.log("Square constructor after super");
-      this.color = "red"; // Overrides inherited field
+      console.log('Square constructor after super');
+      this.color = 'red'; // Overrides inherited field
     }
 
     // Overrides Rectangle's getArea
@@ -543,7 +539,7 @@ const Anon = class {
 
     // Static block
     static {
-      console.log("Circle class static block initialized.");
+      console.log('Circle class static block initialized.');
       this.defaultRadius = 1;
     }
 
@@ -614,7 +610,6 @@ This chapter tackles the often-misunderstood `this` keyword in JavaScript, empha
 1.  **Dynamic Context:** `this` provides a dynamic context mechanism, contrasting with the static context of lexical scope (closures). It allows a function to operate on different context objects during different invocations.
 2.  **The Burden of `this`:** Using `this` requires authors and readers to analyze every call-site to understand a function's behavior, adding complexity. Use it intentionally when its dynamic power outweighs this cost.
 3.  **The Four Binding Rules (in order of precedence):** JS determines `this` for a _regular_ function call based on these rules:
-
     - **1. New Binding (`new`):** When a function is called with `new`, a new object is created, `[[Prototype]]`-linked, and set as the `this` for the call. The function usually returns this new object implicitly.
 
       ```javascript
@@ -649,12 +644,11 @@ This chapter tackles the often-misunderstood `this` keyword in JavaScript, empha
       ```
 
     - **4. Default Binding:** If none of the above rules apply (e.g., a plain `func()` invocation):
-
       - In **strict mode** (most common, recommended): `this` is `undefined`. Accessing properties on it (`this.prop`) throws a `TypeError`.
       - In **non-strict mode**: `this` defaults to the global object (`globalThis`, e.g., `window`). This can lead to accidental global variable creation and is generally discouraged.
 
       ```javascript
-      "use strict";
+      'use strict';
       printA(); // TypeError: Cannot read properties of undefined (reading 'a')
 
       // --- In non-strict mode ---
@@ -662,7 +656,6 @@ This chapter tackles the often-misunderstood `this` keyword in JavaScript, empha
       ```
 
 4.  **Arrow Functions (`=>`) and Lexical `this`:**
-
     - Arrow functions are **irregular**: they **do not have their own `this` binding**.
     - Inside an arrow function, `this` behaves like a normal lexical variable, inheriting its value from the **nearest enclosing _regular_ function scope**.
     - `call`, `apply`, and `bind` have no effect on the `this` value of an arrow function. They also cannot be used with `new`.
@@ -692,7 +685,7 @@ This chapter tackles the often-misunderstood `this` keyword in JavaScript, empha
 
     ```javascript
     class Handler {
-      message = "Clicked!";
+      message = 'Clicked!';
       handleClick() {
         console.log(this.message); // Relies on 'this' being the Handler instance
       }
@@ -702,7 +695,7 @@ This chapter tackles the often-misunderstood `this` keyword in JavaScript, empha
         // button.addEventListener('click', this.handleClick); // 'this' will be wrong
 
         // Solution 1: Arrow function wrapper (Lexical this)
-        button.addEventListener("click", (evt) => this.handleClick(evt));
+        button.addEventListener('click', evt => this.handleClick(evt));
 
         // Solution 2: bind()
         // button.addEventListener('click', this.handleClick.bind(this));
@@ -713,7 +706,6 @@ This chapter tackles the often-misunderstood `this` keyword in JavaScript, empha
 6.  **Hard Binding (`bind`)**: `func.bind(thisContext)` creates a _new_ function that is permanently bound to `thisContext`. Its `this` cannot be overridden by implicit or explicit binding (though `new` binding _can_ still override it, surprisingly).
 
 7.  **Critique of Over-Binding:** The chapter strongly cautions against patterns like defining class methods as arrow function fields (`myMethod = () => {...}`) or using `.bind(this)` in constructors for _all_ methods just to avoid dealing with dynamic `this`.
-
     - **Costs:** Creates functions per instance (memory/performance overhead), defeats prototype sharing, adds complexity.
     - **Argument:** If fixed context is always needed, the **closure pattern** (using lexical scope without `this`) is often simpler, more appropriate, and more performant than forcing `class` methods to behave like closures. Use `this` when its _dynamic_ nature is beneficial.
 

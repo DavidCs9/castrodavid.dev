@@ -3,27 +3,27 @@ import {
   insertionSort,
   mergeSort,
   quickSort,
-} from "../sortingAlgorithms";
-import type { Skill } from "../sortingAlgorithms";
+} from '../sortingAlgorithms';
+import type { Skill } from '../sortingAlgorithms';
 
-describe("Sorting Algorithms", () => {
+describe('Sorting Algorithms', () => {
   const testCases: Skill[][] = [
     [
-      { name: "JavaScript", level: 90 },
-      { name: "TypeScript", level: 85 },
-      { name: "Python", level: 95 },
-      { name: "Java", level: 80 },
+      { name: 'JavaScript', level: 90 },
+      { name: 'TypeScript', level: 85 },
+      { name: 'Python', level: 95 },
+      { name: 'Java', level: 80 },
     ],
     [
-      { name: "React", level: 95 },
-      { name: "Vue", level: 85 },
-      { name: "Angular", level: 75 },
+      { name: 'React', level: 95 },
+      { name: 'Vue', level: 85 },
+      { name: 'Angular', level: 75 },
     ],
     [
-      { name: "Node.js", level: 90 },
-      { name: "Express", level: 85 },
-      { name: "MongoDB", level: 80 },
-      { name: "PostgreSQL", level: 85 },
+      { name: 'Node.js', level: 90 },
+      { name: 'Express', level: 85 },
+      { name: 'MongoDB', level: 80 },
+      { name: 'PostgreSQL', level: 85 },
     ],
   ];
 
@@ -44,7 +44,7 @@ describe("Sorting Algorithms", () => {
     }
   };
 
-  describe("bubbleSort", () => {
+  describe('bubbleSort', () => {
     testCases.forEach((testCase, index) => {
       test(`should correctly sort test case ${index + 1}`, () => {
         const result = bubbleSort(testCase);
@@ -53,7 +53,7 @@ describe("Sorting Algorithms", () => {
     });
   });
 
-  describe("insertionSort", () => {
+  describe('insertionSort', () => {
     testCases.forEach((testCase, index) => {
       test(`should correctly sort test case ${index + 1}`, () => {
         const result = insertionSort(testCase);
@@ -62,7 +62,7 @@ describe("Sorting Algorithms", () => {
     });
   });
 
-  describe("mergeSort", () => {
+  describe('mergeSort', () => {
     testCases.forEach((testCase, index) => {
       test(`should correctly sort test case ${index + 1}`, () => {
         const result = mergeSort(testCase);
@@ -71,7 +71,7 @@ describe("Sorting Algorithms", () => {
     });
   });
 
-  describe("quickSort", () => {
+  describe('quickSort', () => {
     testCases.forEach((testCase, index) => {
       test(`should correctly sort test case ${index + 1}`, () => {
         const result = quickSort(testCase);
@@ -80,26 +80,26 @@ describe("Sorting Algorithms", () => {
     });
   });
 
-  describe("Edge Cases", () => {
-    test("should handle empty array", () => {
+  describe('Edge Cases', () => {
+    test('should handle empty array', () => {
       const emptyArray: Skill[] = [];
       const result = bubbleSort(emptyArray);
       expect(result.sorted).toEqual([]);
       expect(result.steps).toEqual([]);
     });
 
-    test("should handle single element array", () => {
-      const singleElement: Skill[] = [{ name: "Test", level: 100 }];
+    test('should handle single element array', () => {
+      const singleElement: Skill[] = [{ name: 'Test', level: 100 }];
       const result = bubbleSort(singleElement);
       expect(result.sorted).toEqual(singleElement);
       expect(result.steps).toEqual([]);
     });
 
-    test("should handle array with duplicate levels", () => {
+    test('should handle array with duplicate levels', () => {
       const duplicates: Skill[] = [
-        { name: "A", level: 90 },
-        { name: "B", level: 90 },
-        { name: "C", level: 85 },
+        { name: 'A', level: 90 },
+        { name: 'B', level: 90 },
+        { name: 'C', level: 85 },
       ];
       const result = bubbleSort(duplicates);
       verifySorting(result);

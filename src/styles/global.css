@@ -1,7 +1,7 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 body {
-  background-image: url("../assets/concrete-wall.png");
+  background-image: url('../assets/concrete-wall.png');
 }
 
 @theme {
@@ -10,7 +10,7 @@ body {
   --color-primary-light: #7a73d1;
   --color-primary-dark: #342f72;
 
-  --font-primary: "Roboto", sans-serif;
+  --font-primary: 'Roboto', sans-serif;
 }
 
 @layer utilities {
@@ -33,7 +33,7 @@ body {
 /* Override specific Tailwind typography styles for Markdown */
 .prose code::before,
 .prose code::after {
-  content: "" !important;
+  content: '' !important;
 }
 
 .prose pre {
@@ -54,7 +54,7 @@ body {
 
 /* Shiki styles */
 .prose .shiki {
-  font-family: "Fira Code", "Menlo", "Monaco", "Consolas", monospace !important;
+  font-family: 'Fira Code', 'Menlo', 'Monaco', 'Consolas', monospace !important;
   font-size: 0.875rem !important;
   line-height: 1.5 !important;
   padding: 0 !important;

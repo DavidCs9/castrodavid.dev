@@ -1,9 +1,9 @@
 // @ts-check
-import { defineConfig, passthroughImageService } from "astro/config";
+import { defineConfig, passthroughImageService } from 'astro/config';
 
-import tailwindcss from "@tailwindcss/vite";
-import react from "@astrojs/react";
-import mdx from "@astrojs/mdx";
+import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
+import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,17 +14,17 @@ export default defineConfig({
   integrations: [
     react(),
     mdx({
-      syntaxHighlight: "shiki",
+      syntaxHighlight: 'shiki',
       shikiConfig: {
-        theme: "one-dark-pro",
+        theme: 'one-dark-pro',
         wrap: true,
         langs: [],
       },
       remarkPlugins: [],
       rehypePlugins: [],
       remarkRehype: {
-        footnoteLabel: "References",
-        footnoteBackLabel: "Back to content",
+        footnoteLabel: 'References',
+        footnoteBackLabel: 'Back to content',
       },
       gfm: true,
     }),
@@ -33,9 +33,9 @@ export default defineConfig({
     service: passthroughImageService(),
   },
   markdown: {
-    syntaxHighlight: "shiki",
+    syntaxHighlight: 'shiki',
     shikiConfig: {
-      theme: "one-dark-pro",
+      theme: 'one-dark-pro',
       wrap: true,
       langs: [],
     },

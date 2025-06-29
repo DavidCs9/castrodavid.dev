@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
-import { ProjectsData } from "../data/projectsData";
+import { Image } from 'astro:assets';
+import { ProjectsData } from '../data/projectsData';
 ---
 
 <section class="text-gray-800 font-sans">
@@ -9,7 +9,7 @@ import { ProjectsData } from "../data/projectsData";
   </h2>
   <div class="grid grid-cols-1 gap-8">
     {
-      ProjectsData.map((project) => (
+      ProjectsData.map(project => (
         <div class="bg-white/40 rounded-lg border border-gray-100/30 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden hover:bg-white/50 ">
           <div class="md:flex hover:transform hover:scale-102 transition-transform duration-300">
             <div class="md:w-2/5">
@@ -28,7 +28,7 @@ import { ProjectsData } from "../data/projectsData";
               </p>
 
               <div class="flex flex-wrap gap-2 mb-4">
-                {project.techStack.map((tech) => (
+                {project.techStack.map(tech => (
                   <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-light/30 text-primary-dark">
                     {tech}
                   </span>

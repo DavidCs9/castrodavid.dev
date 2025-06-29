@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
-import heroImage from "../assets/hero-square.avif";
+import { Image } from 'astro:assets';
+import heroImage from '../assets/hero-square.avif';
 ---
 
 <div
@@ -64,11 +64,11 @@ import heroImage from "../assets/hero-square.avif";
 </div>
 
 <script>
-  const logos = document.querySelectorAll<HTMLElement>(".fill-current");
+  const logos = document.querySelectorAll<HTMLElement>('.fill-current');
   // add animation appear from above with a delay
   logos.forEach((logo, index) => {
     logo.style.animationDelay = `${index * 0.3}s`;
-    logo.classList.add("animate-appear");
+    logo.classList.add('animate-appear');
   });
 </script>
 

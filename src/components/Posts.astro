@@ -1,9 +1,9 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { getCollection } from "astro:content";
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
 
 // Fetch the posts collection and sort by date descending
-let posts = await getCollection("posts");
+let posts = await getCollection('posts');
 posts = posts.sort(
   (a: any, b: any) => b.data.date.getTime() - a.data.date.getTime()
 );
@@ -30,7 +30,7 @@ const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
 
   <div class="space-y-16">
     {
-      years.map((year) => (
+      years.map(year => (
         <section>
           <h2 class="text-2xl font-bold text-gray-800 mb-6">{year}</h2>
           <ul class="space-y-6">
@@ -48,10 +48,10 @@ const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
                       datetime={post.data.date.toISOString()}
                       class="text-sm text-gray-500 shrink-0"
                     >
-                      {post.data.date.toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
+                      {post.data.date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
                       })}
                     </time>
                   </div>

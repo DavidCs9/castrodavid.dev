@@ -2,7 +2,7 @@
 title: "You Don't Know JS Yet: Get Started"
 date: 2025-03-25
 description: "Insights from Kyle Simpson's fundamental exploration of JavaScript's core mechanics and why it matters."
-tags: ["javascript", "web-development", "programming", "frontend"]
+tags: ['javascript', 'web-development', 'programming', 'frontend']
 ---
 
 The second book review and the first of the series YDKJS. This book is a great introduction to the core concepts of JavaScript. If you want to become a serious JavaScript developer, this is a must read.
@@ -49,7 +49,7 @@ class Rectangle {
 
 // Functional
 const area = (width, height) => width * height;
-const double = (x) => x * 2;
+const double = x => x * 2;
 const doubledArea = (width, height) => double(area(width, height));
 ```
 
@@ -129,15 +129,15 @@ This prototype system enables JavaScript to implement inheritance with less over
 
 ```javascript
 // Explicit coercion
-const num = Number("42"); // 42
+const num = Number('42'); // 42
 const str = String(42); // "42"
 const bool = Boolean(42); // true
 
 // Implicit coercion
-const sum = "42" + 8; // "428" (string concatenation)
-const value = "42" - 8; // 34 (numeric subtraction)
-const check = "42" == 42; // true (loose equality with coercion)
-const check2 = "42" === 42; // false (strict equality, no coercion)
+const sum = '42' + 8; // "428" (string concatenation)
+const value = '42' - 8; // 34 (numeric subtraction)
+const check = '42' == 42; // true (loose equality with coercion)
+const check2 = '42' === 42; // false (strict equality, no coercion)
 ```
 
 JavaScript's type coercion system automatically converts values between types. Understanding when and how these conversions happen is essential for writing predictable code.
@@ -146,7 +146,7 @@ JavaScript's type coercion system automatically converts values between types. U
 
 ```javascript
 const person = {
-  name: "Alice",
+  name: 'Alice',
   greet() {
     console.log(`Hello, I'm ${this.name}`);
   },
@@ -167,7 +167,7 @@ The `this` keyword changes based on how a function is called, not where it's def
 
 ```javascript
 // ES6 iteration protocols
-const colors = ["red", "green", "blue"];
+const colors = ['red', 'green', 'blue'];
 
 // For-of loop (uses the iteration protocol)
 for (const color of colors) {
@@ -179,7 +179,7 @@ const entries = colors.entries();
 console.log([...entries]); // [[0, "red"], [1, "green"], [2, "blue"]]
 
 // Iterating an object
-const person = { name: "David", role: "Developer" };
+const person = { name: 'David', role: 'Developer' };
 for (const [key, value] of Object.entries(person)) {
   console.log(`${key}: ${value}`);
 }
@@ -192,8 +192,9 @@ ES6 introduced formal iteration protocols that provide clean ways to traverse da
 After years of daily JavaScript development, it was a humbling experience to realize how much I didn't know about the language as the title suggests. But one thing is for sure, every day im going to be a little bit closer to Simpson's level of understanding of the language.
 
 <br />
-For anyone serious about frontend development, diving deep into "You Don't Know JavaScript
-Yet: Getting Started" isn't optional—it's essential. Seriously, just do it.
+For anyone serious about frontend development, diving deep into "You Don't Know
+JavaScript Yet: Getting Started" isn't optional—it's essential. Seriously, just
+do it.
 
 <br />
 <br />

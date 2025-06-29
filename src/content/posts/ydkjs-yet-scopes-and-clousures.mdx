@@ -1,8 +1,8 @@
 ---
 title: "You Don't Know JS Yet: Scope & Closures"
 date: 2025-04-04
-description: "Deep Dive into Scope, Closures, and the Module Design Pattern in JavaScript."
-tags: ["javascript", "scope", "closures"]
+description: 'Deep Dive into Scope, Closures, and the Module Design Pattern in JavaScript.'
+tags: ['javascript', 'scope', 'closures']
 ---
 
 Third book review and the second of the series YDKJS. This book is a deep dive into the concepts of scope and closures in JavaScript. I find the module chapter particularly interesting, as it provides a great introduction to the module pattern and how to use it in JavaScript.
@@ -33,7 +33,7 @@ Lexical scope means that a function's scope is determined by its _physical locat
 ```javascript
 // Code Example: Lexical Scope
 function outerFunction() {
-  let outerVar = "I am from outer!";
+  let outerVar = 'I am from outer!';
 
   function innerFunction() {
     console.log(outerVar); // innerFunction can access outerVar
@@ -54,10 +54,10 @@ The scope chain is the series of nested scopes the JavaScript engine traverses w
 
 ```javascript
 // Code Example: Shadowing and Function Name Scope
-let myVar = "Global";
+let myVar = 'Global';
 
 function myFunction() {
-  let myVar = "Local"; // Shadows the global myVar
+  let myVar = 'Local'; // Shadows the global myVar
   console.log(myVar); // Output: Local
 
   // Example of function name scope (for recursion)
@@ -82,11 +82,11 @@ The global scope is the outermost scope. In a browser environment, it's typicall
 ```javascript
 // Code Example: Global Scope
 // In a browser:
-window.myGlobalVariable = "Hello from global!";
+window.myGlobalVariable = 'Hello from global!';
 console.log(myGlobalVariable); // Output: Hello from global!
 
 // In Node.js:
-global.myGlobalVariable = "Hello from global!";
+global.myGlobalVariable = 'Hello from global!';
 console.log(global.myGlobalVariable); // Output: Hello from global!
 
 // New globalThis
@@ -100,15 +100,15 @@ Web Workers allow you to run JavaScript code in background threads, parallel to 
 ```javascript
 // Code Example: Web Worker
 // main.js
-const worker = new Worker("worker.js");
-worker.postMessage("Hello from main thread!");
+const worker = new Worker('worker.js');
+worker.postMessage('Hello from main thread!');
 worker.onmessage = function (event) {
-  console.log("Message from worker:", event.data);
+  console.log('Message from worker:', event.data);
 };
 // worker.js
 onmessage = function (event) {
-  console.log("Message from main thread:", event.data);
-  postMessage("Hello from worker!");
+  console.log('Message from main thread:', event.data);
+  postMessage('Hello from worker!');
 };
 ```
 
@@ -119,7 +119,7 @@ JavaScript functions create their own scope. Variables declared inside a functio
 ```javascript
 // Code Example: Function Scope
 function myFunction() {
-  let localVar = "I am local!";
+  let localVar = 'I am local!';
   console.log(localVar); // Output: I am local!
 }
 myFunction();
@@ -133,7 +133,7 @@ Block scope is created by curly braces `{}`. Variables declared with `let` and `
 ```javascript
 // Code Example: Block Scope
 {
-  let blockVar = "I am block scoped!";
+  let blockVar = 'I am block scoped!';
   console.log(blockVar); // Output: I am block scoped!
 }
 // console.log(blockVar); // Error: blockVar is not defined
@@ -151,18 +151,18 @@ Hoisting is JavaScript's behavior of moving declarations to the top of their sco
 ```javascript
 // Code Example: Hoisting
 console.log(myVar); // Output: undefined (hoisted, but undefined)
-var myVar = "Hello";
+var myVar = 'Hello';
 
 myFunction(); // Works fine (function declaration is fully hoisted)
 
 function myFunction() {
-  console.log("Hello from myFunction");
+  console.log('Hello from myFunction');
 }
 
 myFunctionExpression(); // Error: myFunctionExpression is not a function
 var myFunctionExpression = function () {
   // only the var its hoisted not the value
-  console.log("Hello from myFunctionExpression");
+  console.log('Hello from myFunctionExpression');
 };
 ```
 
@@ -173,7 +173,7 @@ The TDZ is the period between entering a scope and the point where a `let` or `c
 ```javascript
 // Code Example: TDZ
 console.log(myLet); // ReferenceError: Cannot access 'myLet' before initialization
-let myLet = "Hello";
+let myLet = 'Hello';
 ```
 
 ### Limiting Scope Exposure (Principle of Least Privilege)
@@ -184,7 +184,7 @@ Minimize the scope of your variables. Wrap code in functions or blocks to create
 // Code Example: Limiting Scope
 function processData(data) {
   if (data) {
-    let processedData = data.map((item) => item * 2); // processedData is only available inside the if block
+    let processedData = data.map(item => item * 2); // processedData is only available inside the if block
     console.log(processedData);
   }
   console.log(processedData); // Error: processedData is not defined
@@ -204,7 +204,7 @@ function outerFunction(outerVar) {
   return innerFunction;
 }
 
-const myClosure = outerFunction("Hello from outer!");
+const myClosure = outerFunction('Hello from outer!');
 myClosure(); // Output: Hello from outer! (even though outerFunction has finished)
 ```
 
@@ -221,7 +221,7 @@ The module pattern is a design pattern used to create self-contained, reusable u
   // Code Example: Namespace
   const MyNamespace = {
     myFunction: function () {
-      console.log("Hello from MyNamespace!");
+      console.log('Hello from MyNamespace!');
     },
   };
   MyNamespace.myFunction(); // Output: Hello from MyNamespace!
@@ -262,7 +262,7 @@ const myModule = (function () {
 
   function privateFunction() {
     privateVariable++;
-    console.log("Private variable:", privateVariable);
+    console.log('Private variable:', privateVariable);
   }
 
   return {
@@ -286,7 +286,7 @@ module.exports = (function () {
 
   function privateFunction() {
     privateVariable++;
-    console.log("Private variable:", privateVariable);
+    console.log('Private variable:', privateVariable);
   }
 
   return {
@@ -297,7 +297,7 @@ module.exports = (function () {
 })();
 
 // // In another file:
-const myModule = require("./my-module");
+const myModule = require('./my-module');
 myModule.publicMethod();
 ```
 
@@ -309,7 +309,7 @@ let privateVariable = 0;
 
 function privateFunction() {
   privateVariable++;
-  console.log("Private variable:", privateVariable);
+  console.log('Private variable:', privateVariable);
 }
 
 export function publicMethod() {
@@ -317,7 +317,7 @@ export function publicMethod() {
 }
 
 // In another file:
-import { publicMethod } from "./my-module.js";
+import { publicMethod } from './my-module.js';
 publicMethod();
 ```
 

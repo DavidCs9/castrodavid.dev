@@ -1,6 +1,6 @@
 ---
-import "../styles/global.css";
-import Header from "../components/Header.astro";
+import '../styles/global.css';
+import Header from '../components/Header.astro';
 
 // Define props
 interface Props {
@@ -17,7 +17,7 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title || "David Castro | SWE"}</title>
+    <title>{title || 'David Castro | SWE'}</title>
     <meta
       name="description"
       content="David Castro's personal portfolio. I am a software engineer passionate about building scalable and efficient software solutions."
@@ -87,7 +87,7 @@ const { title } = Astro.props;
 
     <script is:inline>
       // Re-trigger Prism highlighting after page load
-      document.addEventListener("DOMContentLoaded", (event) => {
+      document.addEventListener('DOMContentLoaded', event => {
         Prism.highlightAll();
       });
     </script>

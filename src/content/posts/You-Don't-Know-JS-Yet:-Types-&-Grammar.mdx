@@ -2,7 +2,7 @@
 title: "You Don't Know JS Yet: Types & Grammar - 2nd Edition"
 date: 2025-05-20
 description: "A Deep Dive into JavaScript's Type System, Coercion, and Fundamental Grammar."
-tags: ["javascript", "types", "grammar", "coercion", "values", "ydkjs"]
+tags: ['javascript', 'types', 'grammar', 'coercion', 'values', 'ydkjs']
 ---
 
 My next review tackles the second edition of "Types & Grammar," from the "You Don't Know JS Yet" series by Kyle Simpson. This book is essential for truly understanding how JavaScript handles values, the intricacies of its type system (including the often-misunderstood coercion), and the fundamental rules of its grammar that dictate how we write valid code.
@@ -24,8 +24,8 @@ This chapter firmly establishes that JavaScript applies types to **values themse
     console.log(typeof true); // "boolean"
     console.log(typeof 42); // "number"
     console.log(typeof 42n); // "bigint"
-    console.log(typeof Symbol("desc")); // "symbol"
-    console.log(typeof "hello"); // "string"
+    console.log(typeof Symbol('desc')); // "symbol"
+    console.log(typeof 'hello'); // "string"
     console.log(typeof undefined); // "undefined"
     console.log(typeof null); // "object" (This is a long-standing bug)
     ```
@@ -36,14 +36,13 @@ This chapter firmly establishes that JavaScript applies types to **values themse
     > **Warning:** This might seem contradicted by expressions like `"hello".length`. This behavior is due to _auto-boxing_, where the primitive is temporarily wrapped in an object. This is covered in Chapter 3 of the book.
 
     ```javascript
-    "use strict";
-    const myName = "David";
+    'use strict';
+    const myName = 'David';
     // myName.account = "DavidCs9"; // TypeError: Cannot create property 'account' on string 'David'
     ```
 
 3.  **Empty Values: `null` and `undefined` ("Nullish"):**
     Both `null` and `undefined` represent emptiness or absence of value.
-
     - **`typeof null` returns `"object"`:** A historical bug that cannot be fixed. `null` is its own primitive type.
     - **`typeof undefined` returns `"undefined"`:** This applies to the `undefined` value itself, uninitialized variables, undeclared variables (a special safe case for `typeof`), and accessing non-existent properties or out-of-bounds array elements.
     - **Nullish Behavior:** JS often treats `null` and `undefined` interchangeably.
@@ -51,7 +50,7 @@ This chapter firmly establishes that JavaScript applies types to **values themse
       - **Nullish Coalescing Operator (`??`):** Provides a default value if the left-hand side is `null` or `undefined`.
         ```javascript
         const myName = null;
-        const who = myName ?? "User"; // who is "User"
+        const who = myName ?? 'User'; // who is "User"
         ```
       - **Optional Chaining (`?.`, `?.[]`, `?.()`):** Safely access properties or call functions on potentially nullish values. If the value before `?.` is nullish, the expression short-circuits and returns `undefined`.
         ```javascript
@@ -64,7 +63,7 @@ This chapter firmly establishes that JavaScript applies types to **values themse
         > **Warning (Author's Opinion):** Overusing `?.` can hide bugs. The `?.(` form is particularly disliked by the author as it only checks for nullish, not if the value is actually a function, potentially leading to `TypeError`.
     - **Distinction:** Despite similarities, `null` and `undefined` are distinct. For example, function parameter defaults trigger for `undefined` or missing arguments, but not for `null`.
       ```javascript
-      function greet(msg = "Hello") {
+      function greet(msg = 'Hello') {
         console.log(msg);
       }
       greet(); // Hello
@@ -77,7 +76,6 @@ This chapter firmly establishes that JavaScript applies types to **values themse
 
 5.  **String Values:**
     Strings are sequences of characters, delimited by single quotes (`'`), double quotes (`"`), or backticks (`` ` ``).
-
     - **Length:** Strings have a `length` property (details on computation in Chapter 2).
     - **Character Encodings:** JS strings use UTF-16. This means characters outside the Basic Multilingual Plane (BMP) are stored as _surrogate pairs_ (two 16-bit code units), affecting `length`.
     - **Escape Sequences:** Special character sequences like `\n` (newline), `\t` (tab), `\\` (backslash), `\"` (double quote within double-quoted string).
@@ -88,9 +86,9 @@ This chapter firmly establishes that JavaScript applies types to **values themse
       - Unicode (Extended): `\u{HHHHHH}` for any Unicode code point (e.g., `\u{1F4A9}` for `💩`).
     - **Unicode Normalization:** Different sequences of code points can render the same visual character (e.g., "é" as a single code point vs. "e" + combining accent). The `normalize()` method (`"NFC"`, `"NFD"`) helps manage these representations for consistent comparisons and length calculations.
       ```javascript
-      const eTilde1 = "é"; // Might be composed or decomposed depending on source
-      const eTilde2 = "\u{e9}"; // Composed form
-      const eTilde3 = "\u{65}\u{301}"; // Decomposed form ("e" + combining acute accent)
+      const eTilde1 = 'é'; // Might be composed or decomposed depending on source
+      const eTilde2 = '\u{e9}'; // Composed form
+      const eTilde3 = '\u{65}\u{301}'; // Decomposed form ("e" + combining acute accent)
       // console.log(eTilde1.length); // 1 or 2
       console.log(eTilde2.length); // 1
       console.log(eTilde3.length); // 2
@@ -98,19 +96,18 @@ This chapter firmly establishes that JavaScript applies types to **values themse
       ```
     - **Grapheme Clusters:** Multiple code points can combine to form a single visual symbol (e.g., family emojis like `"👩‍👩‍👦‍👦"`), further complicating length and manipulation.
     - **Template Literals (`` ` ``):**
-
       - **Interpolation:** Embed expressions using `${expression}`.
       - **Multi-line Strings:** Newlines within backticks become part of the string value (unlike line continuations in regular strings).
       - **Tagged Template Literals:** A function (tag) placed before a template literal receives the string parts and interpolated values, allowing custom processing and returning any value type.
 
         ```javascript
-        const myName = "David";
+        const myName = 'David';
         const greeting = `Hello, ${myName}!`; // "Hello, David!"
 
         function highlight(strings, ...values) {
-          let str = "";
+          let str = '';
           strings.forEach((string, i) => {
-            str += string + (values[i] ? `<strong>${values[i]}</strong>` : "");
+            str += string + (values[i] ? `<strong>${values[i]}</strong>` : '');
           });
           return str;
         }
@@ -122,16 +119,15 @@ This chapter firmly establishes that JavaScript applies types to **values themse
 
 6.  **Number Values:**
     Represented as 64-bit IEEE-754 double-precision floating-point numbers. Integers are numbers with no non-zero fractional part (`42` is the same as `42.0`).
-
     - **`Number.isInteger()`:** Checks if a number has a non-zero fraction.
     - **Parsing vs. Coercion:**
       - **Parsing (`parseInt(str, radix)`, `parseFloat(str)`):** Converts string to number, character by character. Stops at non-numeric characters. `parseInt` requires a `radix` (base, e.g., 10).
       - **Coercion (`Number(val)`, `+val`):** All-or-nothing conversion. If the entire string isn't numeric, results in `NaN`.
         ```javascript
-        console.log(parseInt("123.45px", 10)); // 123
-        console.log(parseFloat("123.45px")); // 123.45
-        console.log(Number("123.45px")); // NaN
-        console.log(+"123.45"); // 123.45
+        console.log(parseInt('123.45px', 10)); // 123
+        console.log(parseFloat('123.45px')); // 123.45
+        console.log(Number('123.45px')); // NaN
+        console.log(+'123.45'); // 123.45
         ```
     - **Other Numeric Representations in Code:**
       - Binary: `0b101010` (42)
@@ -153,7 +149,6 @@ This chapter firmly establishes that JavaScript applies types to **values themse
 
 7.  **BigInteger Values (`bigint`):**
     For arbitrarily large integers, beyond `Number.MAX_SAFE_INTEGER`. Denoted by an `n` suffix (e.g., `42n`).
-
     - Cannot mix `number` and `bigint` types in arithmetic operations directly; explicit conversion is needed using `BigInt()`.
     - `BigInt(value)` converts numbers or numeric strings to `bigint`. Called without `new`.
 
@@ -162,7 +157,7 @@ This chapter firmly establishes that JavaScript applies types to **values themse
       console.log(largeNum + 2n); // 9007199254740993n
       // console.log(largeNum + 2); // TypeError
 
-      const fromString = BigInt("12345678901234567890");
+      const fromString = BigInt('12345678901234567890');
       console.log(fromString); // 12345678901234567890n
       ```
 
@@ -192,7 +187,7 @@ This chapter delves into the inherent behaviors of JavaScript's primitive values
     let myAge = 42;
     myAge = 43; // 'myAge' is reassigned, the value 42 itself is unchanged.
 
-    let greeting = "Hello.";
+    let greeting = 'Hello.';
     // greeting[5] = "!"; // Fails silently (non-strict) or throws TypeError (strict)
     console.log(greeting); // "Hello."
     ```
@@ -214,20 +209,18 @@ This chapter delves into the inherent behaviors of JavaScript's primitive values
     ```
 
 3.  **String Behaviors:**
-
     - **Character Access & Iteration:** Strings allow array-like character access (`greeting[4]`) and are iterable (e.g., `for (let char of myName)` or `[...myName]`).
     - **Length Computation (`.length`):** Counts 16-bit _code-units_, not visual characters (graphemes). This is complicated by:
-
       - **Surrogate Pairs:** Extended Unicode characters (e.g., `📱`) count as 2.
       - **Combining Marks:** Characters like "é" can be one code-point or two ("e" + combining accent), affecting length. `normalize("NFC")` helps.
       - **Grapheme Clusters:** Emojis like `"👎🏾"` or `"👩‍👩‍👦‍👦"` are multiple code-points visually forming one symbol, leading to lengths greater than 1 even after spreading.
 
       ```javascript
-      const cellphone = "📱";
+      const cellphone = '📱';
       console.log(cellphone.length); // 2
       console.log([...cellphone].length); // 1 (handles surrogate pairs)
 
-      const thumbsDown = "👎🏾"; // A grapheme cluster
+      const thumbsDown = '👎🏾'; // A grapheme cluster
       console.log(thumbsDown.length); // 4
       console.log([...thumbsDown].length); // 2 (still not 1)
       ```
@@ -238,15 +231,15 @@ This chapter delves into the inherent behaviors of JavaScript's primitive values
         - `===` (Strict): Checks type, then value (code-unit by code-unit).
         - `==` (Coercive): If types differ, prefers numeric comparison by coercing operands. If both are strings, behaves like `===`.
           ```javascript
-          console.log("42" == "42"); // true (string comparison)
-          console.log(42 == "42"); // true (numeric comparison after coercion)
+          console.log('42' == '42'); // true (string comparison)
+          console.log(42 == '42'); // true (numeric comparison after coercion)
           ```
         - `Object.is(val1, val2)`: Truly strict, no exceptions for `NaN` or `-0`.
       - **Relational (`<`, `<=`, `>`, `>=`):**
         - Lexicographical (dictionary order) if both operands are strings.
         - Coerces to numbers if types differ (no strict version).
           ```javascript
-          console.log("100" < "11"); // true (lexicographical: "0" < "1")
+          console.log('100' < '11'); // true (lexicographical: "0" < "1")
           ```
         - `localeCompare()` method or `Intl.Collator` for locale-aware string comparisons.
     - **String Concatenation (`+`):** If either operand is a string, `+` performs concatenation, coercing the non-string operand to a string. Template literals (`` ` ``) are often preferred.
@@ -296,7 +289,6 @@ After exploring primitive types, this chapter shifts focus to JavaScript's `obje
 
 1.  **Types of Objects:**
     The `object` value-type encompasses several sub-types, each with specialized behaviors. These include:
-
     - **Plain Objects (POJOs):** General key-value collections.
     - **Fundamental Objects:** Wrappers for primitives (e.g., `new String()`), primarily used internally for auto-boxing.
     - **Built-in Objects:** Instances of constructors like `Date`, `Error`, `Map`, `Set`, Typed Arrays (`Int8Array`, etc.), `ArrayBuffer`.
@@ -310,10 +302,10 @@ After exploring primitive types, this chapter shifts focus to JavaScript's `obje
 
     ```javascript
     const address = {
-      street: "12345 Market St",
-      city: "San Francisco",
-      state: "CA",
-      zip: "94114",
+      street: '12345 Market St',
+      city: 'San Francisco',
+      state: 'CA',
+      zip: '94114',
     };
     ```
 
@@ -323,15 +315,14 @@ After exploring primitive types, this chapter shifts focus to JavaScript's `obje
     Constructors like `new String()`, `new Number()`, and `new Boolean()` create object wrappers around their corresponding primitive values.
 
     ```javascript
-    const myNamePrimitive = "David";
+    const myNamePrimitive = 'David';
     console.log(typeof myNamePrimitive); // "string"
 
-    const myNicknameObject = new String("DavidCs9");
+    const myNicknameObject = new String('DavidCs9');
     console.log(typeof myNicknameObject); // "object"
     ```
 
     > **Warning:** Directly instantiating these fundamental objects is generally considered bad practice. Primitives with auto-boxing are preferred.
-
     - `Symbol()` and `BigInt()` are also called "constructors" but produce primitive values when called without `new`. Internal fundamental objects exist for these for prototype delegation and auto-boxing.
     - `null` and `undefined` do not have corresponding fundamental objects or constructors.
     - **Prototypes:** Instances of fundamental objects (and auto-boxed primitives) link to respective `.prototype` objects (e.g., `String.prototype`, `Number.prototype`), which provide type-specific methods.
@@ -340,7 +331,7 @@ After exploring primitive types, this chapter shifts focus to JavaScript's `obje
     When a property or method is accessed on a primitive value (except `null` or `undefined`), JavaScript temporarily wraps the primitive in its corresponding fundamental object. This "auto-boxing" allows primitives to access methods from their respective prototypes.
 
     ```javascript
-    const myName = "David";
+    const myName = 'David';
     console.log(myName.length); // 4 (myName is auto-boxed to a String object)
     console.log(myName.toUpperCase()); // "DAVID" (toUpperCase from String.prototype)
     ```
@@ -349,7 +340,6 @@ After exploring primitive types, this chapter shifts focus to JavaScript's `obje
 
 5.  **Other Built-in Objects:**
     JS provides various other built-in constructors for specialized object sub-types:
-
     - `new Date()`
     - `new Error()`
     - `new Map()`, `new Set()`, `new WeakMap()`, `new WeakSet()` (for keyed collections)
@@ -393,7 +383,7 @@ This chapter tackles JavaScript's often-maligned **type coercion**, arguing for 
   - **Falsy:** `undefined`, `null`, `""`, `0`, `-0`, `0n`, `NaN`.
   - **Truthy:** Everything else (including `[]`, `{}`, `" "`).
   ```javascript
-  console.log(Boolean("")); // false
+  console.log(Boolean('')); // false
   console.log(Boolean(0)); // false
   console.log(Boolean([])); // true
   console.log(Boolean({})); // true
@@ -402,8 +392,8 @@ This chapter tackles JavaScript's often-maligned **type coercion**, arguing for 
   - `hint` (`"string"` or `"number"`) determines if `obj.toString()` or `obj.valueOf()` is tried first.
   ```javascript
   const objHint = {
-    toString: () => "from toString",
-    valueOf: () => "from valueOf", // Typically returns a number or the object itself
+    toString: () => 'from toString',
+    valueOf: () => 'from valueOf', // Typically returns a number or the object itself
   };
   // Conceptual: ToPrimitive(objHint, "string") would likely call toString() first.
   // Conceptual: ToPrimitive(objHint, "number") would likely call valueOf() first.
@@ -417,6 +407,7 @@ This chapter tackles JavaScript's often-maligned **type coercion**, arguing for 
   // String(Symbol("desc")); // "Symbol(desc)" - String() handles Symbols
   // (Symbol("desc")).toString(); // "Symbol(desc)"
   ```
+
   - Objects use `ToPrimitive(obj, "string")`.
   ```javascript
   console.log(String([1, 2])); // "1,2"
@@ -427,8 +418,8 @@ This chapter tackles JavaScript's often-maligned **type coercion**, arguing for 
   - `true` -> `1`, `false` -> `0`, `null` -> `0`, `undefined` -> `NaN`.
   - Abstractly, `Symbol` or `BigInt` to `Number` throws `TypeError`.
   ```javascript
-  console.log(Number("42")); // 42
-  console.log(Number("")); // 0
+  console.log(Number('42')); // 42
+  console.log(Number('')); // 0
   console.log(Number(true)); // 1
   console.log(Number(null)); // 0
   console.log(Number(undefined)); // NaN
@@ -439,73 +430,72 @@ This chapter tackles JavaScript's often-maligned **type coercion**, arguing for 
 #### Key Coercion Triggers & Behaviors:
 
 - **Explicit Coercion:**
-
   - `Boolean(value)` & `!!value` -> boolean.
 
   ```javascript
-  console.log(Boolean("text")); // true
-  console.log(!!""); // false
+  console.log(Boolean('text')); // true
+  console.log(!!''); // false
   ```
 
   - `String(value)` & `value + ""` -> string.
-
     - **Important:** `String(obj)` uses `"string"` hint for `ToPrimitive`, while `obj + ""` uses default/`"number"` hint.
 
     ```javascript
     const myObjCoerce = {
-      toString: () => "myObjToString",
+      toString: () => 'myObjToString',
       valueOf: () => 42,
     };
     console.log(String(myObjCoerce)); // "myObjToString" (toString preferred by String())
-    console.log(myObjCoerce + ""); // "42" (valueOf preferred by + "", then result stringified)
+    console.log(myObjCoerce + ''); // "42" (valueOf preferred by + "", then result stringified)
 
-    console.log(String(Symbol("ok"))); // "Symbol(ok)"
+    console.log(String(Symbol('ok'))); // "Symbol(ok)"
     // console.log(Symbol("ok") + ""); // TypeError
     ```
 
   - `Number(value)` & `+value` (unary plus) -> number.
     - **Important:** `Number(42n)` is `42`, but `+42n` throws `TypeError`.
     ```javascript
-    console.log(Number("123")); // 123
-    console.log(+"123"); // 123
+    console.log(Number('123')); // 123
+    console.log(+'123'); // 123
     console.log(Number(42n)); // 42
     // console.log(+42n); // TypeError
     ```
   - Mathematical operators (`-`, `*`, `/`, etc.) coerce operands to numbers. `x - 0` is a common idiom.
 
   ```javascript
-  console.log("5" - 0); // 5
-  console.log("5" * 2); // 10
+  console.log('5' - 0); // 5
+  console.log('5' * 2); // 10
   ```
 
 - **Object Property Keys:** Numeric keys (`obj[3]`) are effectively treated as string keys (`obj["3"]`).
   ```javascript
   const propObj = {};
-  propObj[3] = "hello";
-  console.log(propObj["3"]); // "hello"
+  propObj[3] = 'hello';
+  console.log(propObj['3']); // "hello"
   ```
 - **Customizing Object Coercion:**
   - `obj[Symbol.toStringTag]` customizes `Object.prototype.toString.call(obj)`.
   ```javascript
   const taggedObj = {
     get [Symbol.toStringTag]() {
-      return "MyTag";
+      return 'MyTag';
     },
   };
   console.log(Object.prototype.toString.call(taggedObj)); // "[object MyTag]"
   ```
+
   - `obj[Symbol.toPrimitive](hint)` completely overrides `ToPrimitive` logic.
   ```javascript
   const customPrimitiveObj = {
     [Symbol.toPrimitive](hint) {
-      if (hint === "number") return 100;
-      if (hint === "string") return "custom";
+      if (hint === 'number') return 100;
+      if (hint === 'string') return 'custom';
       return false; // default
     },
   };
   console.log(Number(customPrimitiveObj)); // 100
   console.log(String(customPrimitiveObj)); // "custom"
-  console.log(customPrimitiveObj + "!"); // "false!" (default hint used for +)
+  console.log(customPrimitiveObj + '!'); // "false!" (default hint used for +)
   ```
 
 **Equality (`==` vs `===`): The Author's Stance**
@@ -517,7 +507,7 @@ Advocates for **type-aware usage of `==`**.
     ```javascript
     console.log(42 == 42); // true
     console.log(42 === 42); // true
-    console.log("hi" == "hi"); // true
+    console.log('hi' == 'hi'); // true
     ```
 2.  **If types differ:**
     - `===` immediately returns `false`.
@@ -525,9 +515,10 @@ Advocates for **type-aware usage of `==`**.
     - _Author's advice:_
       - If you **know** types differ and want potential equality through coercion, **you MUST use `==`**.
       ```javascript
-      console.log(42 == "42"); // true
-      console.log(42 === "42"); // false
+      console.log(42 == '42'); // true
+      console.log(42 === '42'); // false
       ```
+
       - If you **don't know** the types, use `===` defensively (and refactor).
 3.  **Key `==` Nuances:**
     - **Nullish Coercion:** `value == null` is `true` if `value` is `null` or `undefined`.
@@ -536,12 +527,13 @@ Advocates for **type-aware usage of `==`**.
     console.log(x == null); // true
     console.log(null == undefined); // true
     ```
+
     - **Boolean Gotcha:** **NEVER use `x == true` or `x == false`**.
     ```javascript
-    console.log("1" == true); // true ( "1" -> 1; true -> 1 )
-    console.log("yes" == true); // false ( "yes" -> NaN; true -> 1 )
-    if ("yes") {
-      console.log("Truthy!");
+    console.log('1' == true); // true ( "1" -> 1; true -> 1 )
+    console.log('yes' == true); // false ( "yes" -> NaN; true -> 1 )
+    if ('yes') {
+      console.log('Truthy!');
     } // "Truthy!" (ToBoolean("yes") is true)
     ```
 
@@ -550,7 +542,7 @@ Advocates for **type-aware usage of `==`**.
 ```javascript
 console.log(String([])); // ""
 console.log(String([null, undefined])); // ","
-console.log(Number("")); // 0
+console.log(Number('')); // 0
 console.log(Number([])); // 0 ( [] -> "" -> 0 )
 console.log([] == ![]); // true
 ```

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   experiences,
   education,
   additionalInfo,
   type Experience,
   type Education,
-} from "../data/experienceData";
+} from '../data/experienceData';
 
 // Experience Card Component
 const ExperienceCard = ({ experience }: { experience: Experience }) => {
@@ -17,7 +17,7 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
       <div className="flex justify-between md:items-start relative">
         <div>
           <h3 className="text-xl font-medium text-gray-900/90">
-            {experience.title}{" "}
+            {experience.title}{' '}
             <span className="text-primary"> @ {experience.company}</span>
           </h3>
           <p className="text-sm text-gray-600 mb-1">
@@ -26,7 +26,7 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
           {/* Summary section - always visible */}
           <p className="text-gray-700 mb-2 text-md">
             {experience.summary ||
-              "Responsible for various projects and initiatives."}
+              'Responsible for various projects and initiatives.'}
           </p>
         </div>
         <button
@@ -34,11 +34,11 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
           onClick={() => setIsExpanded(!isExpanded)}
           aria-expanded={isExpanded}
         >
-          <span>{isExpanded ? "See less" : "See more"}</span>
+          <span>{isExpanded ? 'See less' : 'See more'}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className={`h-4 w-4 ml-1 transform transition-transform duration-200 ${
-              isExpanded ? "rotate-180" : ""
+              isExpanded ? 'rotate-180' : ''
             }`}
             fill="none"
             viewBox="0 0 24 24"
@@ -60,7 +60,7 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
           <motion.div
             className="mt-3"
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >

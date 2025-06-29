@@ -1,8 +1,8 @@
 ---
 title: "You Don't Know JS: Async & Performance"
 date: 2025-04-22
-description: "Deep Dive into Async & Performance in JavaScript."
-tags: ["javascript", "async", "performance"]
+description: 'Deep Dive into Async & Performance in JavaScript.'
+tags: ['javascript', 'async', 'performance']
 ---
 
 Fourth book review and the third of the series YDKJS. This book is a deep dive into the concepts of async and performance in JavaScript. Im glad i didn't have to program in the callback hell of the past 😅.
@@ -16,17 +16,17 @@ One of the first hurdles when learning asynchronous JavaScript is grasping that 
 Let's look at a super simple example:
 
 ```javascript
-console.log("Program Start: Executing NOW"); // Part 1: Now
+console.log('Program Start: Executing NOW'); // Part 1: Now
 
 // Schedule a function to run 'later'
 setTimeout(function taskForLater() {
   // This function body is the 'later' part
-  console.log("Inside setTimeout: Executing LATER"); // Part 3: Later
+  console.log('Inside setTimeout: Executing LATER'); // Part 3: Later
 }, 0); // We use 0ms delay
 
-console.log("After setTimeout call: Also executing NOW"); // Part 2: Now
+console.log('After setTimeout call: Also executing NOW'); // Part 2: Now
 
-console.log("Program End: Executing NOW"); // Part 4: Now
+console.log('Program End: Executing NOW'); // Part 4: Now
 ```
 
 #### What Do You Expect?
@@ -73,19 +73,19 @@ At its core, a callback is simply a function that you pass _as an argument_ to a
 Let's revisit our `setTimeout` example, but be more explicit about the callback:
 
 ```javascript
-console.log("Program Start: NOW"); // Now
+console.log('Program Start: NOW'); // Now
 
 // Define the function we want to run later
 function taskForLater() {
-  console.log("Callback executed: LATER"); // Later
+  console.log('Callback executed: LATER'); // Later
 }
 
 // Schedule taskForLater to be called back after (at least) 0ms
 // taskForLater is the *callback* function here.
 setTimeout(taskForLater, 0);
 
-console.log("setTimeout scheduled: NOW"); // Now
-console.log("Program End: NOW"); // Now
+console.log('setTimeout scheduled: NOW'); // Now
+console.log('Program End: NOW'); // Now
 
 // Expected Output:
 // Program Start: NOW
@@ -116,22 +116,22 @@ This often results in code structured like this (pseudo-code):
 
 ```javascript
 // --- Pseudo-code Example ---
-ajax("/api/user", function handleUser(userData) {
+ajax('/api/user', function handleUser(userData) {
   // Runs LATER (after user data arrives)
-  console.log("Got user data");
-  ajax("/api/permissions?id=" + userData.id, function handlePerms(permsData) {
+  console.log('Got user data');
+  ajax('/api/permissions?id=' + userData.id, function handlePerms(permsData) {
     // Runs EVEN LATER (after permissions arrive)
-    console.log("Got permissions");
-    ajax("/api/posts?perms=" + permsData.key, function handlePosts(postsData) {
+    console.log('Got permissions');
+    ajax('/api/posts?perms=' + permsData.key, function handlePosts(postsData) {
       // Runs YET EVEN LATER (after posts arrive)
-      console.log("Got posts");
+      console.log('Got posts');
       // ... finally do something with postsData
     });
-    console.log("Requesting posts..."); // Runs LATER (but before posts arrive)
+    console.log('Requesting posts...'); // Runs LATER (but before posts arrive)
   });
-  console.log("Requesting permissions..."); // Runs LATER (but before perms arrive)
+  console.log('Requesting permissions...'); // Runs LATER (but before perms arrive)
 });
-console.log("Requesting user data..."); // Runs NOW
+console.log('Requesting user data...'); // Runs NOW
 // --- End Pseudo-code Example ---
 ```
 
@@ -190,22 +190,22 @@ The `.then()` method takes up to two arguments:
 ```javascript
 let myPromise = fetchDataFromServer(); // Assume this returns a Promise
 
-console.log("Promise created (likely pending): NOW"); // Now
+console.log('Promise created (likely pending): NOW'); // Now
 
 myPromise.then(
   // Fulfillment handler (runs LATER, if promise fulfills)
   function handleSuccess(data) {
-    console.log("Promise Fulfilled: LATER");
-    console.log("Data:", data);
+    console.log('Promise Fulfilled: LATER');
+    console.log('Data:', data);
   },
   // Rejection handler (runs LATER, if promise rejects)
   function handleError(error) {
-    console.error("Promise Rejected: LATER");
-    console.error("Reason:", error);
+    console.error('Promise Rejected: LATER');
+    console.error('Reason:', error);
   }
 );
 
-console.log("Promise handler attached: NOW"); // Now
+console.log('Promise handler attached: NOW'); // Now
 ```
 
 Notice that we're still using callbacks here, but the _way_ we use them is different. We aren't passing them _into_ the `fetchDataFromServer` function; we're attaching them to the _return value_ (the promise itself).
@@ -218,30 +218,30 @@ Let's revisit our previous pseudo-code example, now using Promises:
 
 ```javascript
 // --- Promise Chaining Example ---
-ajax("/api/user") // Assume ajax returns a Promise
+ajax('/api/user') // Assume ajax returns a Promise
   .then(function handleUser(userData) {
     // Runs LATER (after user data arrives)
-    console.log("Got user data");
+    console.log('Got user data');
     // Return a *new* promise for the next step
-    return ajax("/api/permissions?id=" + userData.id);
+    return ajax('/api/permissions?id=' + userData.id);
   })
   .then(function handlePerms(permsData) {
     // Runs EVEN LATER (after permissions arrive)
-    console.log("Got permissions");
+    console.log('Got permissions');
     // Return another promise
-    return ajax("/api/posts?perms=" + permsData.key);
+    return ajax('/api/posts?perms=' + permsData.key);
   })
   .then(function handlePosts(postsData) {
     // Runs YET EVEN LATER (after posts arrive)
-    console.log("Got posts");
+    console.log('Got posts');
     // ... finally do something with postsData
   })
   .catch(function handleError(error) {
     // Runs LATER if *any* preceding promise rejects
-    console.error("An error occurred in the chain:", error);
+    console.error('An error occurred in the chain:', error);
   });
 
-console.log("Requesting user data (chain initiated): NOW"); // Runs NOW
+console.log('Requesting user data (chain initiated): NOW'); // Runs NOW
 // --- End Promise Chaining Example ---
 ```
 
@@ -270,7 +270,7 @@ While you mostly _consume_ promises returned by browser APIs (`fetch`) or librar
 
 ```javascript
 function delay(ms) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     // The function passed to new Promise runs NOW (synchronously)
     // resolve is a function provided by the Promise mechanism
     setTimeout(() => {
@@ -279,7 +279,7 @@ function delay(ms) {
   });
 }
 
-delay(1000).then((message) => console.log(message)); // Logs "Waited 1000ms" after 1 second
+delay(1000).then(message => console.log(message)); // Logs "Waited 1000ms" after 1 second
 ```
 
 JavaScript also provides static helper methods like `Promise.resolve(value)` (creates an already fulfilled promise), `Promise.reject(reason)` (creates an already rejected promise), `Promise.all(iterable)` (waits for all promises in an iterable to fulfill), and `Promise.race(iterable)` (settles as soon as the first promise in an iterable settles).
@@ -305,12 +305,12 @@ You define a generator function using the `function*` syntax (note the asterisk)
 ```javascript
 // Define a generator function
 function* myGenerator() {
-  console.log("Generator started");
+  console.log('Generator started');
   yield 1; // Pause and yield the value 1
-  console.log("Generator resumed after 1");
+  console.log('Generator resumed after 1');
   yield 2; // Pause and yield the value 2
-  console.log("Generator resumed after 2");
-  return "Generator finished"; // Finish execution
+  console.log('Generator resumed after 2');
+  return 'Generator finished'; // Finish execution
 }
 
 // --- How to use it ---
@@ -318,22 +318,22 @@ function* myGenerator() {
 // 1. Call the generator function - it DOES NOT run the code yet!
 //    It returns an 'iterator' object.
 const iterator = myGenerator();
-console.log("Generator function called, iterator created.");
+console.log('Generator function called, iterator created.');
 
 // 2. Call .next() on the iterator to start/resume execution
-console.log("Calling next() the first time:");
+console.log('Calling next() the first time:');
 let result1 = iterator.next(); // Runs code until the first 'yield'
 console.log(result1); // { value: 1, done: false }
 
-console.log("Calling next() the second time:");
+console.log('Calling next() the second time:');
 let result2 = iterator.next(); // Runs code from after first 'yield' to the second 'yield'
 console.log(result2); // { value: 2, done: false }
 
-console.log("Calling next() the third time:");
+console.log('Calling next() the third time:');
 let result3 = iterator.next(); // Runs code from after second 'yield' until 'return' or end
 console.log(result3); // { value: 'Generator finished', done: true }
 
-console.log("Calling next() again (generator is done):");
+console.log('Calling next() again (generator is done):');
 let result4 = iterator.next(); // Generator is already finished
 console.log(result4); // { value: undefined, done: true }
 ```
@@ -351,11 +351,11 @@ Generators aren't just about pausing and yielding values _out_; they can also re
 
 ```javascript
 function* generatorWithInput() {
-  console.log("Generator started");
-  const input1 = yield "Need first input"; // Pause, yield string
-  console.log("Received first input:", input1);
-  const input2 = yield "Need second input"; // Pause, yield string
-  console.log("Received second input:", input2);
+  console.log('Generator started');
+  const input1 = yield 'Need first input'; // Pause, yield string
+  console.log('Received first input:', input1);
+  const input2 = yield 'Need second input'; // Pause, yield string
+  console.log('Received second input:', input2);
   return `Processed: ${input1}, ${input2}`;
 }
 
@@ -366,12 +366,12 @@ console.log(iterator.next()); // { value: 'Need first input', done: false }
 
 // Resume generator, passing 'Value A' back in.
 // 'Value A' becomes the result of the first 'yield'.
-console.log(iterator.next("Value A")); // Logs "Received first input: Value A"
+console.log(iterator.next('Value A')); // Logs "Received first input: Value A"
 //                                      // Returns { value: 'Need second input', done: false }
 
 // Resume generator, passing 'Value B' back in.
 // 'Value B' becomes the result of the second 'yield'.
-console.log(iterator.next("Value B")); // Logs "Received second input: Value B"
+console.log(iterator.next('Value B')); // Logs "Received second input: Value B"
 //                                      // Returns { value: 'Processed: Value A, Value B', done: true }
 ```
 
@@ -395,28 +395,28 @@ If the promise _rejects_, the runner can use the iterator's `.throw(error)` meth
 // Assume 'asyncRunner' is a utility that handles yielded promises
 asyncRunner(function* main() {
   try {
-    console.log("Fetching user data...");
+    console.log('Fetching user data...');
     // yield pauses the generator, asyncRunner waits for the promise
-    let userData = yield ajax("/api/user"); // Looks synchronous!
-    console.log("Got user data:", userData);
+    let userData = yield ajax('/api/user'); // Looks synchronous!
+    console.log('Got user data:', userData);
 
-    console.log("Fetching permissions...");
+    console.log('Fetching permissions...');
     // yield pauses again, asyncRunner waits for the next promise
-    let permsData = yield ajax("/api/permissions?id=" + userData.id);
-    console.log("Got permissions:", permsData);
+    let permsData = yield ajax('/api/permissions?id=' + userData.id);
+    console.log('Got permissions:', permsData);
 
-    console.log("Fetching posts...");
-    let postsData = yield ajax("/api/posts?perms=" + permsData.key);
-    console.log("Got posts:", postsData);
+    console.log('Fetching posts...');
+    let postsData = yield ajax('/api/posts?perms=' + permsData.key);
+    console.log('Got posts:', postsData);
 
-    console.log("All done!");
+    console.log('All done!');
   } catch (error) {
     // Catches errors from *any* of the yielded promises if they reject!
-    console.error("An error occurred:", error);
+    console.error('An error occurred:', error);
   }
 });
 
-console.log("Generator-based async flow initiated: NOW");
+console.log('Generator-based async flow initiated: NOW');
 // --- End Conceptual Example ---
 ```
 
@@ -463,10 +463,10 @@ The solution provided by the JavaScript environment is **Web Workers**.
 
 ```javascript
 // Example of creating a worker
-const worker = new Worker("worker.js");
+const worker = new Worker('worker.js');
 
 // Example of sending a message to the worker
-worker.postMessage("Hello, worker!");
+worker.postMessage('Hello, worker!');
 ```
 
 (_SharedArrayBuffer allows memory sharing but requires careful use of Atomics for synchronization._)
@@ -565,28 +565,28 @@ Let's rewrite our Promise chaining example using `async/await`:
 ```javascript
 // --- Async/Await Example ---
 async function fetchUserDataFlow() {
-  console.log("Flow started: NOW (inside async function)"); // Still runs synchronously initially
+  console.log('Flow started: NOW (inside async function)'); // Still runs synchronously initially
   try {
-    console.log("Requesting user data..."); // NOW
+    console.log('Requesting user data...'); // NOW
     // Pause function execution here, wait for ajax promise
-    const userData = await ajax("/api/user"); // LATER (when promise resolves)
-    console.log("Got user data:", userData); // LATER
+    const userData = await ajax('/api/user'); // LATER (when promise resolves)
+    console.log('Got user data:', userData); // LATER
 
-    console.log("Requesting permissions..."); // LATER
+    console.log('Requesting permissions...'); // LATER
     // Pause again, wait for next promise
-    const permsData = await ajax("/api/permissions?id=" + userData.id); // EVEN LATER
-    console.log("Got permissions:", permsData); // EVEN LATER
+    const permsData = await ajax('/api/permissions?id=' + userData.id); // EVEN LATER
+    console.log('Got permissions:', permsData); // EVEN LATER
 
-    console.log("Requesting posts..."); // EVEN LATER
+    console.log('Requesting posts...'); // EVEN LATER
     // Pause again...
-    const postsData = await ajax("/api/posts?perms=" + permsData.key); // YET EVEN LATER
-    console.log("Got posts:", postsData); // YET EVEN LATER
+    const postsData = await ajax('/api/posts?perms=' + permsData.key); // YET EVEN LATER
+    console.log('Got posts:', postsData); // YET EVEN LATER
 
-    console.log("All done!"); // YET EVEN LATER
+    console.log('All done!'); // YET EVEN LATER
     return postsData; // Fulfills the promise returned by fetchUserDataFlow
   } catch (error) {
     // Catches rejections from *any* awaited promise
-    console.error("An error occurred in the flow:", error);
+    console.error('An error occurred in the flow:', error);
     // Rejects the promise returned by fetchUserDataFlow
     throw error;
   }
@@ -594,14 +594,14 @@ async function fetchUserDataFlow() {
 
 // Call the async function
 fetchUserDataFlow()
-  .then((finalData) => {
-    console.log("Async function completed successfully.");
+  .then(finalData => {
+    console.log('Async function completed successfully.');
   })
-  .catch((err) => {
-    console.log("Async function failed.");
+  .catch(err => {
+    console.log('Async function failed.');
   });
 
-console.log("Async function called: NOW"); // Runs NOW, before any 'await' completes
+console.log('Async function called: NOW'); // Runs NOW, before any 'await' completes
 // --- End Async/Await Example ---
 ```
 
@@ -622,9 +622,9 @@ The benefits are clear:
 Reviewing "YDKJS: Async & Performance" takes us on a crucial journey through the evolution of handling asynchronous operations in JavaScript. We start with the fundamental concept of code running **"Now"** versus being scheduled for **"Later"**, initially managed by **Callbacks**. While functional, callbacks introduce challenges like "Callback Hell" and the more subtle but significant problem of "Inversion of Control."
 
 <br />
-**Promises** arrive as a robust solution, offering a trustable placeholder for future
-values, enabling cleaner chaining with `.then()`, and providing better error handling
-via `.catch()`. They restore control to the calling code.
+**Promises** arrive as a robust solution, offering a trustable placeholder for
+future values, enabling cleaner chaining with `.then()`, and providing better
+error handling via `.catch()`. They restore control to the calling code.
 <br />
 
 **Generators**, though seemingly unrelated at first, provide the key mechanism of pausable functions (`function*` and `yield`), which, when combined with Promises and a runner, allow asynchronous code to be written in a more sequential, synchronous-looking style.

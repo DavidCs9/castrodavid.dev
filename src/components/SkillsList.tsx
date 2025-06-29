@@ -1,32 +1,32 @@
 // src/components/SkillsList.tsx
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   bubbleSort,
   insertionSort,
   mergeSort,
   quickSort,
   type Skill,
-} from "../utils/sortingAlgorithms";
+} from '../utils/sortingAlgorithms';
 
 const skillsData: Skill[] = [
-  { name: "Cypress", level: 6 },
-  { name: "Go", level: 6 },
-  { name: "React", level: 8 },
-  { name: "AWS", level: 10 },
-  { name: "TypeScript", level: 9 },
-  { name: "Redis", level: 7 },
-  { name: "Python", level: 8 },
-  { name: "MongoDB", level: 7 },
-  { name: "GraphQL", level: 6 },
-  { name: "MySQL", level: 10 },
-  { name: "Git", level: 9 },
-  { name: "SQS", level: 7 },
-  { name: "JavaScript", level: 10 },
-  { name: "Docker", level: 8 },
-  { name: "Bash", level: 6 },
-  { name: "CI/CD", level: 8 },
-  { name: "Node.js", level: 10 },
+  { name: 'Cypress', level: 6 },
+  { name: 'Go', level: 6 },
+  { name: 'React', level: 8 },
+  { name: 'AWS', level: 10 },
+  { name: 'TypeScript', level: 9 },
+  { name: 'Redis', level: 7 },
+  { name: 'Python', level: 8 },
+  { name: 'MongoDB', level: 7 },
+  { name: 'GraphQL', level: 6 },
+  { name: 'MySQL', level: 10 },
+  { name: 'Git', level: 9 },
+  { name: 'SQS', level: 7 },
+  { name: 'JavaScript', level: 10 },
+  { name: 'Docker', level: 8 },
+  { name: 'Bash', level: 6 },
+  { name: 'CI/CD', level: 8 },
+  { name: 'Node.js', level: 10 },
 ];
 
 const SkillsList: React.FC = () => {
@@ -73,12 +73,12 @@ const SkillsList: React.FC = () => {
   };
 
   const getSkillColor = (level: number) => {
-    if (level === 10) return "bg-green-700"; // Darker green for highest skill
-    if (level === 9) return "bg-green-600"; // Rich green
-    if (level === 8) return "bg-teal-500"; // Slightly darker teal
-    if (level === 7) return "bg-teal-400"; // Rich teal
-    if (level === 6) return "bg-blue-500"; // Medium blue
-    return "bg-blue-400"; // Slightly darker blue for lowest skill
+    if (level === 10) return 'bg-green-700'; // Darker green for highest skill
+    if (level === 9) return 'bg-green-600'; // Rich green
+    if (level === 8) return 'bg-teal-500'; // Slightly darker teal
+    if (level === 7) return 'bg-teal-400'; // Rich teal
+    if (level === 6) return 'bg-blue-500'; // Medium blue
+    return 'bg-blue-400'; // Slightly darker blue for lowest skill
   };
 
   const restartSkills = () => {
@@ -91,10 +91,10 @@ const SkillsList: React.FC = () => {
   };
 
   const algorithms = [
-    { name: "Bubble Sort", fn: bubbleSort },
-    { name: "Insertion Sort", fn: insertionSort },
-    { name: "Merge Sort", fn: mergeSort },
-    { name: "Quick Sort", fn: quickSort },
+    { name: 'Bubble Sort', fn: bubbleSort },
+    { name: 'Insertion Sort', fn: insertionSort },
+    { name: 'Merge Sort', fn: mergeSort },
+    { name: 'Quick Sort', fn: quickSort },
   ];
 
   return (
@@ -106,7 +106,7 @@ const SkillsList: React.FC = () => {
         Click on the algorithm you want to sort them.
       </p>
       <div className="mb-6 flex justify-center md:gap-4 gap-1">
-        {algorithms.map((algo) => (
+        {algorithms.map(algo => (
           <button
             key={algo.name}
             onClick={() => handleSort(algo.fn)}
@@ -132,7 +132,7 @@ const SkillsList: React.FC = () => {
       )}
       <div className="flex flex-wrap items-end rounded-lg gap-1 md:gap-2 justify-center">
         <AnimatePresence>
-          {skills.map((skill) => (
+          {skills.map(skill => (
             <motion.div
               key={skill.name}
               layout
