@@ -30,13 +30,17 @@ This is my personal website and blog built with modern web technologies. The sit
 
 All commands are run from the root of the project:
 
-| Command        | Action                                       |
-| :------------- | :------------------------------------------- |
-| `pnpm install` | Installs dependencies                        |
-| `pnpm dev`     | Starts local dev server at `localhost:4321`  |
-| `pnpm build`   | Build your production site to `./dist/`      |
-| `pnpm preview` | Preview your build locally, before deploying |
-| `pnpm test`    | Run tests using Jest                         |
+| Command             | Action                                       |
+| :------------------ | :------------------------------------------- |
+| `pnpm install`      | Installs dependencies                        |
+| `pnpm dev`          | Starts local dev server at `localhost:4321`  |
+| `pnpm build`        | Build your production site to `./dist/`      |
+| `pnpm preview`      | Preview your build locally, before deploying |
+| `pnpm test`         | Run tests using Jest                         |
+| `pnpm lint`         | Run ESLint to check for code issues          |
+| `pnpm lint:fix`     | Run ESLint and automatically fix issues      |
+| `pnpm format`       | Format code using Prettier                   |
+| `pnpm format:check` | Check if code is properly formatted          |
 
 ## 📝 Features
 
