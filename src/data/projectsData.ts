@@ -1,4 +1,5 @@
 import ecovizImage from '../assets/projects/ecoviz.avif';
+import { type ImageMetadata } from 'astro';
 
 export interface Project {
   title: string;

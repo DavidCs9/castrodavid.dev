@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   experiences,
   education,
-  additionalInfo,
   type Experience,
   type Education,
 } from '../data/experienceData';
@@ -116,14 +115,6 @@ const EducationCard = ({ education }: { education: Education }) => {
     </div>
   );
 };
-
-// InfoItem Component for consistent styling in additional info section
-const InfoItem = ({ children }: { children: React.ReactNode }) => (
-  <li className="text-gray-700 flex items-center">
-    <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 mr-2"></span>
-    {children}
-  </li>
-);
 
 // Main Resume Component
 const Resume = () => {

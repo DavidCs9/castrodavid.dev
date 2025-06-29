@@ -34,7 +34,6 @@ const SkillsList: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [steps, setSteps] = useState<Skill[][]>([]);
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [clickAlgorithm, setClickAlgorithm] = useState<string>();
   const [algoLatency, setAlgoLatency] = useState<number>(0);
 
   const STEP_DELAY = 400;
@@ -43,7 +42,6 @@ const SkillsList: React.FC = () => {
     algorithmFn: (arr: Skill[]) => { sorted: Skill[]; steps: Skill[][] }
   ) => {
     restartSkills();
-    setClickAlgorithm(algorithmFn.name);
     const { steps: algoSteps } = algorithmFn(skillsData);
     setSteps(algoSteps);
   };
@@ -86,7 +84,6 @@ const SkillsList: React.FC = () => {
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
-    setClickAlgorithm(undefined);
     setAlgoLatency(0);
   };
 
