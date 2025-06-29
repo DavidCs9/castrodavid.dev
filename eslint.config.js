@@ -2,12 +2,33 @@ import js from '@eslint/js';
 import typescript from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
 import astro from 'eslint-plugin-astro';
+import astroParser from 'astro-eslint-parser';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier';
 
 export default [
+  {
+    files: ['**/*.astro'],
+    languageOptions: {
+      parser: astroParser,
+      parserOptions: {
+        parser: typescriptParser,
+        extraFileExtensions: ['.astro'],
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+    plugins: {
+      astro,
+    },
+    rules: {
+      ...astro.configs.recommended.rules,
+      'astro/no-conflict-set-directives': 'error',
+      'astro/no-unused-define-vars-in-style': 'error',
+    },
+  },
   js.configs.recommended,
   {
     ignores: [
@@ -84,24 +105,6 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       'no-console': 'warn',
       '@typescript-eslint/no-require-imports': 'off',
-    },
-  },
-  {
-    files: ['**/*.astro'],
-    languageOptions: {
-      parser: astro.configs.recommended.parser,
-      parserOptions: {
-        parser: typescriptParser,
-        extraFileExtensions: ['.astro'],
-      },
-    },
-    plugins: {
-      astro,
-    },
-    rules: {
-      ...astro.configs.recommended.rules,
-      'astro/no-conflict-set-directives': 'error',
-      'astro/no-unused-define-vars-in-style': 'error',
     },
   },
 ];

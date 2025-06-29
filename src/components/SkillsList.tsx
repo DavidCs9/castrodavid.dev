@@ -1,5 +1,5 @@
 // src/components/SkillsList.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   bubbleSort,
@@ -46,14 +46,7 @@ const SkillsList: React.FC = () => {
     setSteps(algoSteps);
   };
 
-  // Add this useEffect
-  useEffect(() => {
-    if (steps.length > 0 && !isRunning) {
-      runAutomated();
-    }
-  }, [steps]); // This will run whenever steps changes
-
-  const runAutomated = () => {
+  const runAutomated = useCallback(() => {
     if (steps.length === 0) return;
     setIsRunning(true);
     let step = currentStep;
@@ -68,7 +61,14 @@ const SkillsList: React.FC = () => {
         setIsRunning(false);
       }
     }, STEP_DELAY);
-  };
+  }, [steps, currentStep]);
+
+  // Add this useEffect
+  useEffect(() => {
+    if (steps.length > 0 && !isRunning) {
+      runAutomated();
+    }
+  }, [steps, isRunning, runAutomated]); // This will run whenever steps changes
 
   const getSkillColor = (level: number) => {
     if (level === 10) return 'bg-green-700'; // Darker green for highest skill
