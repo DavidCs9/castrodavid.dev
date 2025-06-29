@@ -401,6 +401,7 @@ This chapter tackles JavaScript's often-maligned **type coercion**, arguing for 
 - **`ToString`:** Converts values to strings.
   - Primitives: `42` -> `"42"`, `null` -> `"null"`. `-0` becomes `"0"`.
   - Abstractly, `Symbol` to string throws `TypeError`.
+
   ```javascript
   console.log(String(42)); // "42"
   console.log(String(-0)); // "0"
@@ -409,10 +410,12 @@ This chapter tackles JavaScript's often-maligned **type coercion**, arguing for 
   ```
 
   - Objects use `ToPrimitive(obj, "string")`.
+
   ```javascript
   console.log(String([1, 2])); // "1,2"
   console.log(String({ a: 1 })); // "[object Object]"
   ```
+
 - **`ToNumber`:** Converts values to numbers.
   - `"42"` -> `42`, `""` -> `0`, `"abc"` -> `NaN`.
   - `true` -> `1`, `false` -> `0`, `null` -> `0`, `undefined` -> `NaN`.
@@ -475,6 +478,7 @@ This chapter tackles JavaScript's often-maligned **type coercion**, arguing for 
   ```
 - **Customizing Object Coercion:**
   - `obj[Symbol.toStringTag]` customizes `Object.prototype.toString.call(obj)`.
+
   ```javascript
   const taggedObj = {
     get [Symbol.toStringTag]() {
@@ -485,6 +489,7 @@ This chapter tackles JavaScript's often-maligned **type coercion**, arguing for 
   ```
 
   - `obj[Symbol.toPrimitive](hint)` completely overrides `ToPrimitive` logic.
+
   ```javascript
   const customPrimitiveObj = {
     [Symbol.toPrimitive](hint) {
@@ -514,14 +519,17 @@ Advocates for **type-aware usage of `==`**.
     - `==` attempts to **coerce** operands (preferring numeric conversion).
     - _Author's advice:_
       - If you **know** types differ and want potential equality through coercion, **you MUST use `==`**.
+
       ```javascript
       console.log(42 == '42'); // true
       console.log(42 === '42'); // false
       ```
 
       - If you **don't know** the types, use `===` defensively (and refactor).
+
 3.  **Key `==` Nuances:**
     - **Nullish Coercion:** `value == null` is `true` if `value` is `null` or `undefined`.
+
     ```javascript
     let x; // undefined
     console.log(x == null); // true
@@ -529,6 +537,7 @@ Advocates for **type-aware usage of `==`**.
     ```
 
     - **Boolean Gotcha:** **NEVER use `x == true` or `x == false`**.
+
     ```javascript
     console.log('1' == true); // true ( "1" -> 1; true -> 1 )
     console.log('yes' == true); // false ( "yes" -> NaN; true -> 1 )
