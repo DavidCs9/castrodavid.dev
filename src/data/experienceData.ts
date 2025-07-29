@@ -1,19 +1,27 @@
 export const experiences: Experience[] = [
   {
+    title: 'Senior Application Developer',
+    company: 'PSL Group',
+    location: 'Remote',
+    date: '06/25 - Present',
+    summary:
+      'Working on LLMs for medical use cases, serverless architectures and lot of AWS.',
+    achievements: ['Soon to be updated with more details'],
+  },
+  {
     title: 'Full Stack Developer',
     company: 'PID ELECTRONICS',
     location: 'Chihuahua, MX',
-    date: '06/2023 - Present',
+    date: '06/2023 - 06/2025',
     summary:
-      'Maintained and enhanced a critical legacy system responsible for managing and visualizing sand silo metrics during the fracking process in the USA. The project processes 100,000 writes per day and tracks over 5 billion lbs of sand usage annually for a prominent USA client, ensuring precise real-time data analysis and operational decision support in a high-stakes environment.',
+      'Maintained and enhanced a critical legacy system responsible for managing and visualizing sand silo metrics during the fracking process in the USA. ',
     achievements: [
+      'The project processes 100,000 writes per day and tracks over 5 billion lbs of sand usage annually for a prominent USA client, ensuring precise real-time data analysis and operational decision support in a high-stakes environment.',
       'Championed the conversion of 50% of the legacy JavaScript codebase to TypeScript, resulting in a 35% reduction in critical production bugs and an acceleration in feature delivery timelines by two weeks.',
       'Spearheaded the migration of a critical reporting feature from a client-side to a microservice architecture using AWS Lambda and API Gateway—reducing report generation time by 90% (from 5 minutes to 30 seconds), enhancing system resilience, and lowering operational costs through effective caching strategies.',
       'Identified and optimized an inefficient indexing strategy in our MySQL database, reducing query latency by 75% and markedly improving system performance.',
       'Independently developed an internal server monitoring tool in Go that tracks performance metrics from 8 cross-cloud servers, improving the detection speed of high-latency issues by 50%.',
       'Implemented serverless features using AWS SAM and CloudFormation that improved deployment speed by 3x, reducing the workload on the main server.',
-      'Mentored a new intern on coding standards and agile methodology, resulting in the intern contributing effectively within three weeks.',
-      'Drove the adoption of industry-standard coding practices and linters, raising overall code quality and boosting developer productivity by 20%.',
     ],
   },
   {
