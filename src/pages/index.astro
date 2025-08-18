@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import SkillsList from '../components/SkillsList.tsx';
+import Experience from '../components/Experience.tsx';
 import Projects from '../components/Projects.astro';
 import Posts from '../components/Posts.astro';
 import Footer from '../components/Footer.astro';
@@ -13,7 +14,7 @@ import Footer from '../components/Footer.astro';
 <Layout title="David Castro | Software Engineer">
   <Hero />
   <SkillsList client:load />
-  <!-- <Experience client:load /> TODO: Fix -->
+  <Experience client:load />
   <Projects />
   <Posts />
   <Footer />
