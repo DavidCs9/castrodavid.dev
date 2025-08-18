@@ -1,5 +1,5 @@
 // src/components/SkillsList.tsx
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   bubbleSort,
@@ -41,34 +41,37 @@ const SkillsList: React.FC = () => {
   const handleSort = (
     algorithmFn: (arr: Skill[]) => { sorted: Skill[]; steps: Skill[][] }
   ) => {
+    // Clear any existing animation before starting a new one
+    if (isRunning) return;
+
     restartSkills();
     const { steps: algoSteps } = algorithmFn(skillsData);
     setSteps(algoSteps);
   };
 
-  const runAutomated = useCallback(() => {
+  // Move the animation logic directly into useEffect to avoid dependency issues
+  useEffect(() => {
     if (steps.length === 0) return;
+
     setIsRunning(true);
-    let step = currentStep;
+    setCurrentStep(0); // Reset step counter
+
+    let stepIndex = 0;
     const interval = setInterval(() => {
-      if (step < steps.length) {
-        setSkills(steps[step]);
-        setCurrentStep(step);
-        step++;
-        setAlgoLatency((step * STEP_DELAY) / 1000);
+      if (stepIndex < steps.length) {
+        setSkills(steps[stepIndex]);
+        setCurrentStep(stepIndex);
+        stepIndex++;
+        setAlgoLatency((stepIndex * STEP_DELAY) / 1000);
       } else {
         clearInterval(interval);
         setIsRunning(false);
       }
     }, STEP_DELAY);
-  }, [steps, currentStep]);
 
-  // Add this useEffect
-  useEffect(() => {
-    if (steps.length > 0 && !isRunning) {
-      runAutomated();
-    }
-  }, [steps, isRunning, runAutomated]); // This will run whenever steps changes
+    // Cleanup function to clear interval when component unmounts or effect re-runs
+    return () => clearInterval(interval);
+  }, [steps]); // Only depend on steps changing
 
   const getSkillColor = (level: number) => {
     if (level === 10) return 'bg-green-700'; // Darker green for highest skill
