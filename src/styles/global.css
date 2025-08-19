@@ -1,16 +1,49 @@
 @import 'tailwindcss';
 
-body {
-  background-image: url('../assets/concrete-wall.png');
-}
-
-@theme {
+/* Custom properties for design system */
+:root {
   --color-background: #e4e3d8;
   --color-primary: #3d3879;
   --color-primary-light: #7a73d1;
   --color-primary-dark: #342f72;
 
   --font-primary: 'Roboto', sans-serif;
+
+  /* Modern spacing scale */
+  --spacing-xs: 0.125rem;
+  --spacing-sm: 0.25rem;
+  --spacing-md: 0.5rem;
+  --spacing-lg: 1rem;
+  --spacing-xl: 1.5rem;
+  --spacing-2xl: 2rem;
+  --spacing-3xl: 3rem;
+
+  /* Typography scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  /* Modern shadows */
+  --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-medium:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-large:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+body {
+  background-image: url('../assets/concrete-wall.png');
+  font-feature-settings:
+    'rlig' 1,
+    'calt' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer utilities {
@@ -28,20 +61,94 @@ body {
   .animate-appearFromAbove {
     animation: appearFromAbove 0.5s ease-out;
   }
+
+  /* Modern focus styles */
+  .focus-modern {
+    outline: none;
+    box-shadow:
+      0 0 0 2px rgba(var(--color-primary), 0.2),
+      0 0 0 4px rgba(var(--color-primary), 0.1);
+  }
+
+  /* Fluid typography utilities */
+  .text-fluid-sm {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+
+  .text-fluid-base {
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+  }
+
+  .text-fluid-lg {
+    font-size: clamp(1.125rem, 3vw, 1.25rem);
+  }
+
+  .text-fluid-xl {
+    font-size: clamp(1.25rem, 3.5vw, 1.5rem);
+  }
+
+  .text-fluid-2xl {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .text-fluid-3xl {
+    font-size: clamp(1.875rem, 5vw, 2.5rem);
+  }
 }
 
-/* Override specific Tailwind typography styles for Markdown */
+/* Enhanced prose styles using modern Tailwind Typography patterns */
+.prose {
+  /* Use CSS custom properties for better theming */
+  --tw-prose-body: theme('colors.gray.700');
+  --tw-prose-headings: theme('colors.gray.900');
+  --tw-prose-links: theme('colors.primary.DEFAULT');
+  --tw-prose-bold: theme('colors.gray.900');
+  --tw-prose-counters: theme('colors.gray.500');
+  --tw-prose-bullets: theme('colors.gray.300');
+  --tw-prose-hr: theme('colors.gray.200');
+  --tw-prose-quotes: theme('colors.gray.900');
+  --tw-prose-quote-borders: theme('colors.gray.200');
+  --tw-prose-captions: theme('colors.gray.500');
+  --tw-prose-code: theme('colors.primary.dark');
+  --tw-prose-pre-code: theme('colors.gray.200');
+  --tw-prose-pre-bg: theme('colors.gray.800');
+  --tw-prose-th-borders: theme('colors.gray.300');
+  --tw-prose-td-borders: theme('colors.gray.200');
+}
+
+/* Dark mode prose styles */
+.dark .prose {
+  --tw-prose-body: theme('colors.gray.300');
+  --tw-prose-headings: theme('colors.white');
+  --tw-prose-links: theme('colors.primary.light');
+  --tw-prose-bold: theme('colors.white');
+  --tw-prose-counters: theme('colors.gray.400');
+  --tw-prose-bullets: theme('colors.gray.600');
+  --tw-prose-hr: theme('colors.gray.700');
+  --tw-prose-quotes: theme('colors.gray.100');
+  --tw-prose-quote-borders: theme('colors.gray.700');
+  --tw-prose-captions: theme('colors.gray.400');
+  --tw-prose-code: theme('colors.primary.light');
+  --tw-prose-pre-code: theme('colors.gray.300');
+  --tw-prose-pre-bg: theme('colors.gray.900');
+  --tw-prose-th-borders: theme('colors.gray.600');
+  --tw-prose-td-borders: theme('colors.gray.700');
+}
+
+/* Remove the extensive manual prose overrides - let the typography plugin handle it */
 .prose code::before,
 .prose code::after {
   content: '' !important;
 }
 
 .prose pre {
-  background-color: #1e293b !important;
-  padding: 1rem !important;
-  border-radius: 0.5rem !important;
+  background-color: var(--tw-prose-pre-bg) !important;
+  color: var(--tw-prose-pre-code) !important;
+  padding: 1.5rem !important;
+  border-radius: 0.75rem !important;
   overflow-x: auto !important;
-  margin: 1.5rem 0 !important;
+  margin: 2rem 0 !important;
+  box-shadow: var(--shadow-medium);
 }
 
 .prose pre code {
@@ -50,17 +157,21 @@ body {
   border-radius: 0 !important;
   font-size: 0.875rem !important;
   color: inherit !important;
+  font-family:
+    'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
 }
 
-/* Shiki styles */
+/* Enhanced Shiki styles with better contrast */
 .prose .shiki {
-  font-family: 'Fira Code', 'Menlo', 'Monaco', 'Consolas', monospace !important;
+  font-family:
+    'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
   font-size: 0.875rem !important;
-  line-height: 1.5 !important;
+  line-height: 1.6 !important;
   padding: 0 !important;
   margin: 0 !important;
-  border-radius: 0.375rem !important;
-  background-color: #282c34 !important; /* One Dark Pro background */
+  border-radius: 0.75rem !important;
+  background-color: #1e293b !important;
+  border: 1px solid rgb(0 0 0 / 0.1);
 }
 
 .prose .shiki code {
@@ -72,57 +183,117 @@ body {
   font-family: inherit !important;
 }
 
-.prose ul {
-  list-style-type: disc !important;
+/* Enhanced blockquote styling */
+.prose blockquote {
+  border-left: 4px solid var(--tw-prose-quote-borders) !important;
   padding-left: 1.5rem !important;
-  margin: 1rem 0 !important;
+  font-style: italic !important;
+  color: var(--tw-prose-quotes) !important;
+  margin: 2rem 0 !important;
+  background: rgb(0 0 0 / 0.02);
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
 }
 
-.prose ol {
-  list-style-type: decimal !important;
-  padding-left: 1.5rem !important;
-  margin: 1rem 0 !important;
-}
-
+/* Improved heading styles with better spacing */
 .prose h1 {
-  font-weight: 700 !important;
-  margin-top: 2rem !important;
-  margin-bottom: 1.25rem !important;
-  color: #111827 !important;
+  font-weight: 800 !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 1.5rem !important;
+  color: var(--tw-prose-headings) !important;
   line-height: 1.1 !important;
-  font-size: 1.4rem !important;
+  font-size: clamp(1.5rem, 4vw, 2rem) !important;
 }
 
 .prose h2 {
   font-weight: 700 !important;
-  margin-top: 1.75rem !important;
-  margin-bottom: 1rem !important;
-  color: #111827 !important;
+  margin-top: 2rem !important;
+  margin-bottom: 1.25rem !important;
+  color: var(--tw-prose-headings) !important;
   line-height: 1.2 !important;
-  font-size: 1.2rem !important;
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem) !important;
 }
 
 .prose h3 {
-  font-weight: 700 !important;
-  margin-top: 1.5rem !important;
-  margin-bottom: 0.75rem !important;
-  color: #111827 !important;
+  font-weight: 600 !important;
+  margin-top: 1.75rem !important;
+  margin-bottom: 1rem !important;
+  color: var(--tw-prose-headings) !important;
   line-height: 1.25 !important;
-  font-size: 1.1rem !important;
+  font-size: clamp(1.125rem, 3vw, 1.5rem) !important;
 }
 
 .prose h4 {
-  font-weight: 700 !important;
-  margin-top: 1.25rem !important;
-  margin-bottom: 0.5rem !important;
-  color: #111827 !important;
+  font-weight: 600 !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  color: var(--tw-prose-headings) !important;
   line-height: 1.3 !important;
+  font-size: clamp(1rem, 2.5vw, 1.25rem) !important;
 }
 
-.prose blockquote {
-  border-left: 4px solid rgba(59, 130, 246, 0.4) !important;
-  padding-left: 1rem !important;
-  font-style: italic !important;
-  color: #4b5563 !important;
+/* Enhanced link styles */
+.prose a {
+  color: var(--tw-prose-links) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.prose a:hover {
+  border-bottom-color: var(--tw-prose-links);
+  text-decoration: none !important;
+}
+
+/* Better image styling */
+.prose img {
+  border-radius: 0.75rem !important;
+  box-shadow: var(--shadow-medium) !important;
+  margin: 2rem 0 !important;
+}
+
+/* Enhanced lists */
+.prose ul,
+.prose ol {
   margin: 1.5rem 0 !important;
+  padding-left: 1.75rem !important;
+}
+
+.prose li {
+  margin: 0.5rem 0 !important;
+  line-height: 1.6 !important;
+}
+
+/* Better table styling */
+.prose table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 2rem 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.prose th,
+.prose td {
+  padding: 0.75rem 1rem !important;
+  border: 1px solid var(--tw-prose-td-borders) !important;
+}
+
+.prose th {
+  background-color: rgb(0 0 0 / 0.03);
+  font-weight: 600;
+}
+
+/* Enhanced code styling */
+.prose :not(pre) > code {
+  background-color: rgb(0 0 0 / 0.05) !important;
+  padding: 0.25rem 0.375rem !important;
+  border-radius: 0.375rem !important;
+  font-size: 0.875em !important;
+  font-weight: 500 !important;
+  color: var(--tw-prose-code) !important;
+  border: 1px solid rgb(0 0 0 / 0.1);
 }
