@@ -18,13 +18,17 @@ import EngineeringOrgTournament from '../../components/blog/EngineeringOrgTourna
 
 ## Integration Hell
 
-Picture this: It's 9 PM on a Thursday. The release deadline is tomorrow. You're staring at your terminal, watching a seemingly endless cascade of test failures scroll by. The feature you've been working on for two weeks _should_ integrate seamlessly with your teammate's code, but instead, you're drowning in merge conflicts and compatibility issues.
+Picture this: It's 9 PM on a Thursday. The release deadline is tomorrow. You're staring at your terminal, watching a seemingly endless cascade of test failures scroll by. The feature you've been working on for two weeks _should_ integrate seamlessly with your teammate's code, but instead, you're drowning in merge conflicts and compatibility issues. Sound familiar?
 
-Sound familiar?
+<br />
 
 You and your teammate are both skilled engineers. You both want to ship quality software. Yet somehow, you've ended up in what can only be described as "integration hell" – debugging brittle, undocumented code under crushing time pressure.
 
+<br />
+
 Here's the million-dollar question: **Why does this happen?** We're all smart engineers who want to build good things. Is it just a technical problem, or is it a people problem?
+
+<br />
 
 The answer might surprise you. It's not really either – it's a **game theory problem**.
 
@@ -45,7 +49,11 @@ Let's explore what happens in each scenario through our first interactive compon
 
 If you played around with the matrix above, you probably noticed something troubling. The dominant strategy – the choice that gives you the best outcome regardless of what your teammate does – is to **Cut Corners**. This is what game theorists call a _Nash Equilibrium_, where no player can improve their outcome by unilaterally changing their strategy.
 
+<br />
+
 But here's the kicker: when both players follow their dominant strategy, you end up in the worst possible outcome for the team – mutual technical debt, missed deadlines, and that dreaded integration hell.
+
+<br />
 
 This isn't a failure of engineering skill. It's a structural problem baked into how we often evaluate individual performance in the short term.
 
@@ -53,9 +61,15 @@ This isn't a failure of engineering skill. It's a structural problem baked into 
 
 The single-sprint analysis above has a critical flaw: it assumes we only work together once. In reality, software development is an **iterated game**. You'll work with the same teammates sprint after sprint, project after project.
 
+<br />
+
 This changes everything.
 
+<br />
+
 In repeated interactions, your reputation matters. Being known as someone who consistently delivers quality work becomes valuable. Getting burned by a corner-cutting teammate makes you less likely to trust them in the future.
+
+<br />
 
 Let's explore this through our second interactive component, where you can play multiple rounds against different "engineer archetypes":
 
