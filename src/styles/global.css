@@ -1,5 +1,36 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  --color-primary-950: #172554;
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-primary-light: #60a5fa;
+
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+
+  --color-white: #ffffff;
+}
+
 /* Custom properties for design system */
 :root {
   --color-background: #e4e3d8;
@@ -99,40 +130,40 @@ body {
 /* Enhanced prose styles using modern Tailwind Typography patterns */
 .prose {
   /* Use CSS custom properties for better theming */
-  --tw-prose-body: theme('colors.gray.700');
-  --tw-prose-headings: theme('colors.gray.900');
-  --tw-prose-links: theme('colors.primary.DEFAULT');
-  --tw-prose-bold: theme('colors.gray.900');
-  --tw-prose-counters: theme('colors.gray.500');
-  --tw-prose-bullets: theme('colors.gray.300');
-  --tw-prose-hr: theme('colors.gray.200');
-  --tw-prose-quotes: theme('colors.gray.900');
-  --tw-prose-quote-borders: theme('colors.gray.200');
-  --tw-prose-captions: theme('colors.gray.500');
-  --tw-prose-code: theme('colors.primary.dark');
-  --tw-prose-pre-code: theme('colors.gray.200');
-  --tw-prose-pre-bg: theme('colors.gray.800');
-  --tw-prose-th-borders: theme('colors.gray.300');
-  --tw-prose-td-borders: theme('colors.gray.200');
+  --tw-prose-body: var(--color-gray-700);
+  --tw-prose-headings: var(--color-gray-900);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: var(--color-gray-900);
+  --tw-prose-counters: var(--color-gray-500);
+  --tw-prose-bullets: var(--color-gray-300);
+  --tw-prose-hr: var(--color-gray-200);
+  --tw-prose-quotes: var(--color-gray-900);
+  --tw-prose-quote-borders: var(--color-gray-200);
+  --tw-prose-captions: var(--color-gray-500);
+  --tw-prose-code: var(--color-primary-dark);
+  --tw-prose-pre-code: var(--color-gray-200);
+  --tw-prose-pre-bg: var(--color-gray-800);
+  --tw-prose-th-borders: var(--color-gray-300);
+  --tw-prose-td-borders: var(--color-gray-200);
 }
 
 /* Dark mode prose styles */
 .dark .prose {
-  --tw-prose-body: theme('colors.gray.300');
-  --tw-prose-headings: theme('colors.white');
-  --tw-prose-links: theme('colors.primary.light');
-  --tw-prose-bold: theme('colors.white');
-  --tw-prose-counters: theme('colors.gray.400');
-  --tw-prose-bullets: theme('colors.gray.600');
-  --tw-prose-hr: theme('colors.gray.700');
-  --tw-prose-quotes: theme('colors.gray.100');
-  --tw-prose-quote-borders: theme('colors.gray.700');
-  --tw-prose-captions: theme('colors.gray.400');
-  --tw-prose-code: theme('colors.primary.light');
-  --tw-prose-pre-code: theme('colors.gray.300');
-  --tw-prose-pre-bg: theme('colors.gray.900');
-  --tw-prose-th-borders: theme('colors.gray.600');
-  --tw-prose-td-borders: theme('colors.gray.700');
+  --tw-prose-body: var(--color-gray-300);
+  --tw-prose-headings: var(--color-white);
+  --tw-prose-links: var(--color-primary-light);
+  --tw-prose-bold: var(--color-white);
+  --tw-prose-counters: var(--color-gray-400);
+  --tw-prose-bullets: var(--color-gray-600);
+  --tw-prose-hr: var(--color-gray-700);
+  --tw-prose-quotes: var(--color-gray-100);
+  --tw-prose-quote-borders: var(--color-gray-700);
+  --tw-prose-captions: var(--color-gray-400);
+  --tw-prose-code: var(--color-primary-light);
+  --tw-prose-pre-code: var(--color-gray-300);
+  --tw-prose-pre-bg: var(--color-gray-900);
+  --tw-prose-th-borders: var(--color-gray-600);
+  --tw-prose-td-borders: var(--color-gray-700);
 }
 
 /* Remove the extensive manual prose overrides - let the typography plugin handle it */
