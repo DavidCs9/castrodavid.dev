@@ -1,7 +1,7 @@
 {
   "name": "castrodavid-dev",
   "type": "module",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -12,7 +12,8 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.astro --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "pre-commit": "astro build && pnpm lint && pnpm test && pnpm format:check"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.1",

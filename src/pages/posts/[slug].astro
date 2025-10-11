@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, getEntry } from 'astro:content';
 import me from '@/assets/me-removebg.png';
-import Image from 'astro/components/Image.astro';
+import { Image } from 'astro:assets';
 
 // Generate static paths for all posts in the collection
 export async function getStaticPaths() {
