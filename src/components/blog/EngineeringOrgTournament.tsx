@@ -213,7 +213,7 @@ const EngineeringOrgTournament: React.FC = () => {
   };
 
   return (
-    <div className="my-8 p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+    <div className="my-8 p-6 rounded-xl  border border-gray-300">
       <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
         Engineering Organization Tournament
       </h3>
@@ -257,7 +257,7 @@ const EngineeringOrgTournament: React.FC = () => {
         <button
           onClick={runTournament}
           disabled={isRunning || selectedStrategies.length < 2}
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           {isRunning ? 'Running...' : 'Start Tournament'}
         </button>
@@ -272,16 +272,16 @@ const EngineeringOrgTournament: React.FC = () => {
 
       {/* Progress */}
       {isRunning && (
-        <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+        <div className="mb-6 p-4 rounded-lg">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-blue-800 font-medium">
+            <span className="text-purple-800 font-medium">
               Tournament Progress
             </span>
-            <span className="text-blue-600">Round {currentRound}</span>
+            <span className="text-purple-600">Round {currentRound}</span>
           </div>
-          <div className="w-full bg-blue-200 rounded-full h-2">
+          <div className="w-full bg-purple-200 rounded-full h-2">
             <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              className="bg-purple-600 h-2 rounded-full transition-all duration-300"
               style={{
                 width: `${(currentRound / (selectedStrategies.length * (selectedStrategies.length - 1) * 2.5)) * 100}%`,
               }}
@@ -313,7 +313,7 @@ const EngineeringOrgTournament: React.FC = () => {
                   <div className="w-8 text-center font-bold text-gray-600">
                     #{index + 1}
                   </div>
-                  <div className="flex-1 bg-gray-200 rounded-lg overflow-hidden">
+                  <div className="flex-1 rounded-lg overflow-hidden">
                     <div
                       className="h-8 flex items-center px-3 text-white font-medium transition-all duration-500"
                       style={{
@@ -336,10 +336,8 @@ const EngineeringOrgTournament: React.FC = () => {
 
       {/* Final Results */}
       {finalResults.length > 0 && !isRunning && (
-        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-          <h4 className="font-bold text-green-800 mb-3">
-            🏆 Tournament Complete!
-          </h4>
+        <div className="p-4 border rounded-lg">
+          <div className="font-bold mb-3">🏆 Tournament Complete!</div>
           <div className="space-y-2">
             {finalResults.map((strategy, index) => (
               <div
@@ -362,16 +360,14 @@ const EngineeringOrgTournament: React.FC = () => {
                   ></div>
                   <span className="font-medium">{strategy.shortName}</span>
                 </div>
-                <span className="font-bold text-green-700">
-                  {strategy.score} points
-                </span>
+                <span className="font-bold">{strategy.score} points</span>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+      <div className="mt-6 p-4 bg-purple-300/40 border border-purple-200 rounded-lg">
         <h4 className="font-bold text-purple-800 mb-2">
           🔍 What to Watch For:
         </h4>

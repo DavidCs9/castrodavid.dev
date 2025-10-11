@@ -150,7 +150,7 @@ const ProjectLifecycleSimulation: React.FC = () => {
   };
 
   return (
-    <div className="my-8 p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+    <div className="my-8 p-6 rounded-xl border border-gray-300">
       <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
         Project Lifecycle Simulation
       </h3>
@@ -181,7 +181,7 @@ const ProjectLifecycleSimulation: React.FC = () => {
             </option>
           ))}
         </select>
-        <div className="mt-2 p-3 bg-gray-50 rounded-lg">
+        <div className="mt-2 p-3 rounded-lg">
           <span className="text-sm text-gray-600">
             <strong>Strategy:</strong> {strategies[selectedStrategy].behavior}
           </span>
@@ -190,19 +190,19 @@ const ProjectLifecycleSimulation: React.FC = () => {
 
       {/* Game Status */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="text-center p-4 bg-blue-50 rounded-lg">
+        <div className="text-center p-4 rounded-lg">
           <div className="text-2xl font-bold text-blue-600">
             {gameComplete ? '10' : gameState.sprint}
           </div>
           <div className="text-sm text-gray-600">Sprint</div>
         </div>
-        <div className="text-center p-4 bg-green-50 rounded-lg">
+        <div className="text-center p-4  rounded-lg">
           <div className="text-2xl font-bold text-green-600">
             {gameState.yourScore}
           </div>
           <div className="text-sm text-gray-600">Your Score</div>
         </div>
-        <div className="text-center p-4 bg-purple-50 rounded-lg">
+        <div className="text-center p-4  rounded-lg">
           <div className="text-2xl font-bold text-purple-600">
             {gameState.teammateScore}
           </div>
@@ -236,7 +236,7 @@ const ProjectLifecycleSimulation: React.FC = () => {
 
       {/* Game Complete */}
       {gameComplete && (
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg text-center">
+        <div className="mb-6 p-4 rounded-lg text-center">
           <h4 className="text-lg font-bold text-gray-800 mb-2">
             Project Complete!
           </h4>
@@ -249,7 +249,7 @@ const ProjectLifecycleSimulation: React.FC = () => {
           </p>
           <button
             onClick={resetGame}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             Play Again
           </button>
@@ -264,7 +264,7 @@ const ProjectLifecycleSimulation: React.FC = () => {
             {gameState.history.slice(-5).map(round => (
               <div
                 key={round.sprint}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg text-sm"
+                className="flex items-center justify-between p-3 rounded-lg text-sm"
               >
                 <div className="flex items-center space-x-4">
                   <span className="font-medium">Sprint {round.sprint}:</span>
@@ -291,9 +291,9 @@ const ProjectLifecycleSimulation: React.FC = () => {
         </div>
       )}
 
-      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <h4 className="font-bold text-blue-800 mb-2">💡 What to Notice:</h4>
-        <ul className="text-blue-700 text-sm space-y-1">
+      <div className="mt-6 p-4 bg-purple-300/40 border border-purple-200 rounded-lg">
+        <h4 className="font-bold text-purple-900 mb-2">💡 What to Notice:</h4>
+        <ul className="text-purple-800 text-sm space-y-1">
           <li>• How does each strategy make you feel as a teammate?</li>
           <li>• Which strategies encourage you to cooperate?</li>
           <li>• What happens when you try to exploit different archetypes?</li>

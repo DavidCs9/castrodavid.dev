@@ -18,16 +18,17 @@ const PayoffCell: React.FC<PayoffCellProps> = ({
   onLeave,
 }) => {
   const getCellColor = () => {
-    if (youScore === 5) return 'bg-green-100 border-green-300';
-    if (youScore === 3) return 'bg-blue-100 border-blue-300';
-    if (youScore === 1) return 'bg-red-100 border-red-300';
-    return 'bg-yellow-100 border-yellow-300';
+    if (youScore === 5)
+      return 'bg-green-100 border-green-300 hover:bg-green-200';
+    if (youScore === 3) return 'bg-blue-100 border-blue-300 hover:bg-blue-200';
+    if (youScore === 1) return 'bg-red-100 border-red-300 hover:bg-red-200';
+    return 'bg-yellow-100 border-yellow-300 hover:bg-yellow-200';
   };
 
   return (
     <div
       className={`p-4 border-2 cursor-pointer transition-all duration-200 rounded-lg ${getCellColor()} ${
-        isHovered ? 'scale-105 shadow-lg' : 'hover:shadow-md'
+        isHovered ? 'shadow-lg' : 'hover:shadow-md'
       }`}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
@@ -85,7 +86,7 @@ const SprintPayoffMatrix: React.FC = () => {
   };
 
   return (
-    <div className="my-8 p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+    <div className="my-8 p-6 rounded-xl border border-gray-300">
       <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
         The Sprint Payoff Matrix
       </h3>
@@ -140,16 +141,16 @@ const SprintPayoffMatrix: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+      <div className="mt-6 p-4 rounded-lg">
         <h4 className="font-bold text-gray-800 mb-2">Scenario Analysis:</h4>
         <p className="text-gray-700 text-sm leading-relaxed">
           {getExplanation()}
         </p>
       </div>
 
-      <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-        <h4 className="font-bold text-amber-800 mb-2">🎯 Key Insight:</h4>
-        <p className="text-amber-700 text-sm">
+      <div className="mt-4 p-4  rounded-lg">
+        <div className="font-bold text-purple-800 mb-2">🎯 Key Insight:</div>
+        <p className="text-purple-700 text-sm">
           The dominant strategy is to &ldquo;Cut Corners&rdquo; because it gives
           you the best outcome regardless of what your teammate does (5 vs 0, or
           1 vs 3). But when both players follow this logic, you end up with the
