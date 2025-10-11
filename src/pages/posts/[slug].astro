@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, getEntry } from 'astro:content';
+import me from '@/assets/me-removebg.png';
+import Image from 'astro/components/Image.astro';
 
 // Generate static paths for all posts in the collection
 export async function getStaticPaths() {
@@ -21,10 +23,10 @@ const { Content } = await post.render();
 
 <Layout title={`David Castro | ${post.data.title}`}>
   <article class="mt-8 md:mt-16">
-    <header class="mb-8 md:mb-12">
+    <header class="mb-8 md:mb-12 pb-8 border-b border-gray-300">
       <!-- Title -->
       <h1
-        class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4 md:mb-6 leading-tight"
+        class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 tracking-tight mb-4 md:mb-6 leading-tight"
       >
         {post.data.title}
       </h1>
@@ -39,7 +41,7 @@ const { Content } = await post.render();
       }
 
       <div
-        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-500/20 pb-6"
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
         <!-- Date -->
         <time
@@ -59,7 +61,7 @@ const { Content } = await post.render();
         <div class="flex flex-wrap gap-2">
           {
             post.data.tags.map((tag: string) => (
-              <div class="inline-block bg-primary/10 text-primary font-medium rounded-full px-4 py-1 text-sm hover:bg-primary/20 transition-colors">
+              <div class="inline-block bg-primary/30 text-primary font-medium rounded-full px-4 py-1 text-sm hover:bg-primary/20 transition-colors">
                 #{tag}
               </div>
             ))
@@ -91,27 +93,30 @@ const { Content } = await post.render();
       <Content />
     </section>
 
-    <!-- Author Bio (optional) -->
-    <!-- {
-      post.data.author && (
-        <div class="mt-16 pt-8 border-t border-gray-200">
-          <div class="flex items-center gap-4">
-            {post.data.authorImage && (
-              <img
-                src={post.data.authorImage}
-                alt={post.data.author}
-                class="w-12 h-12 rounded-full object-cover"
-              />
-            )}
-            <div>
-              <h3 class="font-medium text-gray-900">{post.data.author}</h3>
-              {post.data.authorBio && (
-                <p class="text-gray-600 text-sm">{post.data.authorBio}</p>
-              )}
-            </div>
-          </div>
+    <!-- Author About Section -->
+    <section class="mt-12 pt-8 border-t border-gray-300">
+      <a
+        href="https://www.linkedin.com/in/davidcastrosiq/"
+        class="flex flex-col sm:flex-row gap-6 items-start"
+      >
+        <!-- Author Image -->
+        <div class="flex-shrink-0">
+          <Image
+            src={me}
+            alt="David Castro"
+            class="w-20 h-20 rounded-full object-cover"
+          />
         </div>
-      )
-    } -->
+
+        <!-- Author Info -->
+        <div class="flex-1">
+          <h3 class="text-xl font-bold text-purple-900 mb-2">David Castro</h3>
+          <p class="text-gray-600 leading-relaxed">
+            Software Engineer. Passionate about science, engineering and
+            reading.
+          </p>
+        </div>
+      </a>
+    </section>
   </article>
 </Layout>
