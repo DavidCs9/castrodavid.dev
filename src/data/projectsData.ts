@@ -16,7 +16,7 @@ export const ProjectsData: Project[] = [
     description:
       'EcoViz is a web-based application designed to help individuals calculate, visualize, and reduce their carbon footprint. This project combines modern web technologies with AI to provide personalized environmental impact assessments and actionable recommendations.',
     image: ecovizImage,
-    url: 'https://ecoviz-frontend.vercel.app/',
+    url: 'https://ecoviz.castrodavid.dev/',
     github: 'https://github.com/DavidCs9/ecoviz',
     techStack: [
       'React',
