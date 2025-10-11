@@ -16,7 +16,7 @@ import SprintPayoffMatrix from '../../components/blog/SprintPayoffMatrix.tsx';
 import ProjectLifecycleSimulation from '../../components/blog/ProjectLifecycleSimulation.tsx';
 import EngineeringOrgTournament from '../../components/blog/EngineeringOrgTournament.tsx';
 
-## Integration Hell
+#### Integration Hell
 
 Picture this: It's 9 PM on a Thursday. The release deadline is tomorrow. You're staring at your terminal, watching a seemingly endless cascade of test failures scroll by. The feature you've been working on for two weeks _should_ integrate seamlessly with your teammate's code, but instead, you're drowning in merge conflicts and compatibility issues. Sound familiar?
 
@@ -32,7 +32,7 @@ Here's the million-dollar question: **Why does this happen?** We're all smart en
 
 The answer might surprise you. It's not really either – it's a **game theory problem**.
 
-## The Software Engineer's Dilemma
+#### The Software Engineer's Dilemma
 
 Let me introduce you to a concept that will change how you think about code quality forever. It's called **Game Theory** – the mathematical study of strategic decision-making. And it turns out, writing code is one giant strategic game.
 
@@ -45,7 +45,7 @@ Let's explore what happens in each scenario through our first interactive compon
 
 <SprintPayoffMatrix client:load />
 
-## The Nash Equilibrium of Bad Code
+#### The Nash Equilibrium of Bad Code
 
 If you played around with the matrix above, you probably noticed something troubling. The dominant strategy – the choice that gives you the best outcome regardless of what your teammate does – is to **Cut Corners**. This is what game theorists call a _Nash Equilibrium_, where no player can improve their outcome by unilaterally changing their strategy.
 
@@ -57,7 +57,7 @@ But here's the kicker: when both players follow their dominant strategy, you end
 
 This isn't a failure of engineering skill. It's a structural problem baked into how we often evaluate individual performance in the short term.
 
-## But We Work in More Than One Sprint
+#### But We Work in More Than One Sprint
 
 The single-sprint analysis above has a critical flaw: it assumes we only work together once. In reality, software development is an **iterated game**. You'll work with the same teammates sprint after sprint, project after project.
 
@@ -75,29 +75,30 @@ Let's explore this through our second interactive component, where you can play 
 
 <ProjectLifecycleSimulation client:load />
 
-## The Archetypes: Engineering Personalities in Game Theory
+#### The Archetypes: Engineering Personalities in Game Theory
 
 As you played through different strategies in the simulation above, you might have noticed that some approaches feel more satisfying and productive than others. Let's break down these engineering archetypes:
 
-### The Idealist (Always Cooperate)
+<br />
+**The Idealist (Always Cooperate)**
 
 - **Strategy**: Always writes clean code, no matter what
 - **Strengths**: Produces consistently high-quality work, builds trust
 - **Weaknesses**: Can be taken advantage of by corner-cutters
 
-### The Cowboy Coder (Always Defect)
+**The Cowboy Coder (Always Defect)**
 
 - **Strategy**: Always cuts corners to ship faster
 - **Strengths**: Delivers features quickly in the short term
 - **Weaknesses**: Burns bridges, creates maintenance nightmares
 
-### The Pragmatist (Tit-for-Tat)
+**The Pragmatist (Tit-for-Tat)**
 
 - **Strategy**: Starts with clean code, then mirrors your last move
 - **Strengths**: Encourages cooperation, punishes bad behavior
 - **Weaknesses**: Can get stuck in retaliation cycles
 
-### The Grudger
+**The Grudger**
 
 - **Strategy**: Cooperates until you defect once, then never forgives
 - **Strengths**: Strongly discourages defection
@@ -110,13 +111,13 @@ If you experimented with different strategies, you probably found that the **Pra
 3. **Forgiving**: Don't hold grudges forever
 4. **Clear**: Easy to understand and predict
 
-## The Grand Tournament: Which Strategy Wins at Scale?
+#### The Grand Tournament: Which Strategy Wins at Scale?
 
 Now for the big question: In a large engineering organization with dozens of developers, which archetype ultimately succeeds? Let's find out by running a tournament where every strategy plays against every other strategy over an extended period.
 
 <EngineeringOrgTournament client:load />
 
-## The Surprising Results
+#### The Surprising Results
 
 If you ran the tournament above, you witnessed something remarkable. Despite the **Cowboy Coder** getting off to a strong start by exploiting cooperative strategies, over time the **Pragmatist** and other "nice" strategies rise to the top.
 
@@ -128,31 +129,39 @@ This happens because:
 
 The lesson? **In the long run, being cooperative, clear, and appropriately retaliatory is not just morally right – it's strategically optimal.**
 
-## Building a Cooperative System
+#### Building a Cooperative System
 
 So how do we apply these insights to real engineering organizations? The goal isn't to find perfect individual engineers, but to build systems that encourage cooperation:
 
-### Code Reviews: Enforcing the Social Contract
+<br />
+**Code Reviews: Enforcing the Social Contract**
 
 Code reviews aren't just about catching bugs – they're a mechanism for enforcing cooperation. When you know your code will be scrutinized by peers, cutting corners becomes much more expensive.
 
-### Team Culture: Creating Psychological Safety
+<br />
+**Team Culture: Creating Psychological Safety**
 
 Engineers need to feel safe being "nice." If the culture punishes people for taking time to write quality code, you'll push everyone toward defection.
 
-### Clear Standards: Making Cooperation Observable
+<br />
+
+**Clear Standards: Making Cooperation Observable**
 
 When quality standards are vague, it's hard to tell who's cooperating and who's cutting corners. Clear, measurable standards make cooperation visible and valuable.
 
-### Long-term Metrics: Aligning Incentives
+<br />
+
+**Long-term Metrics: Aligning Incentives**
 
 If you only measure velocity and ignore maintenance costs, you're incentivizing defection. Track metrics like code stability, bug rates, and developer happiness over time.
 
-### Forgiveness Mechanisms: Allowing Redemption
+<br />
+
+**Forgiveness Mechanisms: Allowing Redemption**
 
 Everyone occasionally needs to cut corners due to external pressures. Having explicit ways to "pay back" technical debt prevents permanent damage to relationships.
 
-## The Meta-Game
+#### The Meta-Game
 
 Here's the really fascinating part: once you understand this framework, you can start playing the meta-game. You can:
 
@@ -161,7 +170,7 @@ Here's the really fascinating part: once you understand this framework, you can 
 - **Build reputation systematically**: Consistently demonstrate reliability
 - **Recover from defection gracefully**: Have explicit processes for making amends
 
-## The Takeaway
+### The Takeaway
 
 The tech debt dilemma isn't a failure of individual engineers – it's an emergent property of the strategic environment we create. By understanding the game we're all playing, we can design better rules, incentives, and cultures.
 
