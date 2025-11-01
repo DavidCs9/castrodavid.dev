@@ -4,6 +4,33 @@ on:
   push:
     branches:
       - main # Trigger on pushes to the main branch
+    paths:
+      - '**.astro'
+      - '**.js'
+      - '**.mjs'
+      - '**.cjs'
+      - '**.ts'
+      - '**.tsx'
+      - '**.jsx'
+      - '**.json'
+      - '**.mdx'
+      - '**.md'
+      - '**.css'
+      - 'src/**'
+      - 'public/**'
+      - 'scripts/**'
+      - 'astro.config.mjs'
+      - 'tailwind.config.js'
+      - 'tsconfig.json'
+      - 'tsconfig.jest.json'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'eslint.config.js'
+      - 'jest.config.js'
+      - 'playwright.config.ts'
+      - '.bundlesize.json'
+      - '.prettierrc'
+      - '.github/workflows/**'
 
 jobs:
   test:
