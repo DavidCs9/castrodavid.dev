@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "path": "dist/_astro/*.js",
+      "maxSize": "150kb",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/_astro/*.css",
+      "maxSize": "50kb",
+      "compression": "gzip"
+    }
+  ],
+  "ci": {
+    "trackBranches": ["main"],
+    "repoBranchBase": "main"
+  }
+}

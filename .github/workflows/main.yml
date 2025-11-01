@@ -53,6 +53,21 @@ jobs:
       - name: Build Astro project
         run: pnpm build
 
+      # Step 5.5: Check bundle size
+      - name: Check bundle size
+        run: pnpm bundle:check
+
+      # Step 5.6: Upload bundle analysis artifacts
+      - name: Upload bundle analysis
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: bundle-analysis
+          path: |
+            dist/stats.html
+            dist/bundle-size-report.json
+          retention-days: 30
+
       # Step 6: Sync files to S3
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
